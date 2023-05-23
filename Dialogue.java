@@ -18,15 +18,18 @@ import javax.imageio.ImageIO;
 
 public class Dialogue implements KeyListener{
     /** */
-    JFrame frame = new JFrame("test");
+    JFrame frame = new JFrame();
+    JPanel test = new JPanel();
     JPanel dialogue = new JPanel();
+    JLabel text;
+    JLabel mageon = null;
     Color border = new Color(82,180,218);
-    Color fill = new Color(191,237,254, 90);
+    Color fill = new Color(189,235,253);
     String[] words = {"First", "Second", "Third", "Fourth", "Gah"};
     int wordsNum = 0;
 
     public Dialogue(){
-      frame.setSize(660, 420);
+      frame.setSize(655, 435);
       frame.addKeyListener(this);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setLayout(null);
@@ -37,44 +40,38 @@ public class Dialogue implements KeyListener{
     public void dialogueBox(){
       dialogue.setLayout(null);
       dialogue.addKeyListener(this);
-      dialogue.setBounds(10, 250, 620, 140);
+      dialogue.setBounds(10, 280, 620, 110);
       dialogue.setBorder(new RoundedBorder(10, border));
       dialogue.setBackground(fill);
-
-      JLabel text = new JLabel(words[wordsNum], JLabel.RIGHT);
+      
+      text = new JLabel(words[wordsNum], JLabel.RIGHT);
       text.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
-      text.setBounds(30, 10, 450, 120);
+      text.setBounds(30, 0, 450, 110);
+      text.setBackground(new Color(0, 0, 0, 0));
       dialogue.add(text);
 
-      JLabel mageon = null;
       try{
          mageon = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/MAGEON Logo2.png")).getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
       }catch(IOException e){throw new RuntimeException(e);}
-      mageon.setBounds(500, 10, 120, 120);
+      mageon.setBounds(500, 0, 120, 120);
       dialogue.add(mageon);
       frame.add(dialogue);
     }
 
     
-    public void keyTyped(KeyEvent e){
-      if(e.getKeyCode() == KeyEvent.VK_SPACE){
-         System.out.println("hi");
-         if(wordsNum < words.length-1){
-            wordsNum++;
-         }else{
-            wordsNum = 0;
-         }
-         dialogue.removeAll();
-         dialogue.revalidate();
-         dialogue.repaint();
-         dialogueBox();
-      }
-      frame.repaint();
-    }
+    public void keyTyped(KeyEvent e){}
     
     public void keyPressed(KeyEvent e){}
     
-    public void keyReleased(KeyEvent e){}
+    public void keyReleased(KeyEvent e){
+      System.out.println("hi");
+      if(wordsNum < words.length-1){
+         wordsNum++;
+      }else{
+         wordsNum = 0;
+      }
+      text.setText(words[wordsNum]);
+    }
     
     public static void main(String[] args) {
         new Dialogue();
