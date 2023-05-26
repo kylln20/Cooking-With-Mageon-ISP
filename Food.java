@@ -91,7 +91,7 @@ public class Food{
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testing.setSize(400, 400);
         String[] lettuceNutrients = {"Vitamin A", "Vitamin C"};
-        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", false, lettuceNutrients, 25, "im+n+q");
+        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", lettuceNutrients, 25, "im+n+q");
         testing.add(lettuce.display());
         testing.setVisible(true);
     }
