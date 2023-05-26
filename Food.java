@@ -28,13 +28,14 @@ public class Food{
      */
     private String displayMode;
 
-    public Food(String n, String filePath, String[] nu, int cal, String dm){
+    public Food(String n, String filePath, String[] nu, int cal, String dm, float pri){
         display = new JPanel();
         name = n;
         file = new File(filePath);
         nutrients = nu;
         calories = cal;
         displayMode = dm;
+        price = pri;
         makePanel();
     }
 
@@ -91,7 +92,7 @@ public class Food{
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testing.setSize(400, 400);
         String[] lettuceNutrients = {"Vitamin A", "Vitamin C"};
-        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", lettuceNutrients, 25, "im+n+q");
+        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", lettuceNutrients, 25, "im+n+q", 0.14);
         testing.add(lettuce.display());
         testing.setVisible(true);
     }
