@@ -2,7 +2,7 @@
  * A class representing a food item
  * This class also creates a JPanel that displays information about the food
  * ICS4UO - Ms Krasteva
- *
+ * @version 2
  * @author Kayla Lin
  */
 import java.util.*;
@@ -15,8 +15,6 @@ public class Food{
     JPanel display;
     private String name;
     private File file;
-    private boolean mustCook;
-    private boolean cooked; // can remove this - when cooked, just change the name and everythingelse
     private String[] nutrients;
     private int calories;
     private int quantity;
@@ -30,12 +28,10 @@ public class Food{
      */
     private String displayMode;
 
-    public Food(String n, String filePath, boolean mc, String[] nu, int cal, String dm){
+    public Food(String n, String filePath, String[] nu, int cal, String dm){
         display = new JPanel();
         name = n;
         file = new File(filePath);
-        mustCook = mc;
-        cooked = false;
         nutrients = nu;
         calories = cal;
         displayMode = dm;
@@ -43,9 +39,6 @@ public class Food{
     }
 
     public String name(){ return name; }
-    public boolean isMustCook(){ return mustCook; }
-    public boolean isCooked(){ return cooked; }
-    public void setCooked(boolean c){ cooked = c; }
     public String[] nutrients(){ return nutrients; }
     public int calories(){ return calories; }
     public int quantity(){ return quantity; }
@@ -64,13 +57,13 @@ public class Food{
             logo.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         }
         logo.setBounds(5, 5, 30, 30);
-
+        JPanel text = new JPanel();
         JLabel nameText = new JLabel(name);
-        nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+        nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         nameText.setBounds(45, 5, 30, 20);
 
         JLabel quantityText = new JLabel("Quantity: " + Integer.toString(quantity));
-        quantityText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+        quantityText.setFont(new Font(Font.SERIF, Font.PLAIN, 5));
         quantityText.setBounds(45, 25, 30, 10);
 
         if(displayMode.equals("")){
@@ -95,6 +88,7 @@ public class Food{
 
     public static void main(String[] args){
         JFrame testing = new JFrame();
+        testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testing.setSize(400, 400);
         String[] lettuceNutrients = {"Vitamin A", "Vitamin C"};
         Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", false, lettuceNutrients, 25, "im+n+q");
