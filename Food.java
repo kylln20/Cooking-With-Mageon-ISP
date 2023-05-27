@@ -15,10 +15,10 @@ public class Food{
     JPanel display;
     private String name;
     private File file;
-    private String[] nutrients;
+    private int[] nutrients;
     private int calories;
     private int quantity;
-    private float price;
+    private double price;
 
     /**
      * "": nothing
@@ -28,7 +28,7 @@ public class Food{
      */
     private String displayMode;
 
-    public Food(String n, String filePath, String[] nu, int cal, String dm, float pri){
+    public Food(String n, String filePath, int[] nu, int cal, String dm, double pri){
         display = new JPanel();
         name = n;
         file = new File(filePath);
@@ -40,13 +40,14 @@ public class Food{
     }
 
     public String name(){ return name; }
-    public String[] nutrients(){ return nutrients; }
+    public int[] nutrients(){ return nutrients; }
     public int calories(){ return calories; }
     public int quantity(){ return quantity; }
     public void setQuantity(int q){ quantity = q; }
     public String displayMode(){ return displayMode; }
     public void setDisplayMode(String dm){ displayMode = dm; }
-    
+    public double price() {return price;}
+
     public void makePanel(){
         display.setBackground(new Color(189,235,253));
         display.setBorder(new RoundedBorder(10, new Color(82,180,218)));
@@ -91,9 +92,15 @@ public class Food{
         JFrame testing = new JFrame();
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testing.setSize(400, 400);
-        String[] lettuceNutrients = {"Vitamin A", "Vitamin C"};
-        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", lettuceNutrients, 25, "im+n+q", 0.14);
+        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", new int[]{}, 25, "im+n+q", 0.14);
         testing.add(lettuce.display());
         testing.setVisible(true);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Food other = (Food) obj;
+        if (other.name().equals(this.name)) return true;
+        return false;
     }
 }
