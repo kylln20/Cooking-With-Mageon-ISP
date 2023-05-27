@@ -15,6 +15,23 @@ public class Food{
     JPanel display;
     private String name;
     private File file;
+
+    /**
+     * 0: Vitamin A
+     * 1: Vitamin B12
+     * 2: Vitamin C
+     * 3: Vitamin D
+     * 4: Vitamin K
+     * 5: Protein
+     * 6: Iron
+     * 7: Fiber
+     * 8: Calcium
+     * 9: Potassium
+     * 10: Sodium
+     * 11: Cholesterol
+     * 12: Omega 3
+     * 13: Selenium
+     */
     private int[] nutrients;
     private int calories;
     private int quantity;
