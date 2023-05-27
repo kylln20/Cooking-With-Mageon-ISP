@@ -3,7 +3,7 @@
  * This class also creates a JPanel that displays information about the food
  * ICS4UO - Ms Krasteva
  * @version 2
- * @author Kayla Lin
+ * @author Kayla Lin & Angelina Jiang
  */
 import java.util.*;
 import javax.swing.*;
