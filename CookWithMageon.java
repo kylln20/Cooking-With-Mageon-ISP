@@ -36,14 +36,16 @@ public class CookWithMageon implements KeyListener {
     private double percentage = 0.7; // nutrients absorbed tend to be between 10% - 90%
 
     /** Coordinates for the maze */
-    private int xCoord;
-    private int yCoord;
+    private int xCoord = 7;
+    private int yCoord = 0;
 
     /** The choice the user is picking */
     private JLabel choose;
     private int chooseY;
 
     private Drawing d;
+
+    private Maze maze;
 
     /**
      * CookWithMageon constructor
@@ -55,13 +57,14 @@ public class CookWithMageon implements KeyListener {
         mainFrame.addKeyListener(this);
         //mainFrame.setResizable(false); put this in final
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(640, 400);
+        mainFrame.setSize(655, 440);
         panel.setLayout(null);
         panel.setBackground(new Color(201, 218, 248));
         mainFrame.add(panel);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
         chooseY = 190;
+        maze = new Maze();
         update();
     }
 
@@ -122,24 +125,31 @@ public class CookWithMageon implements KeyListener {
                 update();
             }
         } else if (sceneNum == 5) {
-            System.out.println("5 pressed");
+            System.out.println(maze.check(yCoord, xCoord, 0));
+            System.out.println(maze.check(yCoord, xCoord, 1));
+            System.out.println(maze.check(yCoord, xCoord, 2));
+            System.out.println(maze.check(yCoord, xCoord, 3));
             if (e.getKeyCode() == KeyEvent.VK_UP) {
-                yCoord--;
-                System.out.println("w");
+                if (!maze.check(yCoord, xCoord, 0)) {
+                    yCoord--;
+                }
             } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                xCoord--;
-                System.out.println("a");
+                if (!maze.check(yCoord, xCoord, 3)) {
+                    xCoord--;
+                }
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                yCoord++;
-                System.out.println("s");
+                if (!maze.check(yCoord, xCoord, 2)) {
+                    yCoord++;
+                }
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                xCoord++;
-                System.out.println("d");
+                if (!maze.check(yCoord, xCoord, 1)) {
+                    xCoord++;
+                }
             }
             if (xCoord < 0) xCoord = 0;
-            if (xCoord > 9) xCoord = 15;
+            if (xCoord > 15) xCoord = 15;
             if (yCoord < 0) yCoord = 0;
-            if (yCoord > 15) yCoord = 9;
+            if (yCoord > 9) yCoord = 9;
             d.repaint();
             update();
         }
@@ -266,366 +276,79 @@ public class CookWithMageon implements KeyListener {
         } else if (sceneNum == 4) {
 
         } else if (sceneNum == 5) { // grocery shop
-            boolean[][][] maze = new boolean[10][16][4];
-            {
-                maze[0][0][0] = true;
-                maze[0][0][2] = true;
-                maze[0][0][3] = true;
-                maze[0][1][0] = true;
-                maze[0][2][0] = true;
-                maze[0][2][2] = true;
-                maze[0][3][0] = true;
-                maze[0][3][1] = true;
-                maze[0][3][2] = true;
-                maze[0][4][0] = true;
-                maze[0][4][3] = true;
-                maze[0][5][0] = true;
-                maze[0][5][2] = true;
-                maze[0][6][0] = true;
-                maze[0][6][1] = true;
-                maze[0][7][3] = true;
-                maze[0][8][0] = true;
-                maze[0][8][2] = true;
-                maze[0][9][0] = true;
-                maze[0][10][0] = true;
-                maze[0][10][2] = true;
-                maze[0][11][0] = true;
-                maze[0][11][2] = true;
-                maze[0][12][0] = true;
-                maze[0][12][1] = true;
-                maze[0][12][2] = true;
-                maze[0][13][0] = true;
-                maze[0][13][3] = true;
-                maze[0][14][0] = true;
-                maze[0][14][2] = true;
-                maze[0][15][0] = true;
-                maze[0][15][1] = true;
-                maze[1][0][0] = true;
-                maze[1][0][3] = true;
-                maze[1][1][1] = true;
-                maze[1][1][2] = true;
-                maze[1][2][0] = true;
-                maze[1][2][3] = true;
-                maze[1][3][0] = true;
-                maze[1][3][2] = true;
-                maze[1][4][1] = true;
-                maze[1][4][2] = true;
-                maze[1][5][0] = true;
 
-                maze[1][5][3] = true;
-                maze[1][5][2] = true;
-                maze[1][6][1] = true;
-                maze[1][7][1] = true;
-                maze[1][7][3] = true;
-                maze[1][8][0] = true;
-                maze[1][8][1] = true;
-                maze[1][8][3] = true;
-                maze[1][9][1] = true;
-                maze[1][9][3] = true;
-                maze[1][10][0] = true;
-                maze[1][10][3] = true;
-                maze[1][11][0] = true;
-                maze[1][11][2] = true;
-                maze[1][12][2] = true;
-                maze[1][12][0] = true;
-                maze[1][13][2] = true;
-                maze[1][13][1] = true;
-                maze[1][14][0] = true;
-                maze[1][14][1] = true;
-                maze[1][15][1] = true;
-                maze[1][15][3] = true;
-
-                maze[2][0][2] = true;
-                maze[2][0][3] = true;
-                maze[2][1][0] = true;
-                maze[2][2][2] = true;
-                maze[2][3][0] = true;
-                maze[2][3][2] = true;
-                maze[2][4][0] = true;
-                maze[2][4][2] = true;
-                maze[2][5][1] = true;
-                maze[2][5][0] = true;
-                maze[2][6][3] = true;
-                maze[2][7][2] = true;
-                maze[2][8][1] = true;
-                maze[2][8][2] = true;
-                maze[2][9][2] = true;
-                maze[2][9][3] = true;
-                maze[2][10][1] = true;
-                maze[2][11][0] = true;
-                maze[2][11][3] = true;
-                maze[2][12][0] = true;
-                maze[2][13][2] = true;
-                maze[2][13][0] = true;
-                maze[2][14][1] = true;
-                maze[2][14][2] = true;
-                maze[2][15][1] = true;
-                maze[2][15][3] = true;
-
-                maze[3][0][0] = true;
-                maze[3][0][3] = true;
-                maze[3][1][1] = true;
-                maze[3][1][2] = true;
-                maze[3][2][0] = true;
-                maze[3][2][3] = true;
-                maze[3][3][0] = true;
-                maze[3][3][1] = true;
-                maze[3][4][0] = true;
-                maze[3][4][3] = true;
-                maze[3][5][1] = true;
-                maze[3][5][2] = true;
-                maze[3][6][2] = true;
-                maze[3][6][3] = true;
-                maze[3][7][0] = true;
-                maze[3][7][2] = true;
-                maze[3][8][0] = true;
-                maze[3][8][1] = true;
-                maze[3][8][2] = true;
-                maze[3][9][0] = true;
-                maze[3][9][3] = true;
-                maze[3][10][1] = true;
-                maze[3][10][2] = true;
-                maze[3][11][1] = true;
-                maze[3][11][3] = true;
-                maze[3][12][3] = true;
-                maze[3][13][0] = true;
-                maze[3][13][1] = true;
-                maze[3][14][3] = true;
-                maze[3][14][0] = true;
-                maze[3][15][1] = true;
-
-
-                maze[4][0][1] = true;
-                maze[4][0][3] = true;
-                maze[4][1][1] = true;
-                maze[4][1][3] = true;
-                maze[4][1][0] = true;
-                maze[4][2][3] = true;
-                maze[4][2][1] = true;
-                maze[4][3][1] = true;
-                maze[4][3][3] = true;
-                maze[4][4][3] = true;
-                maze[4][4][2] = true;
-                maze[4][5][0] = true;
-                maze[4][6][0] = true;
-                maze[4][6][2] = true;
-                maze[4][7][0] = true;
-                maze[4][7][1] = true;
-                maze[4][8][0] = true;
-                maze[4][8][3] = true;
-                maze[4][9][1] = true;
-                maze[4][9][2] = true;
-                maze[4][9][3] = true;
-                maze[4][10][0] = true;
-                maze[4][10][2] = true;
-                maze[4][10][3] = true;
-                maze[4][11][1] = true;
-                maze[4][12][3] = true;
-                maze[4][12][1] = true;
-                maze[4][13][1] = true;
-                maze[4][13][2] = true;
-                maze[4][13][3] = true;
-                maze[4][14][1] = true;
-                maze[4][14][3] = true;
-                maze[4][15][1] = true;
-                maze[4][15][3] = true;
-
-                maze[5][0][1] = true;
-                maze[5][0][3] = true;
-                maze[5][1][1] = true;
-                maze[5][1][3] = true;
-                maze[5][2][3] = true;
-                maze[5][2][1] = true;
-                maze[5][3][1] = true;
-                maze[5][3][3] = true;
-                maze[5][3][2] = true;
-                maze[5][4][0] = true;
-                maze[5][5][1] = true;
-                maze[5][5][2] = true;
-                maze[5][6][0] = true;
-                maze[5][6][3] = true;
-                maze[5][7][2] = true;
-                maze[5][8][2] = true;
-                maze[5][9][3] = true;
-                maze[5][10][0] = true;
-                maze[5][10][2] = true;
-                maze[5][11][1] = true;
-                maze[5][11][2] = true;
-                maze[5][12][3] = true;
-                maze[5][12][1] = true;
-                maze[5][12][2] = true;
-                maze[5][13][0] = true;
-                maze[5][13][3] = true;
-                maze[5][14][1] = true;
-                maze[5][14][2] = true;
-                maze[5][15][1] = true;
-                maze[5][15][3] = true;
-
-                maze[6][0][1] = true;
-                maze[6][0][3] = true;
-                maze[6][1][1] = true;
-                maze[6][1][3] = true;
-                maze[6][2][3] = true;
-                maze[6][2][2] = true;
-                maze[6][3][0] = true;
-                maze[6][3][2] = true;
-                maze[6][4][1] = true;
-                maze[6][5][0] = true;
-                maze[6][5][2] = true;
-                maze[6][5][3] = true;
-                maze[6][6][1] = true;
-                maze[6][6][2] = true;
-                maze[6][7][0] = true;
-                maze[6][7][3] = true;
-                maze[6][8][0] = true;
-                maze[6][8][2] = true;
-                maze[6][9][0] = true;
-                maze[6][9][2] = true;
-                maze[6][10][0] = true;
-                maze[6][10][1] = true;
-                maze[6][11][0] = true;
-                maze[6][11][3] = true;
-                maze[6][12][0] = true;
-                maze[6][12][2] = true;
-                maze[6][13][1] = true;
-                maze[6][13][2] = true;
-                maze[6][14][0] = true;
-                maze[6][14][3] = true;
-                maze[6][15][1] = true;
-                maze[6][15][2] = true;
-
-                maze[7][0][2] = true;
-                maze[7][0][3] = true;
-                maze[7][1][1] = true;
-                maze[7][2][0] = true;
-                maze[7][2][3] = true;
-                maze[7][3][0] = true;
-                maze[7][3][1] = true;
-                maze[7][3][2] = true;
-                maze[7][4][1] = true;
-                maze[7][4][3] = true;
-                maze[7][5][0] = true;
-                maze[7][5][3] = true;
-                maze[7][6][0] = true;
-                maze[7][7][1] = true;
-                maze[7][7][2] = true;
-                maze[7][8][0] = true;
-                maze[7][8][3] = true;
-                maze[7][9][0] = true;
-                maze[7][9][1] = true;
-                maze[7][10][1] = true;
-                maze[7][10][2] = true;
-                maze[7][10][3] = true;
-                maze[7][11][3] = true;
-                maze[7][11][1] = true;
-                maze[7][12][0] = true;
-                maze[7][12][3] = true;
-                maze[7][13][0] = true;
-                maze[7][13][1] = true;
-                maze[7][14][2] = true;
-                maze[7][14][3] = true;
-                maze[7][15][0] = true;
-                maze[7][15][1] = true;
-
-                maze[8][0][0] = true;
-                maze[8][0][3] = true;
-                maze[8][1][0] = true;
-                maze[8][2][2] = true;
-                maze[8][3][0] = true;
-                maze[8][3][2] = true;
-                maze[8][4][1] = true;
-                maze[8][4][2] = true;
-                maze[8][5][1] = true;
-                maze[8][5][3] = true;
-                maze[8][6][2] = true;
-                maze[8][6][3] = true;
-                maze[8][7][0] = true;
-                maze[8][7][1] = true;
-                maze[8][8][1] = true;
-                maze[8][8][3] = true;
-                maze[8][9][1] = true;
-                maze[8][9][3] = true;
-                maze[8][10][0] = true;
-                maze[8][10][3] = true;
-                maze[8][11][1] = true;
-                maze[8][11][2] = true;
-                maze[8][12][1] = true;
-                maze[8][12][2] = true;
-                maze[8][12][3] = true;
-                maze[8][13][3] = true;
-                maze[8][14][0] = true;
-                maze[8][14][2] = true;
-                maze[8][15][1] = true;
-                maze[8][15][2] = true;
-
-                maze[9][0][1] = true;
-                maze[9][0][2] = true;
-                maze[9][0][3] = true;
-                maze[9][1][3] = true;
-                maze[9][1][2] = true;
-                maze[9][2][0] = true;
-                maze[9][2][2] = true;
-                maze[9][3][0] = true;
-                maze[9][3][2] = true;
-                maze[9][4][0] = true;
-                maze[9][4][2] = true;
-                maze[9][5][1] = true;
-                maze[9][5][2] = true;
-                maze[9][6][0] = true;
-                maze[9][6][2] = true;
-                maze[9][6][3] = true;
-                maze[9][7][1] = true;
-                maze[9][7][2] = true;
-                maze[9][8][1] = true;
-                maze[9][8][3] = true;
-                maze[9][9][2] = true;
-                maze[9][9][3] = true;
-                maze[9][10][1] = true;
-                maze[9][10][2] = true;
-                maze[9][11][0] = true;
-                maze[9][11][2] = true;
-                maze[9][11][3] = true;
-                maze[9][12][0] = true;
-                maze[9][12][2] = true;
-                maze[9][13][2] = true;
-                maze[9][14][0] = true;
-                maze[9][14][2] = true;
-                maze[9][15][0] = true;
-                maze[9][15][1] = true;
-                maze[9][15][2] = true;
-            }
             d = new Drawing();
-            d.setBounds(0, 0, 640, 400);
+            d.setBounds(0, 0, 655, 440);
             panel.add(d);
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 16; j++) {
                     for (int k = 0; k < 4; k++) {
-                        if (maze[i][j][k]) {
+                        if (maze.check(i, j, k)) {
                             if (k == 0) {
-                                d.x.add(75 + (j * 30));
-                                d.y.add(40 + (i * 30));
-                                d.x2.add(75 + (j * 30) + 30);
-                                d.y2.add(40 + (i * 30));
+                                d.x.add(80 + (j * 30));
+                                d.y.add(70 + (i * 30));
+                                d.x2.add(80 + (j * 30) + 30);
+                                d.y2.add(70 + (i * 30));
                             } else if (k == 1) {
-                                d.x.add(75 + (j * 30) + 30);
-                                d.y.add(40 + (i * 30));
-                                d.x2.add(75 + (j * 30) + 30);
-                                d.y2.add(40 + (i * 30) + 30);
+                                d.x.add(80 + (j * 30) + 30);
+                                d.y.add(70 + (i * 30));
+                                d.x2.add(80 + (j * 30) + 30);
+                                d.y2.add(70 + (i * 30) + 30);
                             } else if (k == 2) {
-                                d.x.add(75 + (j * 30));
-                                d.y.add(40 + (i * 30) + 30);
-                                d.x2.add(75 + (j * 30) + 30);
-                                d.y2.add(40 + (i * 30) + 30);
+                                d.x.add(80 + (j * 30));
+                                d.y.add(70 + (i * 30) + 30);
+                                d.x2.add(80 + (j * 30) + 30);
+                                d.y2.add(70 + (i * 30) + 30);
                             } else {
-                                d.x.add(75 + (j * 30));
-                                d.y.add(40 + (i * 30));
-                                d.x2.add(75 + (j * 30));
-                                d.y2.add(40 + (i * 30) + 30);
+                                d.x.add(80 + (j * 30));
+                                d.y.add(70 + (i * 30));
+                                d.x2.add(80 + (j * 30));
+                                d.y2.add(70 + (i * 30) + 30);
                             }
                         }
                     }
                 }
             }
+            JPanel lettuce = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97)).display();
+            JPanel whiteFlour = (new Food("White Flour", "Pictures/flour(white).png", new int[]{1, 5}, 302, "", 2.60)).display();
+            JPanel multigrainFlour = (new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{6, 7}, 160, "", 2.99)).display();
+            JPanel milk = (new Food("Milk", "Pictures/milk.png", new int[]{0, 3, 8}, 150, "", 1.47)).display();
+            JPanel cookedRice = (new Food("Raw White Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "", 2.87)).display();
+            JPanel healthyCookedRice = (new Food("Raw Wholegrain Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "", 3.47)).display();
+            JPanel tomato = (new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "", 1.25)).display();
+            JPanel potato = (new Food("Raw Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "", 1.84)).display();
+            JPanel carrot = (new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "", 1.97)).display();
+            JPanel eggs = (new Food("Raw Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "", 1.31)).display();
+            JPanel beef = (new Food("Raw Beef", "Pictures/beef.png", new int[]{1, 5}, 217, "", 1.25)).display();
+            JPanel fish = (new Food("Raw Fish", "Pictures/fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50)).display();
+            JPanel apple = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79)).display();
+            JPanel spinach = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80)).display();
+            JPanel butter = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99)).display();
+            JPanel corn = (new Food("Raw Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04)).display();
+            JPanel cheese = (new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "", 1.77)).display();
+            lettuce.setBounds(80 + (30 * 3), 70, 30, 30);
+            panel.add(lettuce);
+            panel.add(whiteFlour);
+            panel.add(multigrainFlour);
+            panel.add(milk);
+            panel.add(cookedRice);
+            panel.add(healthyCookedRice);
+            panel.add(tomato);
+            panel.add(potato);
+            panel.add(carrot);
+            panel.add(eggs);
+            panel.add(beef);
+            panel.add(fish);
+            panel.add(apple);
+            panel.add(spinach);
+            panel.add(butter);
+            panel.add(corn);
+            panel.add(cheese);
+
+            JLabel budget = new JLabel("Budget: $" + this.budget + " (CAD)");
+            budget.setFont(new Font(Font.SERIF, Font.PLAIN,  14));
+            budget.setBounds(20, 0, 300, 40);
+            panel.add(budget);
             /*JLabel groceryStore;
             try {
                 groceryStore = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocerystore.png")).getScaledInstance(640, 400, Image.SCALE_SMOOTH)));
@@ -671,9 +394,8 @@ public class CookWithMageon implements KeyListener {
                     g2.setStroke(new BasicStroke(2));
                     g2.drawLine(x.get(i), y.get(i), x2.get(i), y2.get(i));
                 }
-                g2.fillOval(75 + (30 * xCoord) + 10, 40 + (30 * yCoord) + 10, 10, 10);
+                g2.fillOval(80 + (30 * xCoord) + 10, 70 + (30 * yCoord) + 10, 10, 10);
             }
         }
     }
-
 }
