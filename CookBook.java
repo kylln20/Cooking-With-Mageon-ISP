@@ -41,23 +41,23 @@ public class CookBook {
     public CookBook() {
         cookbook = new ArrayList<>();
         // initializing all the possible ingredients
-        lettuce = new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97);
-        bread = new Food("Bread", "Pictures/flour(white).png", new int[]{1, 5}, 302, "", 2.60);
-        healthyBread = new Food("Wholegrain Flour", "Pictures/flour(multigrain).png", new int[]{6, 7}, 160, "", 2.99);
-        milk = new Food("Milk", "Pictures/milk.png", new int[]{0, 3, 8}, 150, "", 1.47);
-        cookedRice = new Food("White Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "", 2.87);
-        healthyCookedRice = new Food("Wholegrain Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "", 3.47);
-        tomato = new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "", 1.25);
-        potato = new Food("Cooked Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "", 1.84);
-        carrot = new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "", 1.97);
-        eggs = new Food("Cooked Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "", 1.31);
-        beef = new Food("Cooked Beef", "Pictures/beef.png", new int[]{1, 5}, 217, "", 1.25);
-        fish = new Food("Cooked Fish", "Pictures/fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50);
-        apple = new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79);
-        spinach = new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80);
-        butter = new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99);
-        corn = new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04);
-        cheese = new Food("Cheese", "Pictures/corn.png", new int[]{13, 0, 10, 8}, 100, "", 1.77);
+        lettuce = new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "im", 1.97);
+        bread = new Food("Bread", "Pictures/flour(white).png", new int[]{1, 5}, 302, "im", 2.60);
+        healthyBread = new Food("Healthy Bread", "Pictures/flour(multigrain).png", new int[]{6, 7}, 160, "im", 2.99);
+        milk = new Food("Milk", "Pictures/milk.png", new int[]{0, 3, 8}, 150, "im", 1.47);
+        cookedRice = new Food("Cooked Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "im", 2.87);
+        healthyCookedRice = new Food("Healthy Cooked Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "im", 3.47);
+        tomato = new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "im", 1.25);
+        potato = new Food("Cooked Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "im", 1.84);
+        carrot = new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "im", 1.97);
+        eggs = new Food("Cooked Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "im", 1.31);
+        beef = new Food("Cooked Beef", "Pictures/beef.png", new int[]{1, 5}, 217, "im", 1.25);
+        fish = new Food("Cooked Fish", "Pictures/fish.png", new int[]{1, 3, 12, 13}, 190, "im", 2.50);
+        apple = new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "im", 0.79);
+        spinach = new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "im", 1.80);
+        butter = new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "im", 1.99);
+        corn = new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "im", 2.04);
+        cheese = new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "im", 1.77);
 
         ArrayList<Food> sa = new ArrayList<>(); // making salad
         sa.add(lettuce);
