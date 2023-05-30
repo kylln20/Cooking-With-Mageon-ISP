@@ -41,7 +41,7 @@ public class Dialogue implements KeyListener{
         dialogue.setLayout(null);
         dialogue.addKeyListener(this);
         dialogue.setBounds(10, 280, 620, 110);
-        dialogue.setBorder(new RoundedBorder(10, border));
+        dialogue.setBorder(new RoundedBorder(10, fill, border, "", 0));
         dialogue.setBackground(fill);
 
         text = new JLabel(words[wordsNum], JLabel.RIGHT);

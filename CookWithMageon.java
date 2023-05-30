@@ -250,7 +250,7 @@ public class CookWithMageon implements KeyListener {
             //instructions.setBorderPainted(true);
             instructions.setOpaque(true);
             instructions.setBackground(new Color(207, 226, 243, 0));
-            instructions.setBorder(new RoundedBorder(10, new Color(207, 226, 243), new Color(11, 83, 148))); //10 is the radius
+            instructions.setBorder(new RoundedBorder(10, new Color(207, 226, 243), new Color(11, 83, 148), "Instructions", 30)); //10 is the radius
             //instructions.setForeground(Color.BLACK);
             panel.add(instructions);
 
@@ -440,7 +440,7 @@ public class CookWithMageon implements KeyListener {
                 buying.setBackground(new Color(72, 176, 216, 0));
                 buying.setSize(400, 300);
                 buying.setBounds(127, 100, 400, 200);
-                buying.setBorder(new RoundedBorder(80, new Color(72, 176, 216), new Color(16, 85, 112)));
+                buying.setBorder(new RoundedBorder(80, new Color(72, 176, 216), new Color(16, 85, 112),"",0));
                 JLabel question = new JLabel("Would you like to buy 1 " + "buyable[message].name()" + " for " + "buyable[message].price()");
                 question.setBounds(30, 20, 340, 300);
                 layeredPane.add(buying, 2);
@@ -492,6 +492,9 @@ public class CookWithMageon implements KeyListener {
                 }
                 g2.fillOval(80 + (30 * xCoord) + 10, 70 + (30 * yCoord) + 10, 10, 10);
             }
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setFont(new Font(Font.SERIF, Font.PLAIN,  200));
+            g2.drawString("THISISAPIECEOFTEXT", 0, 0);
         }
     }
 }

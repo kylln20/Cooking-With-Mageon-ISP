@@ -3,7 +3,7 @@
  * This class also creates a JPanel that displays information about the food
  * ICS4UO - Ms Krasteva
  * @version 2
- * @author Kayla Lin & Angelina Jiang
+ * @author Kayla Lin
  */
 import java.util.*;
 import javax.swing.*;
@@ -67,7 +67,7 @@ public class Food{
 
     public void makePanel(){
         display.setBackground(new Color(189,235,253));
-        display.setBorder(new RoundedBorder(10, new Color(82,180,218)));
+        display.setBorder(new RoundedBorder(10, new Color(82,180,218), new Color(82,180,218)));
         JLabel logo = null;
         try{
             logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
@@ -76,7 +76,7 @@ public class Food{
             logo.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         }
         logo.setBounds(5, 5, 30, 30);
-        JPanel text = new JPanel();
+        JPanel text = new JPanel(); // not used :think:
         JLabel nameText = new JLabel(name);
         nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         nameText.setBounds(45, 5, 30, 20);

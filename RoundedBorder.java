@@ -7,17 +7,61 @@ public class RoundedBorder implements Border {
     private int radius;
     private Color fill;
     private Color background;
+    private String text;
+    private int size;
 
-    RoundedBorder(int radius, Color fill, Color background) {
+
+    RoundedBorder(int radius, Color fill, Color background, String text, int size) {
         this.radius = radius;
         this.fill = fill;
         this.background = background;
+        this.text = text;
+        this.size = size;
     }
 
     public Insets getBorderInsets(Component c) {
         return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
     }
 
+    public int getRadius() {
+        return radius;
+    }
+
+    public Color getFill() {
+        return fill;
+    }
+
+    public Color getBackground() {
+        return background;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public void setFill(Color fill) {
+        this.fill = fill;
+    }
+
+    public void setBackground(Color background) {
+        this.background = background;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public boolean isBorderOpaque() {
         return true;
@@ -47,7 +91,19 @@ public class RoundedBorder implements Border {
         g.drawLine(width, radius, width, height - radius);
         Graphics2D newGraphics = (Graphics2D) g;
         newGraphics.setColor(Color.BLACK);
-        newGraphics.setFont(new Font(Font.SERIF, Font.PLAIN,  100));
-        newGraphics.drawString("thisisapieceoftext", 5, 5);
+        newGraphics.setFont(new Font(Font.SERIF, Font.PLAIN,  size));
+        newGraphics.drawString(text, 0, height / 2 + (size / 2) - 5);
+    }
+    public static void main (String[] args) {
+        JFrame frame = new JFrame();
+        frame.setSize(500, 500);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        frame.setVisible(true);
+        frame.add(panel);
+        JButton b = new JButton("hi");
+        b.setBounds(50, 50, 100, 100);
+        b.setBorder(new RoundedBorder(30, Color.CYAN, Color.BLACK, "hi", 30));
+        panel.add(b);
     }
 }
