@@ -3,7 +3,7 @@
  * This class also creates a JPanel that displays information about the food
  * ICS4UO - Ms Krasteva
  * @version 2
- * @author Kayla Lin
+ * @author Kayla Lin & Angelina Jiang
  */
 import java.util.*;
 import javax.swing.*;
@@ -54,6 +54,9 @@ public class Food{
         displayMode = dm;
         price = pri;
         makePanel();
+        JLayeredPane pane = new JLayeredPane();
+        JFrame frame = new JFrame();
+        frame.setLayeredPane(pane);
     }
 
     public String name(){ return name; }
@@ -66,17 +69,17 @@ public class Food{
     public double price() {return price;}
 
     public void makePanel(){
-        display.setBackground(new Color(189,235,253));
-        display.setBorder(new RoundedBorder(10, new Color(82,180,218), new Color(82,180,218)));
+        //display.setBackground(new Color(189,235,253));
+        display.setLayout(null);
+        //display.setBorder(new RoundedBorder(10, new Color(82,180,218)));
         JLabel logo = null;
         try{
-            logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+            logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
         }catch(IOException e){
             logo = new JLabel("image\nnot\nfound");
             logo.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         }
-        logo.setBounds(5, 5, 30, 30);
-        JPanel text = new JPanel(); // not used :think:
+        logo.setBounds(0, 0, 30, 30);
         JLabel nameText = new JLabel(name);
         nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         nameText.setBounds(45, 5, 30, 20);
@@ -86,15 +89,19 @@ public class Food{
         quantityText.setBounds(45, 25, 30, 10);
 
         if(displayMode.equals("")){
-            display.setSize(0, 0);
+            display.setSize(30, 30);
+            display.add(logo);
         }else if(displayMode.equals("im")){
-            display.setSize(60, 60);
+            display.setBackground(new Color(189,235,253));
+            display.setSize(30, 30);
             display.add(logo);
         }else if(displayMode.equals("im+n")){
+            display.setBackground(new Color(189,235,253));
             display.setSize(80, 50);
             display.add(logo);
             display.add(nameText);
         }else if(displayMode.equals("im+n+q")){
+            display.setBackground(new Color(189,235,253));
             display.setSize(80, 50);
             display.add(logo);
             display.add(nameText);
@@ -108,8 +115,8 @@ public class Food{
     public static void main(String[] args){
         JFrame testing = new JFrame();
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        testing.setSize(400, 400);
-        Food lettuce = new Food("lettuce", "Pictures/food/lettuce.png", new int[]{}, 25, "im+n+q", 0.14);
+        testing.setSize(10, 80);
+        Food lettuce = new Food("lettuce", "Pictures/lettuce.png", new int[]{}, 25, "im", 0.14);
         testing.add(lettuce.display());
         testing.setVisible(true);
     }

@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CookWithMageon implements KeyListener {
@@ -32,8 +33,8 @@ public class CookWithMageon implements KeyListener {
 
     private ArrayList<Food> inventory = new ArrayList<>();
 
-    /** How many nutrients, calories, and satisfaction they are able to absorb when eating the food. The lower this number is, the smaller */
-    private double percentage = 0.7; // nutrients absorbed tend to be between 10% - 90%
+    /** Satisfaction they are able to absorb when eating the food. The lower this number is, the smaller */
+    private double percentage = 1.0; // 0.7, 1.0, 1.3 satisfaction absorbed
 
     /** Coordinates for the maze */
     private int xCoord = 7;
@@ -46,8 +47,6 @@ public class CookWithMageon implements KeyListener {
     private Drawing d;
 
     private final Maze maze;
-
-    private boolean isMoving;
 
     private int message = -1;
 
@@ -116,6 +115,15 @@ public class CookWithMageon implements KeyListener {
                 panel.removeAll();
                 panel.revalidate();
                 panel.repaint();
+                if (chooseY == 290) { // hard !
+                    budget = 17;
+                    percentage = 0.7;
+                } else if (chooseY == 240) { // med
+
+                } else if (chooseY == 190) { // easy
+                    budget = 30;
+                    percentage = 1.3;
+                }
                 update();
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 chooseY = Math.min(290, chooseY + 50);
@@ -152,6 +160,9 @@ public class CookWithMageon implements KeyListener {
             if (xCoord > 15) xCoord = 15;
             if (yCoord < 0) yCoord = 0;
             if (yCoord > 9) yCoord = 9;
+            if (yCoord == 9 && xCoord == 8 && e.getKeyCode() == KeyEvent.VK_DOWN) { // got thrugh exit
+
+            }
             if (xCoord == 3 && yCoord == 0) { // lettuce
                 message = 0;
             } else if (xCoord == 5 && yCoord == 1) { // white flour
@@ -250,7 +261,7 @@ public class CookWithMageon implements KeyListener {
             //instructions.setBorderPainted(true);
             instructions.setOpaque(true);
             instructions.setBackground(new Color(207, 226, 243, 0));
-            instructions.setBorder(new RoundedBorder(10, new Color(207, 226, 243), new Color(11, 83, 148), "Instructions", 30)); //10 is the radius
+            instructions.setBorder(new RoundedBorder(20, new Color(207, 226, 243), new Color(11, 83, 148), "Instructions", 30, 40, 30)); //10 is the radius
             //instructions.setForeground(Color.BLACK);
             panel.add(instructions);
 
@@ -385,66 +396,150 @@ public class CookWithMageon implements KeyListener {
             JPanel uncookedCorn = uncookedCornFood.display();
             JPanel cheese = cheeseFood.display();
             Food[] buyable = new Food[17];
+            lettuce.setBounds(80 + (30 * 3), 70, 30, 30);
+            whiteFlour.setBounds(80 + (30 * 5), 70 + 30, 30, 30);
+            multigrainFlour.setBounds(80 + (30 * 8), 70 + 30, 30, 30);
+            milk.setBounds(80 + (30 * 14), 70 + (30), 30, 30);
+            whiteRice.setBounds(80 + (30), 70 + (30 * 4), 30, 30);
+            multigrainRice.setBounds(80 + (30 * 3), 70 + (30 * 5), 30, 30);
+            tomato.setBounds(80 + (30 * 8), 70 + (30 * 4), 30, 30);
+            potato.setBounds(80 + (30 * 13), 70 + (30 * 4), 30, 30);
+            carrot.setBounds(80 + (30 * 12), 70 + (30 * 5), 30, 30);
+            rawEggs.setBounds(80 + (30 * 5), 70 + (30 * 6), 30, 30);
+            rawBeef.setBounds(80 + (30 * 10), 70 + (30 * 7), 30, 30);
+            rawFish.setBounds(80 + (30 * 12), 70 + (30 * 8), 30, 30);
+            apple.setBounds(80 + (30 * 0), 70 + (30 * 9), 30, 30);
+            spinach.setBounds(80 + (30 * 6), 70 + (30 * 9), 30, 30);
+            butter.setBounds(80 + (30 * 10), 70 + (30 * 4), 30, 30);
+            uncookedCorn.setBounds(80 + (30 * 11), 70 + (30 * 9), 30, 30);
+            cheese.setBounds(80 + (30 * 15), 70 + (30 * 9), 30, 30);
+            panel.add(lettuce);
+            panel.add(whiteFlour);
+            panel.add(multigrainFlour);
+            panel.add(milk);
+            panel.add(whiteRice);
+            panel.add(multigrainRice);
+            panel.add(tomato);
+            panel.add(potato);
+            panel.add(carrot);
+            panel.add(rawEggs);
+            panel.add(rawBeef);
+            panel.add(rawFish);
+            panel.add(apple);
+            panel.add(spinach);
+            panel.add(butter);
+            layeredPane.add(uncookedCorn);
+            panel.add(cheese);
+
             buyable[0] = lettuceFood; buyable[1] = whiteFlourFood; buyable[2] = multigrainFlourFood; buyable[3] = milkFood; buyable[4] = whiteRiceFood;
             buyable[5] = multigrainRiceFood; buyable[6] = tomatoFood; buyable[7] = potatoFood; buyable[8] = carrotFood; buyable[9] = rawEggsFood;
             buyable[10] = rawBeefFood; buyable[11] = rawFishFood; buyable[12] = appleFood; buyable[13] = spinachFood; buyable[14] = butterFood;
             buyable[15] = uncookedCornFood; buyable[16] = cheeseFood;
-            lettuce.setBounds(80 + (30 * 3), 70, 30, 30);
-            whiteFlour.setBounds(80 + (30 * 5), 70 + 30, 30, 30);
-            panel.add(lettuce);
-            panel.add(whiteFlour);
-            panel.add(multigrainFlour);
-            multigrainFlour.setBounds(80 + (30 * 8), 70 + 30, 30, 30);
-            panel.add(milk);
-            milk.setBounds(80 + (30 * 14), 70 + (30), 30, 30);
-            panel.add(whiteRice);
-            whiteRice.setBounds(80 + (30), 70 + (30 * 4), 30, 30);
-            panel.add(multigrainRice);
-            multigrainRice.setBounds(80 + (30 * 3), 70 + (30 * 5), 30, 30);
-            panel.add(tomato);
-            tomato.setBounds(80 + (30 * 8), 70 + (30 * 4), 30, 30);
-            panel.add(potato);
-            potato.setBounds(80 + (30 * 13), 70 + (30 * 4), 30, 30);
-            panel.add(carrot);
-            carrot.setBounds(80 + (30 * 12), 70 + (30 * 5), 30, 30);
-            panel.add(rawEggs);
-            rawEggs.setBounds(80 + (30 * 5), 70 + (30 * 6), 30, 30);
-            panel.add(rawBeef);
-            rawBeef.setBounds(80 + (30 * 10), 70 + (30 * 7), 30, 30);
-            panel.add(rawFish);
-            rawFish.setBounds(80 + (30 * 12), 70 + (30 * 8), 30, 30);
-            panel.add(apple);
-            apple.setBounds(80 + (30 * 0), 70 + (30 * 9), 30, 30);
-            panel.add(spinach);
-            spinach.setBounds(80 + (30 * 6), 70 + (30 * 9), 30, 30);
-            panel.add(butter);
-            butter.setBounds(80 + (30 * 10), 70 + (30 * 4), 30, 30);
-            panel.add(uncookedCorn);
-            uncookedCorn.setBounds(80 + (30 * 11), 70 + (30 * 9), 30, 30);
-            panel.add(cheese);
-            cheese.setBounds(80 + (30 * 15), 70 + (30 * 9), 30, 30);
-            String strBudget = String.valueOf(this.budget);
-            if (!strBudget.contains(".")) {
-                strBudget = this.budget + ".00";
-            } else if (strBudget.length() - strBudget.indexOf(".") == 2) {
-                strBudget = this.budget + "0";
-            } else {
-                strBudget = String.valueOf(this.budget);
-            }
-            JLabel budgetLabel = new JLabel("Budget: $" + strBudget + " (CAD)");
+
+            DecimalFormat df = new DecimalFormat("0.00");
+            // DecimalFormat, default is RoundingMode.HALF_EVEN
+            JLabel budgetLabel = new JLabel("Budget: $" + df.format(this.budget) + " (CAD)");
             budgetLabel.setFont(new Font(Font.SERIF, Font.PLAIN,  18));
-            budgetLabel.setBounds(20, 0, 300, 40);
+            budgetLabel.setBounds(20, 10, 300, 40);
             panel.add(budgetLabel);
             if (message != -1) {
                 JPanel buying = new JPanel();
+                buying.setLayout(null);
                 buying.setBackground(new Color(72, 176, 216, 0));
-                buying.setSize(400, 300);
-                buying.setBounds(127, 100, 400, 200);
-                buying.setBorder(new RoundedBorder(80, new Color(72, 176, 216), new Color(16, 85, 112),"",0));
-                JLabel question = new JLabel("Would you like to buy 1 " + "buyable[message].name()" + " for " + "buyable[message].price()");
-                question.setBounds(30, 20, 340, 300);
+                buying.setSize(400, 220);
+                buying.setBounds(127, 100, 400, 220);
+                buying.setBorder(new RoundedBorder(40, new Color(72, 176, 216), new Color(16, 85, 112),"",0, 0, 0));
+                JLabel question = new JLabel("Would you like to buy 1 ");
+                question.setFont(new Font(Font.SERIF, Font.PLAIN,  25));
+                question.setBounds(80, 0, 350, 60);
+                buying.add(question);
+                JLabel itemName = new JLabel(buyable[message].name());
+                itemName.setFont(new Font(Font.SERIF, Font.BOLD, 25));
+                itemName.setBounds(100, 40, 400, 40);
+                buying.add(itemName);
+                JLabel price = new JLabel("for $" + (df.format(buyable[message].price())) + " CAD?");
+                price.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+                price.setBounds(115, 70, 400, 40);
+                buying.add(price);
+
+                JButton no = new JButton("NO");
+                JButton yes = new JButton("YES");
+                yes.setFocusable(false); // must be used so that the keyboard doesn't stop working :sobs:
+                yes.setFont(new Font(Font.SERIF, Font.PLAIN, 30));
+                yes.setBounds(50, 140, 120, 60);
+                //instructions.setBorderPainted(true);
+                yes.setOpaque(true);
+                yes.setBackground(new Color(72, 176, 216));
+                yes.setBorder(new RoundedBorder(15, new Color(217, 234, 211), new Color(217, 234, 211), "YES", 20, 40, 35));
+                //instructions.setForeground(Color.BLACK);
+                buying.add(yes);
+                JLabel enoughMoney = new JLabel("");
+                enoughMoney.setBounds(50, 100, 130, 60);
+                buying.add(enoughMoney);
+                if (budget < buyable[message].price()) {
+                    enoughMoney.setText("Not Enough Money :(");
+                }
+                no.setFont(new Font(Font.SERIF, Font.PLAIN,  25));
+                no.setBorder(new RoundedBorder(15, new Color(244, 204, 204), new Color(244, 204, 204), "NO", 20, 45, 35));
+                no.setBounds(235, 140, 120, 60);
+                //no.setOpaque(true);
+                no.setBackground(new Color(72, 176, 216));
+                no.setFocusable(false);
+                buying.add(no);
                 layeredPane.add(buying, 2);
+                yes.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (enoughMoney.getText().equals("Not Enough Money :(")) {
+                            // nothing happens
+                        } else {
+                            budget -= buyable[message].price();
+                            buying.setVisible(false);
+                            message = -1;
+                            panel.removeAll();
+                            panel.revalidate();
+                            panel.repaint();
+                            update();
+                        }
+                    }
+                });
+                no.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        buying.setVisible(false);
+                        message = -1;
+                    }
+                });
             }
+            JButton inventory = new JButton("Inventory");
+            inventory.setBackground(new Color(201, 218, 248));
+            inventory.setOpaque(true);
+            inventory.setFocusable(false);
+            inventory.setBounds(520, 20, 100, 30);
+            inventory.setBorder(new RoundedBorder(10, new Color(207, 226, 243), new Color(130, 155, 204), "Inventory", 20, 15, 20));
+            panel.add(inventory);
+
+            JPanel inventoryPanel = new JPanel();
+            inventoryPanel.setBackground(new Color(201, 218, 248));
+            inventoryPanel.setLayout(new GridLayout(4, 0));
+            for (Food f : this.inventory) {
+                f.setDisplayMode("im+n+q");
+            }
+
+            JFrame inventoryFrame = new JFrame();
+            inventoryFrame.setResizable(false);
+            inventoryFrame.setSize(655, 440);
+            inventoryFrame.add(inventoryPanel);
+            inventoryFrame.setLocationRelativeTo(null);
+            inventoryFrame.setVisible(false);
+
+            inventory.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    inventoryFrame.setVisible(true);
+                }
+            });
+
             /*JLabel groceryStore;
             try {
                 groceryStore = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocerystore.png")).getScaledInstance(640, 400, Image.SCALE_SMOOTH)));
@@ -492,9 +587,6 @@ public class CookWithMageon implements KeyListener {
                 }
                 g2.fillOval(80 + (30 * xCoord) + 10, 70 + (30 * yCoord) + 10, 10, 10);
             }
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setFont(new Font(Font.SERIF, Font.PLAIN,  200));
-            g2.drawString("THISISAPIECEOFTEXT", 0, 0);
         }
     }
 }
