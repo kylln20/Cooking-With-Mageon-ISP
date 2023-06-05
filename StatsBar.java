@@ -16,30 +16,19 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 public class StatsBar{
-    /** */
-    JFrame frame = new JFrame("test");
     JPanel stats = new JPanel();
     Color border = new Color(249,203,156);
-    Color fill = new Color(249,203,156, 80);
+    Color fill = new Color(249,203,156, 230);
     Font defaultFont = new Font(Font.SERIF, Font.PLAIN, 18);
 
-    int numNutri = 28;
-    int numCal = 100;
-    int numSatis = 50;
+    int numNutri = 0;
+    int numCal = 0;
+    int numSatis = 0;
 
     public StatsBar(){
-        frame.setSize(660, 420);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        setup();
-        frame.setVisible(true);
-    }
-
-    public void setup(){
         stats.setLayout(null);
         stats.setBounds(10, 10, 400, 70);
-        stats.setBorder(new RoundedBorder(10, border));
+        stats.setBorder(new RoundedBorder(10, new Color(249,203,156)));
         stats.setBackground(fill);
 
         JLabel nutrients = new JLabel("Nutrients");
@@ -61,10 +50,12 @@ public class StatsBar{
         Drawing bars = new Drawing();
         bars.setBounds(110, 5, 280, 60);
         stats.add(bars);
-
-        frame.add(stats);
     }
-    
+
+    public JPanel getStats(){
+        return stats;
+    }
+
     class Drawing extends JComponent{
         public void paint(Graphics gr){
             gr.setColor(Color.LIGHT_GRAY);
@@ -81,9 +72,5 @@ public class StatsBar{
             gr.fillRoundRect(1, 26, numCal*280/100, 13, 10, 10);
             gr.fillRoundRect(1, 46, numSatis*280/100, 13, 10, 10);
         }
-    } 
-    
-    public static void main(String[] args) {
-        new StatsBar();
     }
 }

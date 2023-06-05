@@ -5,8 +5,10 @@
  * ICS4UO
  * Valentina Krasteva
  *
- * Version 1
+ * Version 2
  * @author Angelina Jiang and Kayla Lin (2.5hrs)
+ * Source used: https://stackoverflow.com/questions/26420428/how-to-word-wrap-text-in-jlabel
+ * ^ how to wrap text in JLabel
  */
 
 import java.util.*;
@@ -17,63 +19,76 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 public class Dialogue implements KeyListener{
-    /** */
-    JFrame frame = new JFrame();
-    JPanel test = new JPanel();
+    /** The JPanel containing the MAGEON and the text they're saying say */
     JPanel dialogue = new JPanel();
+    /** The JLabel containing MAGEON's message*/
     JLabel text;
-    JLabel mageon = null;
+    /** The JLabel containing a picture*/
+    JLabel im = null;
+    /** The colour of the border of the dialogue box */
     Color border = new Color(82,180,218);
-    Color fill = new Color(189,235,253);
-    String[] words = {"First", "Second", "Third", "Fourth", "Gah"};
+    /** The colour of the dialogue box */
+    Color fill = new Color(189,235,253, 230);
+    /** The messages MAGEON will say */
+    String[] words;
+
+    /** The message that MAGEON is on */
     int wordsNum = 0;
 
-    public Dialogue(){
-        frame.setSize(655, 435);
-        frame.addKeyListener(this);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        dialogueBox();
-        frame.setVisible(true);
-    }
-
-    public void dialogueBox(){
+    /**
+     * The Dialogue constructor
+     * Size, location, and colour is set for the dialogue JPanel
+     * Font is set for the text JLabel
+     * The MAGEON image is added to the icon JLabel
+     * The dialogue JPanel is added to the JFrame
+     * @param panel the scene that the dialogue box is being added to
+     */
+    public Dialogue(String[] words){
         dialogue.setLayout(null);
         dialogue.addKeyListener(this);
-        dialogue.setBounds(10, 280, 620, 110);
-        dialogue.setBorder(new RoundedBorder(10, fill, border, "", 0));
+        dialogue.setBounds(5, 300, 630, 90);
+        dialogue.setBorder(new RoundedBorder(10, border));
         dialogue.setBackground(fill);
 
-        text = new JLabel(words[wordsNum], JLabel.RIGHT);
-        text.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
-        text.setBounds(30, 0, 450, 110);
+        this.words = words;
+        text = new JLabel("<html>" + words[wordsNum] + "</html>");
+        text.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
+        text.setBounds(30, 0, 450, 90);
         text.setBackground(new Color(0, 0, 0, 0));
         dialogue.add(text);
 
         try{
-            mageon = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/MAGEON Logo2.png")).getScaledInstance(120, 120, Image.SCALE_SMOOTH)));
+            im = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/MAGEON Logo2.png")).getScaledInstance(70, 70, Image.SCALE_SMOOTH)));
         }catch(IOException e){throw new RuntimeException(e);}
-        mageon.setBounds(500, 0, 120, 120);
-        dialogue.add(mageon);
-        frame.add(dialogue);
+        im.setBounds(500, 10, 70, 70);
+        dialogue.add(im);
     }
 
+    public boolean lastWord(){
+        return (wordsNum == words.length-1);
+    }
+
+    public JPanel getDialogue(){
+        return dialogue;
+    }
 
     public void keyTyped(KeyEvent e){}
-
     public void keyPressed(KeyEvent e){}
 
+    /**
+     * Detects when the user has released a key, and increases the variable wordsNum to change the message
+     * @param e detects when the user has released a key
+     */
     public void keyReleased(KeyEvent e){
-        System.out.println("hi");
-        if(wordsNum < words.length-1){
-            wordsNum++;
-        }else{
-            wordsNum = 0;
-        }
-        text.setText(words[wordsNum]);
-    }
-
-    public static void main(String[] args) {
-        new Dialogue();
+      if(!lastWord()){ wordsNum++;}
+      if(wordsNum == words.length-1){
+         im = null;
+         try{
+            im = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocery.png")).getScaledInstance(70, 70, Image.SCALE_SMOOTH)));
+         }catch(IOException io){throw new RuntimeException(io);}
+         
+         dialogue.repaint();
+      }
+      text.setText("<html>" + words[wordsNum] + "</html>");
     }
 }
