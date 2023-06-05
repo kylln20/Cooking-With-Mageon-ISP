@@ -69,7 +69,9 @@ public class Food{
     public void makePanel(){
         display.setBackground(new Color(189,235,253, 0));
         display.setLayout(null);
-        display.setBorder(new RoundedBorder(10, new Color(189,235,253), new Color(82,180,218), "", 0, 0, 0));
+        if (!display.equals("")) {
+            display.setBorder(new RoundedBorder(10, new Color(189, 235, 253), new Color(82, 180, 218), "", 0, 0, 0));
+        }
         JLabel logo = null;
         try{
             logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
@@ -90,17 +92,14 @@ public class Food{
             display.setSize(30, 30);
             display.add(logo);
         }else if(displayMode.equals("im")){
-            display.setBackground(new Color(189,235,253));
             display.setSize(30, 30);
             display.add(logo);
         }else if(displayMode.equals("im+n")){
-            display.setBackground(new Color(189,235,253));
             display.setSize(80, 50);
             display.add(logo);
             display.add(nameText);
         }else if(displayMode.equals("im+n+q")){
             logo.setBounds(5, 5, 30, 30);
-            display.setBackground(new Color(189,235,253));
             display.setSize(80, 50);
             display.add(logo);
             display.add(nameText);
