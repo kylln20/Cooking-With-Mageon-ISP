@@ -29,8 +29,10 @@ public class Tutorial implements MouseListener, KeyListener{
     private Dialogue dialogue;
    
     /** */
-    private String[] dialogueText = {"hi", "does", "this", "work"};
-    
+    private String[] dialogueText = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press any key to continue",
+            "At the top left, there will are nutrients, calories, and <br> satisfaction bars. The goal of this game is to fill all of these bars",
+            "At the right, there is a fridge. Click on the fridge to open it!",
+            "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store!"};
     
     public Tutorial(){
         frame.setSize(655, 440);
@@ -38,12 +40,12 @@ public class Tutorial implements MouseListener, KeyListener{
         frame.addMouseListener(this);
         frame.addKeyListener(this);
         frame.setLayout(null);
+        frame.setResizable(false);
         drawBackground();
         
         statsbar = new StatsBar();
         dialogue = new Dialogue(dialogueText);
         addComponents();
-       
         frame.setVisible(true);
     }
 
@@ -72,14 +74,16 @@ public class Tutorial implements MouseListener, KeyListener{
      * and calls the drawBackground() method to change the background accordingly
      */
     public void mouseClicked(MouseEvent e){
-        if(e.getX() > 381 && e.getX() < 640){
-            if(fridgeOpen){ fridgeOpen = false; }
-            else{ fridgeOpen = true; }
-            frame.repaint();
-            drawBackground();
-            addComponents();
-            frame.setVisible(true);
-        }
+        if(!fridgeOpen && e.getX() > 381 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290){
+            fridgeOpen = true;
+         }else if(fridgeOpen && e.getX() > 275 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290){
+            fridgeOpen = false;
+         }
+         frame.repaint();
+         frame.getContentPane().removeAll();
+         drawBackground();
+         addComponents();
+         frame.setVisible(true);
     }
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}
@@ -94,20 +98,14 @@ public class Tutorial implements MouseListener, KeyListener{
      */
     public void keyReleased(KeyEvent e){
       dialogue.keyReleased(e);
-      System.out.println("key pressed");
-      frame.repaint();
+      frame.getContentPane().removeAll();
+      frame.setVisible(true);
       drawBackground();
       addComponents();
-      frame.setVisible(true);
     }
 
     public JPanel getPanel(){
         return tutorial;
-    }
-
-    class Drawing extends JComponent{
-        public void paint(Graphics gr){
-        }
     }
 
     public static void main(String[] args){
