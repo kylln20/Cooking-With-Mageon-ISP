@@ -28,7 +28,7 @@ public class StatsBar{
     public StatsBar(){
         stats.setLayout(null);
         stats.setBounds(10, 10, 400, 70);
-        stats.setBorder(new RoundedBorder(10, new Color(249,203,156)));
+        stats.setBorder(new RoundedBorder(10, fill, border, "", 0, 0, 0));
         stats.setBackground(fill);
 
         JLabel nutrients = new JLabel("Nutrients");
