@@ -12,7 +12,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 public class Food{
-    JPanel display;
+    private JPanel display;
     private String name;
     private File file;
 
@@ -52,11 +52,9 @@ public class Food{
         nutrients = nu;
         calories = cal;
         displayMode = dm;
+        quantity = 1;
         price = pri;
         makePanel();
-        JLayeredPane pane = new JLayeredPane();
-        JFrame frame = new JFrame();
-        frame.setLayeredPane(pane);
     }
 
     public String name(){ return name; }
@@ -65,13 +63,13 @@ public class Food{
     public int quantity(){ return quantity; }
     public void setQuantity(int q){ quantity = q; }
     public String displayMode(){ return displayMode; }
-    public void setDisplayMode(String dm){ displayMode = dm; }
+    public void setDisplayMode(String dm){ displayMode = dm; makePanel();}
     public double price() {return price;}
 
     public void makePanel(){
-        //display.setBackground(new Color(189,235,253));
+        display.setBackground(new Color(189,235,253, 0));
         display.setLayout(null);
-        //display.setBorder(new RoundedBorder(10, new Color(82,180,218)));
+        display.setBorder(new RoundedBorder(10, new Color(189,235,253), new Color(82,180,218), "", 0, 0, 0));
         JLabel logo = null;
         try{
             logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
@@ -81,12 +79,12 @@ public class Food{
         }
         logo.setBounds(0, 0, 30, 30);
         JLabel nameText = new JLabel(name);
-        nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-        nameText.setBounds(45, 5, 30, 20);
+        nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
+        nameText.setBounds(45, 5, 90, 20);
 
         JLabel quantityText = new JLabel("Quantity: " + Integer.toString(quantity));
-        quantityText.setFont(new Font(Font.SERIF, Font.PLAIN, 5));
-        quantityText.setBounds(45, 25, 30, 10);
+        quantityText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+        quantityText.setBounds(45, 25, 90, 10);
 
         if(displayMode.equals("")){
             display.setSize(30, 30);
@@ -101,6 +99,7 @@ public class Food{
             display.add(logo);
             display.add(nameText);
         }else if(displayMode.equals("im+n+q")){
+            logo.setBounds(5, 5, 30, 30);
             display.setBackground(new Color(189,235,253));
             display.setSize(80, 50);
             display.add(logo);
@@ -116,7 +115,7 @@ public class Food{
         JFrame testing = new JFrame();
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         testing.setSize(10, 80);
-        Food lettuce = new Food("lettuce", "Pictures/lettuce.png", new int[]{}, 25, "im", 0.14);
+        Food lettuce = new Food("lettuce", "Pictures/lettuce.png", new int[]{}, 25, "im+n+q", 0.14);
         testing.add(lettuce.display());
         testing.setVisible(true);
     }

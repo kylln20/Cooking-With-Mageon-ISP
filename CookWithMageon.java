@@ -372,7 +372,7 @@ public class CookWithMageon implements KeyListener {
             Food carrotFood = (new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "", 1.97));
             Food rawEggsFood = (new Food("Raw Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "", 1.31));
             Food rawBeefFood = (new Food("Raw Beef", "Pictures/beef.png", new int[]{1, 5}, 217, "", 1.25));
-            Food rawFishFood = (new Food("Raw Fish", "Pictures/fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50));
+            Food rawFishFood = (new Food("Raw Fish", "Pictures/raw_fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50));
             Food appleFood = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79));
             Food spinachFood = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80));
             Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
@@ -495,6 +495,15 @@ public class CookWithMageon implements KeyListener {
                         } else {
                             budget -= buyable[message].price();
                             buying.setVisible(false);
+                            if (inventory.contains(buyable[message])) {
+                                for (int i = 0; i < inventory.size(); i++) {
+                                    if (inventory.get(i).name().equals(buyable[message].name())) {
+                                        inventory.get(i).setQuantity(inventory.get(i).quantity() + 1);
+                                    }
+                                }
+                            } else {
+                                inventory.add(buyable[message]);
+                            }
                             message = -1;
                             panel.removeAll();
                             panel.revalidate();
@@ -521,14 +530,30 @@ public class CookWithMageon implements KeyListener {
 
             JPanel inventoryPanel = new JPanel();
             inventoryPanel.setBackground(new Color(201, 218, 248));
-            inventoryPanel.setLayout(new GridLayout(4, 0));
+            inventoryPanel.setLayout(null);
+            int x = 0;
+            int y = 0;
             for (Food f : this.inventory) {
+                JPanel panels = new JPanel();
                 f.setDisplayMode("im+n+q");
+                panels.setSize(600, 300);
+                panels.setBounds(50 + 180 * x, 75 + 105 * y, 175, 100);
+                x++;
+                if (x == 4) {
+                    x = 0; y++;
+                }
+                panels.setBackground(new Color(0, 0, 0));
+                panels.setBorder(new RoundedBorder(10, new Color(207, 226, 243), new Color(130, 155, 204), "hi", 0, 0, 0));
+                JPanel innerpanel = f.display();
+                innerpanel.setBounds(0, 0, 600, 300);
+                panels.add(innerpanel);
+                inventoryPanel.add(panels);
             }
 
             JFrame inventoryFrame = new JFrame();
-            inventoryFrame.setResizable(false);
+            inventoryFrame.setResizable(true);
             inventoryFrame.setSize(655, 440);
+
             inventoryFrame.add(inventoryPanel);
             inventoryFrame.setLocationRelativeTo(null);
             inventoryFrame.setVisible(false);
