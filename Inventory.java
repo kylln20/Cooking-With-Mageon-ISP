@@ -17,64 +17,52 @@ import javax.imageio.ImageIO;
 
 public class Inventory implements MouseListener{
     private JPanel inventory = new JPanel();
-    private JButton condensedInv;
     private ArrayList<Food> foods;
-    private ArrayList<Food> clicked;
 
     public Inventory(int x1, int y1, int x2, int y2){
         inventory.setLayout(null);
         inventory.setBounds(x1, y1, x2, y2);
-        inventory.setBackground(Color.PINK);
-
-        try{
-            condensedInv = new JButton(new ImageIcon(ImageIO.read(new File("/Pictures/grocery.png")).getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
-        }catch(IOException e){
-            condensedInv = new JButton("inventory");
-            condensedInv.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
-        }
-
+        inventory.setBackground(new Color(201, 218, 248));
         foods = new ArrayList<Food>();
-        clicked = new ArrayList<Food>();
-        condense();
+        expand();
     }
 
     public Inventory(ArrayList<Food> initial){
-        inventory.setVisible(false);
-        condensedInv = null;
+        inventory.setLayout(null);
+        inventory.setBackground(new Color(201, 218, 248));
         foods = initial;
-        clicked = new ArrayList<Food>();
-    }
-
-    public void condense(){
-        inventory.repaint();
-        inventory.add(condensedInv);
-        
-        inventory.setVisible(true);
+        expand();
     }
 
     public void expand(){
-        inventory.repaint();
         inventory.removeAll();
-        int x = 0; 
+        inventory.revalidate();
+        inventory.repaint();
+        JLabel inv = new JLabel("Inventory");
+        inv.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+        inv.setBounds(250, 0, 610, 50);
+        inventory.add(inv);
+        int x = 0;
         int y = 0;
-        int w = 0;
-        int l = 0;
         for(Food f: foods){
-            f.display().setBounds(x, y, x+f.display().getWidth(), y+f.display().getHeight());
+            f.setDisplayMode("im+n+q");
+            f.display().setBounds(30 + 135 * x, 50 + 95 * y, 130, 90);
             inventory.add(f.display());
-            x += f.display().getWidth();
-            y += f.display().getHeight();
+            x += 1;
+            if (x == 4) {
+                x = 0;
+                y += 1;
+            }
         }
-        inventory.setVisible(true);
     }
 
     public void addFood(Food addition){
         foods.add(addition);
         expand();
     }
-    
+
     public JPanel getPanel(){return inventory;}
-    
+
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
     public void mouseClicked(MouseEvent e){
@@ -85,15 +73,18 @@ public class Inventory implements MouseListener{
     public static void main(String[] args){
         JFrame test = new JFrame();
         test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        test.setSize(500, 500);
+        test.setSize(610, 300);
         test.setLayout(null);
+        Food lettuce = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97));
+        Food apple = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
+        Food pr = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
+        Food po = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
 
-        Food lettuce = new Food("lettuce", "Pictures/lettuce.png", new int[]{}, 25, "im+n+q", 0.14);
-        Food apple = new Food("apple", "Pictures/apple.png", new int[]{}, 25, "im+n+q", 0.14);
-
-        Inventory i = new Inventory(0, 0, 300, 300);
+        Inventory i = new Inventory(0, 0, 640, 300);
         i.addFood(lettuce);
         i.addFood(apple);
+        i.addFood(pr);
+        i.addFood(po);
         test.add(i.getPanel());
         test.setVisible(true);
     }

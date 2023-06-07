@@ -43,7 +43,7 @@ public class Food{
      * im+n: the previous and the name of the food
      * im+n+q: the previous and the quantity of the food bought
      */
-    private String displayMode;
+     String displayMode;
 
     public Food(String n, String filePath, int[] nu, int cal, String dm, double pri){
         display = new JPanel();
@@ -63,7 +63,7 @@ public class Food{
     public int quantity(){ return quantity; }
     public void setQuantity(int q){ quantity = q; }
     public String displayMode(){ return displayMode; }
-    public void setDisplayMode(String dm){ displayMode = dm; makePanel();}
+    public void setDisplayMode(String dm){ displayMode = dm; display.removeAll(); display.revalidate(); display.repaint(); makePanel();}
     public double price() {return price;}
 
     public void makePanel(){
@@ -80,14 +80,23 @@ public class Food{
             logo.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
         }
         logo.setBounds(0, 0, 30, 30);
-        JLabel nameText = new JLabel(name);
+
+        String[] names = name.split(" ");
+        JLabel nameText = new JLabel(names[0]);
         nameText.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         nameText.setBounds(45, 5, 90, 20);
 
         JLabel quantityText = new JLabel("Quantity: " + Integer.toString(quantity));
         quantityText.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-        quantityText.setBounds(45, 25, 90, 10);
+        quantityText.setBounds(45, 70, 90, 15);
 
+        JLabel name2 = new JLabel();
+        name2.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
+        name2.setBounds(45, 25, 90, 20);
+
+        JLabel name3 = new JLabel();
+        name3.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
+        name3.setBounds(45, 45, 90, 20);
         if(displayMode.equals("")){
             display.setSize(30, 30);
             display.add(logo);
@@ -98,10 +107,26 @@ public class Food{
             display.setSize(80, 50);
             display.add(logo);
             display.add(nameText);
+            if (names.length >= 2) {
+                name2.setText(names[1]);
+                if (names.length == 3) {
+                    name3.setText(names[2]);
+                }
+            }
+            display.add(name2);
+            display.add(name3);
         }else if(displayMode.equals("im+n+q")){
-            logo.setBounds(5, 5, 30, 30);
+            logo.setBounds(5, 30, 30, 30);
             display.setSize(80, 50);
             display.add(logo);
+            if (names.length >= 2) {
+                name2.setText(names[1]);
+                if (names.length == 3) {
+                    name3.setText(names[2]);
+                }
+            }
+            display.add(name2);
+            display.add(name3);
             display.add(nameText);
             display.add(quantityText);
         }
@@ -113,8 +138,8 @@ public class Food{
     public static void main(String[] args){
         JFrame testing = new JFrame();
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        testing.setSize(10, 80);
-        Food lettuce = new Food("lettuce", "Pictures/lettuce.png", new int[]{}, 25, "im+n+q", 0.14);
+        testing.setSize(10, 130);
+        Food lettuce = new Food("Uncooked Multigrain Rice", "Pictures/rice(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
         testing.add(lettuce.display());
         testing.setVisible(true);
     }
