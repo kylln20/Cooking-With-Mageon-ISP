@@ -41,14 +41,14 @@ public class Dialogue implements KeyListener{
      * Font is set for the text JLabel
      * The MAGEON image is added to the icon JLabel
      * The dialogue JPanel is added to the JFrame
-     * @param panel the scene that the dialogue box is being added to
+     * @param words the scene that the dialogue box is being added to // fix
      */
     public Dialogue(String[] words){
         dialogue.setLayout(null);
         dialogue.addKeyListener(this);
         dialogue.setBounds(5, 300, 630, 90);
-        dialogue.setBorder(new RoundedBorder(10, border));
-        dialogue.setBackground(fill);
+        dialogue.setBorder(new RoundedBorder(10, fill, border, "", 0, 0, 0));
+        dialogue.setBackground(new Color(0, 0, 0, 0));
 
         this.words = words;
         text = new JLabel("<html>" + words[wordsNum] + "</html>");
@@ -80,15 +80,11 @@ public class Dialogue implements KeyListener{
      * @param e detects when the user has released a key
      */
     public void keyReleased(KeyEvent e){
-      if(!lastWord()){ wordsNum++;}
-      if(wordsNum == words.length-1){
-         im = null;
-         try{
-            im = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocery.png")).getScaledInstance(70, 70, Image.SCALE_SMOOTH)));
-         }catch(IOException io){throw new RuntimeException(io);}
-         
-         dialogue.repaint();
-      }
-      text.setText("<html>" + words[wordsNum] + "</html>");
+        if(wordsNum == words.length-1) {
+            dialogue.setVisible(false);
+            dialogue.repaint();
+        }
+        if(!lastWord()){ wordsNum++;}
+        text.setText("<html>" + words[wordsNum] + "</html>");
     }
 }

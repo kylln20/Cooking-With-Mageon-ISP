@@ -69,9 +69,6 @@ public class Food{
     public void makePanel(){
         display.setBackground(new Color(189,235,253, 0));
         display.setLayout(null);
-        if (!display.equals("")) {
-            display.setBorder(new RoundedBorder(10, new Color(189, 235, 253), new Color(82, 180, 218), "", 0, 0, 0));
-        }
         JLabel logo = null;
         try{
             logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
@@ -101,9 +98,11 @@ public class Food{
             display.setSize(30, 30);
             display.add(logo);
         }else if(displayMode.equals("im")){
+            display.setBorder(new RoundedBorder(10, new Color(189, 235, 253), new Color(82, 180, 218), "", 0, 0, 0));
             display.setSize(30, 30);
             display.add(logo);
         }else if(displayMode.equals("im+n")){
+            display.setBorder(new RoundedBorder(10, new Color(189, 235, 253), new Color(82, 180, 218), "", 0, 0, 0));
             display.setSize(80, 50);
             display.add(logo);
             display.add(nameText);
@@ -116,6 +115,7 @@ public class Food{
             display.add(name2);
             display.add(name3);
         }else if(displayMode.equals("im+n+q")){
+            display.setBorder(new RoundedBorder(10, new Color(189, 235, 253), new Color(82, 180, 218), "", 0, 0, 0));
             logo.setBounds(5, 30, 30, 30);
             display.setSize(80, 50);
             display.add(logo);
@@ -129,6 +129,19 @@ public class Food{
             display.add(name3);
             display.add(nameText);
             display.add(quantityText);
+        } else if (displayMode.equals("im+s") || displayMode.equals("s")) {
+            if (displayMode.equals("im+s")) {
+                display.setBorder(new RoundedBorder(10, new Color(189, 235, 253), new Color(82, 180, 218), "", 0, 0, 0));
+            }
+            try{
+                logo = new JLabel(new ImageIcon(ImageIO.read(file).getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+            }catch(IOException e){
+                logo = new JLabel(name);
+                logo.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+            }
+            logo.setBounds(0, 0, 60, 60);
+            display.setSize(60, 60);
+            display.add(logo);
         }
         display.setVisible(true);
     }
@@ -138,8 +151,8 @@ public class Food{
     public static void main(String[] args){
         JFrame testing = new JFrame();
         testing.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        testing.setSize(10, 130);
-        Food lettuce = new Food("Uncooked Multigrain Rice", "Pictures/rice(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
+        testing.setSize(60, 60);
+        Food lettuce = new Food("Uncooked Multigrain Rice", "Pictures/rice(multigrain).png", new int[]{}, 25, "im+s", 0.14);
         testing.add(lettuce.display());
         testing.setVisible(true);
     }

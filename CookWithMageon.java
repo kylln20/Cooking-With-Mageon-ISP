@@ -26,7 +26,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
     private JPanel panel = new JPanel();
 
     /** Which scene or part of the game they are at */
-    private int sceneNum = 0;
+    private int sceneNum = 3;
 
     /** The budget or amount of money they receive when going to the grocery store */
     private double budget = 21.4; // average amount of money spent on groceries per 3 days
@@ -71,6 +71,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
             "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store!"};
 
     private JFrame inventoryFrame = new JFrame("Inventory");
+    private Dialogue di = new Dialogue(new String[] {"Now that we're back from the grocery store, we need to store our ingredients! Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space in the fridge. Then, press the 'swap' button!", "Once you're finished, press the 'Done' button. Any food on the left will be discarded afterwards."});
+    private ArrayList<Food> invL; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
+    private Food[][] invR; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
+    private int[] selectedLeft = new int[2]; // [4, 5] to symbolize 4th column, 5th row is selected 0-th indexed
+    private int[] selectedRight = new int[2]; // [4, 5] to symbolize 4th column, 5th row is selected
 
     /**
      * CookWithMageon constructor
@@ -78,6 +83,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
      * unresizable, gives the frame a size, and allows the user to see the JFrame. It also calls update() which allows
      * the user to start the GUI
      */
+
     public CookWithMageon() throws IOException {
         layeredPane = mainFrame.getLayeredPane();
         layeredPane.add(panel, 1);
@@ -94,6 +100,9 @@ public class CookWithMageon implements KeyListener, MouseListener{
         chooseY = 190;
         maze = new Maze();
         update();
+        selectedLeft[0] = -1;
+        selectedRight[0] = -1;
+        invR = new Food[4][3]; // player can store up to 12 different kind of foods
     }
 
     /**
@@ -241,10 +250,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         buying.setVisible(false);
+                        sceneNum = 4;
                         panel.removeAll();
                         panel.revalidate();
                         panel.repaint();
-                        sceneNum = 4;
+                        update();
                     }
                 });
                 no.addActionListener(new ActionListener() {
@@ -296,6 +306,12 @@ public class CookWithMageon implements KeyListener, MouseListener{
             panel.repaint();
             d.repaint();
             update();
+        } else if (sceneNum == 4) {
+            di.keyReleased(e);
+            panel.removeAll();
+            panel.revalidate();
+            update();
+            panel.repaint();
         }
     }
 
@@ -462,7 +478,6 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
                 Food uncookedCornFood = (new Food("Uncooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
                 Food cheeseFood = (new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "", 1.77));
-                lettuceFood.setDisplayMode("");
                 JPanel lettuce = lettuceFood.display();
                 JPanel whiteFlour = whiteFlourFood.display();
                 JPanel multigrainFlour = multigrainFlourFood.display();
@@ -642,7 +657,85 @@ public class CookWithMageon implements KeyListener, MouseListener{
             panel.add(groceryStore);*/
             }
         } else if (sceneNum == 4) {
+            invL = inventory;
+            panel.add(di.getDialogue());
 
+            InventoryM invmL = new InventoryM(invL, "im+s", true);
+            invmL.getPanel().setBounds(30, 30, 650, 440); // the one on the left (inv)
+            panel.add(invmL.getPanel());
+
+            InventoryM invmR = new InventoryM(invR, "im+s", false);
+            invmR.getPanel().setBounds(410, 30, 650, 440); // the one on the left (inv)
+            panel.add(invmR.getPanel());
+
+            if (selectedLeft[0] != -1) {
+                JPanel highlight = new JPanel();
+                highlight.setSize(60, 60);
+                highlight.setBackground(new Color(255, 0, 0, 0));
+                highlight.setBorder(new RoundedBorder(10, new Color(255, 255, 126), new Color(255,255,126), "", 0, 0, 0));
+                highlight.setBounds(35 + 63 * selectedLeft[0], 35 + 70 * selectedLeft[1], 60, 60); // assuming it starts at (35, 90)
+                panel.add(highlight);
+            }
+            if (selectedRight[0] != -1) {
+                JPanel highlight = new JPanel();
+                highlight.setSize(60, 60);
+                highlight.setBackground(new Color(255, 0, 0, 0));
+                highlight.setBorder(new RoundedBorder(10, new Color(255, 0, 0, 90), new Color(255,0,0), "", 0, 0, 0));
+                highlight.setBounds(417 + 80 * selectedRight[0], 35 + 70 * selectedRight[1], 60, 60); // assuming it starts at (35, 90)
+                panel.add(highlight);
+            }
+            JButton swap = new JButton("swap");
+            swap.setSize(150, 50);
+            swap.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(145, 165, 199), "Swap", 20, 50, 30));
+            swap.setBounds(450, 330, 150, 50);
+            swap.setFocusable(false);
+            swap.setBackground(new Color(0, 0, 0, 0));
+            swap.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Food temp = invR[selectedRight[1]][selectedRight[0]];
+                    if (temp == null) {
+                        invR[selectedRight[1]][selectedRight[0]] = invL.get(selectedLeft[1] * 4 + selectedLeft[0]);
+                        invL.remove(selectedLeft[1] * 4 + selectedLeft[0]);
+                    } else {
+                        invR[selectedRight[1]][selectedRight[0]] = invL.get(selectedLeft[1] * 4 + selectedLeft[0]);
+                        invL.set(selectedLeft[1] * 4 + selectedLeft[0], temp);
+                    }
+                    selectedLeft[0] = -1; selectedRight[0] = -1;
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+                    update();
+                }
+            });
+            if (selectedLeft[0] != -1 && selectedRight[0] != -1) {
+                panel.add(swap);
+            }
+            JButton done = new JButton("Done");
+            done.setSize(150, 50);
+            done.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(145, 165, 199), "Done", 20, 50, 30));
+            done.setBounds(300, 330, 150, 50);
+            done.setFocusable(false);
+            done.setBackground(new Color(0, 0, 0, 0));
+            panel.add(done);
+            done.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { // next, can add confirmation later
+                    sceneNum = 5;
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+
+                    update();
+                }
+            });
+
+            JLabel background;
+            try{
+                background = (new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/kitchen2.png")))));
+            }catch(IOException e){ throw new RuntimeException(e); }
+            background.setBounds(0, 0, 643, 405);
+            panel.add(background);
         } else if (sceneNum == 5) {
 
         } else if (sceneNum == 6) {
@@ -690,7 +783,87 @@ public class CookWithMageon implements KeyListener, MouseListener{
 
     public void mousePressed(MouseEvent e) {  }
 
-    public void mouseReleased(MouseEvent e) {   }
+    public void mouseReleased(MouseEvent e) {
+        if (sceneNum == 4) {
+            int x = -1, y = -1;
+            if (selectedLeft[0] != -1) {
+                x = selectedLeft[0];
+                y = selectedLeft[1];
+            }
+            if (e.getX() > 36 && e.getX() < 96 && e.getY() > 60 && e.getY() < 120 && invL.size() >= 1) {
+                x = 0; y = 0;
+            } else if (e.getX() > 99 && e.getX() < 99 + 60 && e.getY() > 60 && e.getY() < 120 && invL.size() >= 2) {
+                x = 1; y = 0;
+            } else if (e.getX() > 162 && e.getX() < 162 + 60 && e.getY() > 60 && e.getY() < 120 && invL.size() >= 3) {
+                x = 2; y = 0;
+            } else if (e.getX() > 225 && e.getX() < 285 && e.getY() > 60 && e.getY() < 120 && invL.size() >= 4) {
+                x = 3; y = 0;
+            } else if (e.getX() > 36 && e.getX() < 96 && e.getY() > 130 && e.getY() < 190 && invL.size() >= 5) {
+                x = 0; y = 1;
+            } else if (e.getX() > 99 && e.getX() < 99 + 60 && e.getY() > 130 && e.getY() < 190 && invL.size() >= 6) {
+                x = 1; y = 1;
+            } else if (e.getX() > 162 && e.getX() < 162 + 60 && e.getY() > 130 && e.getY() < 190 && invL.size() >= 7) {
+                x = 2; y = 1;
+            } else if (e.getX() > 225 && e.getX() < 285 && e.getY() > 130 && e.getY() < 190 && invL.size() >= 8) {
+                x = 3; y = 1;
+            } else if (e.getX() > 36 && e.getX() < 96 && e.getY() > 200 && e.getY() < 260 && invL.size() >= 9) {
+                x = 0; y = 2;
+            } else if (e.getX() > 99 && e.getX() < 99 + 60 && e.getY() > 200 && e.getY() < 260 && invL.size() >= 10) {
+                x = 1; y = 2;
+            } else if (e.getX() > 162 && e.getX() < 162 + 60 && e.getY() > 200 && e.getY() < 260 && invL.size() >= 11) {
+                x = 2; y = 2;
+            } else if (e.getX() > 225 && e.getX() < 285 && e.getY() > 200 && e.getY() < 260 && invL.size() >= 12) {
+                x = 3; y = 2;
+            } else if (e.getX() > 36 && e.getX() < 96 && e.getY() > 270 && e.getY() < 330 && invL.size() >= 13) {
+                x = 0; y = 3;
+            } else if (e.getX() > 99 && e.getX() < 99 + 60 && e.getY() > 270 && e.getY() < 330 && invL.size() >= 14) {
+                x = 1; y = 3;
+            } else if (e.getX() > 162 && e.getX() < 162 + 60 && e.getY() > 270 && e.getY() < 330 && invL.size() >= 15) {
+                x = 2; y = 3;
+            } else if (e.getX() > 225 && e.getX() < 285 && e.getY() > 270 && e.getY() < 330 && invL.size() >= 16) {
+                x = 3; y = 3;
+            } else if (e.getX() > 36 && e.getX() < 96 && e.getY() > 340 && e.getY() < 400  && invL.size() >= 17) {
+                x = 0; y = 4;
+            }
+
+            int xR = -1, yR = -1;
+            if (selectedRight[0] != -1) {
+                xR = selectedRight[0];
+                yR = selectedRight[1];
+            }
+            if (e.getX() > 417 && e.getX() < 477 && e.getY() > 60 && e.getY() < 120) {
+                xR = 0; yR = 0;
+            } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 60 && e.getY() < 120) {
+                xR = 1; yR = 0;
+            } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 60 && e.getY() < 120) {
+                xR = 2; yR = 0;
+            } else if (e.getX() > 417 && e.getX() < 477 && e.getY() > 130 && e.getY() < 190) {
+                xR = 0; yR = 1;
+            } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 130 && e.getY() < 190) {
+                xR = 1; yR = 1;
+            } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 130 && e.getY() < 190) {
+                xR = 2; yR = 1;
+            } else if (e.getX() > 417 && e.getX() < 477 && e.getY() > 200 && e.getY() < 260) {
+                xR = 0; yR = 2;
+            } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 200 && e.getY() < 260) {
+                xR = 1; yR = 2;
+            } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 200 && e.getY() < 260) {
+                xR = 2; yR = 2; //
+            } else if (e.getX() > 417 && e.getX() < 477 && e.getY() > 270 && e.getY() < 330) {
+                xR = 0; yR = 3;
+            } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 270 && e.getY() < 330) {
+                xR = 1; yR = 3;
+            } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 270 && e.getY() < 330) {
+                xR = 2; yR = 3;
+            }
+            selectedLeft[0] = x; selectedLeft[1] = y;
+            selectedRight[0] = xR; selectedRight[1] = yR;
+            panel.removeAll();
+            panel.revalidate();
+            update();
+            panel.repaint();
+        }
+    }
 
     public void mouseEntered(MouseEvent e) {   }
 

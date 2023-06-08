@@ -12,25 +12,38 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import javax.imageio.ImageIO;
 
-public class Inventory2 implements MouseListener{
+public class InventoryM implements MouseListener, KeyListener{
     private JPanel inventory = new JPanel();
     private ArrayList<Food> foods;
+    private String input;
+    private boolean bool;
 
-    public Inventory(int x1, int y1, int x2, int y2){
+    public InventoryM(Food[][] initial, String input, boolean bool){
         inventory.setLayout(null);
-        inventory.setBounds(x1, y1, x2, y2);
-        inventory.setBackground(new Color(201, 218, 248));
-        foods = new ArrayList<Food>();
+        inventory.setBounds(0, 0, 650, 440);
+        inventory.setBackground(new Color(201, 218, 248, 0));
+        this.input = input;
+        this.bool = bool;
+        foods = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (initial != null && initial[i][j] != null) {
+                    foods.add(initial[i][j]);
+                } else {
+                    foods.add(null);
+                }
+            }
+        }
         expand();
     }
 
-    public Inventory(ArrayList<Food> initial){
+    public InventoryM(ArrayList<Food> initial, String input, boolean bool){
+        this.bool = bool;
         inventory.setLayout(null);
-        inventory.setBackground(new Color(201, 218, 248));
+        inventory.setBackground(new Color(201, 218, 248, 0));
         foods = initial;
+        this.input = input;
         expand();
     }
 
@@ -38,20 +51,33 @@ public class Inventory2 implements MouseListener{
         inventory.removeAll();
         inventory.revalidate();
         inventory.repaint();
-        JLabel inv = new JLabel("Inventory");
-        inv.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
-        inv.setBounds(250, 0, 610, 50);
-        inventory.add(inv);
-        int x = 0;
-        int y = 0;
-        for(Food f: foods){
-            f.setDisplayMode("im");
-            f.display().setBounds(35 * x, 35 * y, 30, 30);
-            inventory.add(f.display());
-            x += 1;
-            if (x == 4) {
-                x = 0;
-                y += 1;
+        if (bool) {
+            int x = 0;
+            int y = 0;
+            if (foods != null) {
+                for (Food f : foods) {
+                    if (f != null) {
+                        f.setDisplayMode(input);
+                        f.display().setBounds(63 * x, 70 * y, 60, 60);
+                        inventory.add(f.display());
+                    }
+                    x += 1;
+                    if (x == 4) {
+                        x = 0;
+                        y += 1;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 4; j++) {
+                    Food f = foods.get(j * 3 + i);
+                    if (f != null) {
+                        f.setDisplayMode(input);
+                        f.display().setBounds(80 * i, 70 * j, 60, 60);
+                        inventory.add(f.display());
+                    }
+                }
             }
         }
     }
@@ -75,17 +101,30 @@ public class Inventory2 implements MouseListener{
         test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         test.setSize(610, 300);
         test.setLayout(null);
-        Food lettuce = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97));
-        Food apple = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
-        Food pr = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
-        Food po = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
-
-        InventoryM i = new InventoryM(0, 0, 640, 300);
-        i.addFood(lettuce);
-        i.addFood(apple);
-        i.addFood(pr);
-        i.addFood(po);
-        test.add(i.getPanel());
+        Food[][] invR = new Food[4][3]; // player can store up to 12 different kind of foods
+        invR[0][0] = (new Food("Raw Fish", "Pictures/raw_fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50));
+        invR[0][1] = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79));
+        invR[0][2] = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80));
+        invR[1][0] = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
+        invR[1][1] = (new Food("Uncooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
+        InventoryM invm = new InventoryM(invR, "s", false);
+        invm.getPanel().setBounds(0, 0, 650, 440);
+        test.add(invm.getPanel());
         test.setVisible(true);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
