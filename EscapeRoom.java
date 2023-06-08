@@ -19,36 +19,50 @@ public class EscapeRoom implements KeyListener, MouseListener{
     JFrame frame;
     JLayeredPane mainPane;
     JPanel panel;
-    JPanel components;
     JLabel backgroundImg;
     String imgName;
     /** A StatsBar object, displays the nutrition, calories, and satisfaction level of the player */
     private StatsBar statsbar;
     /** A Dialogue object, displays the messages the game helper MAGEON gives to the user */
     private Dialogue dialogue;
-    private String[] dialogueText = new String[10];
-
+    private String[] dialogueText = {"one", "two", "three", "four", "five", "six", "seven"};
+    Color transparent = new Color(0, 0, 0, 0);
+    int x = -100;
+    int y = 280;
+    JLabel personImg;
+    JPanel person;
     
     public EscapeRoom(JFrame frame){
         this.frame = frame;
-        
-        mainPane = frame.getLayeredPane();
-
-        panel = new JPanel();
-
         frame.addKeyListener(this);
         frame.addMouseListener(this);
+        frame.setBackground(Color.PINK);
         
-        frame.setVisible(true);
-        components = new JPanel();
-        statsbar = new StatsBar();
-        dialogue = new Dialogue(dialogueText);
+        frame.getContentPane().setBackground(transparent);
+        mainPane = frame.getLayeredPane();
         
+        panel = new JPanel();
+        panel.setBackground(transparent);
         panel.setLayout(null);
         backgroundImg = new JLabel();
         imgName = "fridge open";
+
+        statsbar = new StatsBar();
+        dialogue = new Dialogue(dialogueText);
+        try{
+            personImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/person.png"))));
+        }catch(IOException e){throw new RuntimeException(e);}
+        personImg.setBounds(0, 0, 80, 120);
+        person = new JPanel();
+        person.setBackground(transparent);
+        person.setLayout(null);
+        person.add(personImg);
+
+        panel.add(person);
         addComponents();
+        drawPerson(x, y);
         drawBackground();
+        mainPane.add(panel, JLayeredPane.DEFAULT_LAYER);
         frame.add(panel);
         frame.setVisible(true);
     }
@@ -70,32 +84,32 @@ public class EscapeRoom implements KeyListener, MouseListener{
         }catch(IOException e){ throw new RuntimeException(e); }
         backgroundImg.setBounds(0, 0, 640, 400);
         panel.add(backgroundImg);
-        mainPane.add(panel, 1);
     }
     
     public void addComponents(){
-        components.add(statsbar.getStats());
-        components.add(dialogue.getDialogue());
-        components.setBackground(new Color(0, 0, 0, 0));
-        mainPane.add(components, 2);
+        panel.add(statsbar.getStats());
+        panel.add(dialogue.getDialogue());
     }
     
+    public void drawPerson(int x, int y){
+        personImg.setBounds(0, 0, 80, 120);
+        person.setBounds(x, y, 80, 120);
+        panel.add(person);
+    } 
 
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
     public void mouseClicked(MouseEvent e){
-         if(imgName.equals("fridge closed") && e.getX() > 381 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290){
-            imgName = "fridge open";
-         }else if(imgName.equals("fridge open") && e.getX() > 275 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290){
-            imgName = "fridge closed";
-         }
-         frame.repaint();
-         frame.getContentPane().removeAll();
-         addComponents();
-
-         drawBackground();
-         frame.add(panel);
-         frame.setVisible(true);
+        if(imgName.equals("fridge closed") && e.getX() > 381 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290){
+        imgName = "fridge open";
+        }else if(imgName.equals("fridge open") && e.getX() > 275 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290){
+        imgName = "fridge closed";
+        }
+        panel.removeAll();
+        panel.revalidate();
+        panel.repaint();
+        addComponents();
+        drawBackground();
     } 
     
     
@@ -114,8 +128,14 @@ public class EscapeRoom implements KeyListener, MouseListener{
 
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 
-        } 
-
+        } else if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            dialogue.keyReleased(e);
+            panel.removeAll();
+            panel.revalidate();
+            panel.repaint();
+            addComponents();
+            drawBackground();
+        }
     }
     public void keyTyped(KeyEvent e){}
 

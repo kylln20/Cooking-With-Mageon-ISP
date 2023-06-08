@@ -26,7 +26,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
     private JPanel panel = new JPanel();
 
     /** Which scene or part of the game they are at */
-    private int sceneNum = 3;
+    private int sceneNum = 0;
 
     /** The budget or amount of money they receive when going to the grocery store */
     private double budget = 21.4; // average amount of money spent on groceries per 3 days
@@ -65,7 +65,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
     private Dialogue dialogue;
 
     /** */
-    private String[] dialogueText = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press any key to continue",
+    private String[] dialogueText = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press the ENTER key to continue",
             "At the top left, there will are nutrients, calories, and <br> satisfaction bars. The goal of this game is to fill all of these bars",
             "At the right, there is a fridge. Click on the fridge to open it!",
             "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store!"};
@@ -178,12 +178,14 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 update();
             }
         } else if (sceneNum == 2) {
-            dialogue.keyReleased(e); // no probem
-            panel.removeAll();
-            panel.revalidate();
-            panel.repaint();
-            addComponents();
-            drawBackground();
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                dialogue.keyReleased(e);
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+                addComponents();
+                drawBackground();
+            }
         } else if (sceneNum == 3 && message == -1) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
                 if (!maze.check(yCoord, xCoord, 0)) {
