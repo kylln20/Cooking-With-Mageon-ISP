@@ -6,7 +6,7 @@
  * Valentina Krasteva
  *
  * Version 2
- * @author Angelina Jiang and Kayla Lin (2.5hrs)
+ * @author Angelina Jiang and Kayla Lin
  * Source used: https://stackoverflow.com/questions/26420428/how-to-word-wrap-text-in-jlabel
  * ^ how to wrap text in JLabel
  */
