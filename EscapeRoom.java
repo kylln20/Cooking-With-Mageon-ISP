@@ -8,10 +8,12 @@
  * @authors Kayla Lin + Angelina Jiang
  */
 
-import javax.swing.*;
-import java.io.*;
-import javax.imageio.ImageIO;
-import java.awt.event.*;
+ import java.util.*;
+ import javax.swing.*;
+ import java.awt.*;
+ import java.awt.event.*;
+ import java.io.*;
+ import javax.imageio.ImageIO;
 
 public class EscapeRoom implements KeyListener, MouseListener{
     JFrame frame;
@@ -33,7 +35,6 @@ public class EscapeRoom implements KeyListener, MouseListener{
         mainPane = frame.getLayeredPane();
 
         panel = new JPanel();
-        mainPane.add(panel, 1);
 
         frame.addKeyListener(this);
         frame.addMouseListener(this);
@@ -46,10 +47,9 @@ public class EscapeRoom implements KeyListener, MouseListener{
         panel.setLayout(null);
         backgroundImg = new JLabel();
         imgName = "fridge open";
-        
+        addComponents();
         drawBackground();
         frame.add(panel);
-        addComponents();
         frame.setVisible(true);
     }
       
@@ -70,11 +70,13 @@ public class EscapeRoom implements KeyListener, MouseListener{
         }catch(IOException e){ throw new RuntimeException(e); }
         backgroundImg.setBounds(0, 0, 640, 400);
         panel.add(backgroundImg);
+        mainPane.add(panel, 1);
     }
     
     public void addComponents(){
         components.add(statsbar.getStats());
         components.add(dialogue.getDialogue());
+        components.setBackground(new Color(0, 0, 0, 0));
         mainPane.add(components, 2);
     }
     
@@ -89,9 +91,10 @@ public class EscapeRoom implements KeyListener, MouseListener{
          }
          frame.repaint();
          frame.getContentPane().removeAll();
+         addComponents();
+
          drawBackground();
          frame.add(panel);
-         addComponents();
          frame.setVisible(true);
     } 
     
