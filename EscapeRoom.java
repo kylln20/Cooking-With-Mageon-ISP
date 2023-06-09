@@ -27,8 +27,8 @@ public class EscapeRoom implements KeyListener, MouseListener{
     private Dialogue dialogue;
     private String[] dialogueText = {"one", "two", "three", "four", "five", "six", "seven"};
     Color transparent = new Color(0, 0, 0, 0);
-    int x = -100;
-    int y = 280;
+    int x = 320;
+    int y = 160;
     JLabel personImg;
     JPanel person;
     
@@ -50,18 +50,18 @@ public class EscapeRoom implements KeyListener, MouseListener{
         statsbar = new StatsBar();
         dialogue = new Dialogue(dialogueText);
         try{
-            personImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/person.png"))));
+            personImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/person.png")).getScaledInstance(160, 240, Image.SCALE_SMOOTH)));
         }catch(IOException e){throw new RuntimeException(e);}
-        personImg.setBounds(0, 0, 80, 120);
+        personImg.setBounds(0, 0, 160, 240);
         person = new JPanel();
         person.setBackground(transparent);
         person.setLayout(null);
         person.add(personImg);
 
-        panel.add(person);
         addComponents();
         drawPerson(x, y);
         drawBackground();
+
         mainPane.add(panel, JLayeredPane.DEFAULT_LAYER);
         frame.add(panel);
         frame.setVisible(true);
@@ -92,8 +92,8 @@ public class EscapeRoom implements KeyListener, MouseListener{
     }
     
     public void drawPerson(int x, int y){
-        personImg.setBounds(0, 0, 80, 120);
-        person.setBounds(x, y, 80, 120);
+        personImg.setBounds(0, 0, 160, 240);
+        person.setBounds(x, y, 160, 240);
         panel.add(person);
     } 
 
@@ -109,6 +109,7 @@ public class EscapeRoom implements KeyListener, MouseListener{
         panel.revalidate();
         panel.repaint();
         addComponents();
+        drawPerson(x, y);
         drawBackground();
     } 
     
@@ -121,8 +122,25 @@ public class EscapeRoom implements KeyListener, MouseListener{
     public void keyPressed(KeyEvent e){}
     public void keyReleased(KeyEvent e){
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-
+            if(x < 460){
+                x+=5;
+            }
+            panel.removeAll();
+            panel.revalidate();
+            panel.repaint();
+            addComponents();
+            drawPerson(x, y);
+            drawBackground();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            if(x > 160){
+                x-=5;
+            }
+            panel.removeAll();
+            panel.revalidate();
+            panel.repaint();
+            addComponents();
+            drawPerson(x, y);
+            drawBackground();
 
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
 
@@ -138,7 +156,6 @@ public class EscapeRoom implements KeyListener, MouseListener{
         }
     }
     public void keyTyped(KeyEvent e){}
-
 
     public static void main(String[] args){
         JFrame frame = new JFrame();
