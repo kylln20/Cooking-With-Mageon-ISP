@@ -7,7 +7,7 @@ GAME OVERVIEW
   and cooking. In the end, the player is judged on the metrics of how caloric, nutritious, and satisfactory their meals are.
   
 GAME INSTRUCTIONS
-  Cooking With MAGEON is played with a keyboard and mouse/trackpad.
+  Cooking With MAGEON is played with a keyboard and mouse/trackpad. The main program file is called CookWithMageon.java.
   
   LEVEL 1
   In Level 1, MAGEON introduces the player to the game. The <ENTER> key is used to
