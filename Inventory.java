@@ -12,8 +12,6 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import javax.imageio.ImageIO;
 
 public class Inventory implements MouseListener{
     private JPanel inventory = new JPanel();

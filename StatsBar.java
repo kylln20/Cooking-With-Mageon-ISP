@@ -11,14 +11,28 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import javax.imageio.ImageIO;
 
 public class StatsBar{
+    public int getNumNutri() {
+        int count = 0;
+        for (int i = 0; i < 14; i++) {
+            if (nutrients[i]) count++;
+        }
+        numNutri = (int) (count / 14.0 * 10);
+        return numNutri;
+    }
+
+    public int getNumCal() {
+        return numCal;
+    }
+
+    public int getNumSatis() {
+        return numSatis;
+    }
+
     JPanel stats = new JPanel();
-    Color border = new Color(249,203,156);
-    Color fill = new Color(249,203,156, 230);
+    Color border = new Color(221, 50, 87);
+    Color fill = new Color(238, 148, 128, 180);
     Font defaultFont = new Font(Font.SERIF, Font.PLAIN, 18);
     boolean[] nutrients = new boolean[14];
 
@@ -86,7 +100,7 @@ public class StatsBar{
             for (int i = 0; i < 14; i++) {
                 if (nutrients[i]) count++;
             }
-            numNutri = count;
+            numNutri = (int) (count / 14.0 * 10);
             gr.fillRoundRect(1, 6, numNutri*280/100, 13, 10, 10);
             gr.fillRoundRect(1, 26, numCal*280/100, 13, 10, 10);
             gr.fillRoundRect(1, 46, numSatis*280/100, 13, 10, 10);

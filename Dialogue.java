@@ -11,7 +11,6 @@
  * ^ how to wrap text in JLabel
  */
 
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

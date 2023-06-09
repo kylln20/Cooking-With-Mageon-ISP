@@ -5,7 +5,6 @@
  * @version 2
  * @author Kayla Lin & Angelina Jiang
  */
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -58,6 +57,7 @@ public class Food{
     }
 
     public String name(){ return name; }
+    public void setName(String n){ name = n;}
     public int[] nutrients(){ return nutrients; }
     public int calories(){ return calories; }
     public int quantity(){ return quantity; }
@@ -65,6 +65,7 @@ public class Food{
     public String displayMode(){ return displayMode; }
     public void setDisplayMode(String dm){ displayMode = dm; display.removeAll(); display.revalidate(); display.repaint(); makePanel();}
     public double price() {return price;}
+    public void setPath(String p){file = new File(p);}
 
     public void makePanel(){
         display.setBackground(new Color(189,235,253, 0));

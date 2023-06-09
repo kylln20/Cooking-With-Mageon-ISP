@@ -58,7 +58,6 @@ public class CookBook {
         butter = new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "im", 1.99);
         corn = new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "im", 2.04);
         cheese = new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "im", 1.77); 
-        // kayla do u know where the other bread picture is bc I can't find it on github :((
         ArrayList<Food> sa = new ArrayList<>(); // making salad
         sa.add(lettuce);
         sa.add(spinach);
@@ -176,7 +175,6 @@ public class CookBook {
         ArrayList<Food> bvsf = new ArrayList<>();
         bvsf.add(beef);
         bvsf.add(spinach);
-        bvsf.add(lettuce);
         Recipes bbvsf = new Recipes("Beef and Vegetable Stir-Fry", bvsf);
         cookbook.add(bbvsf);
 

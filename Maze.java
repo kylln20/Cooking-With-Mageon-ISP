@@ -66,6 +66,7 @@ public class Maze {
             maze[1][13][2] = true;
             maze[1][13][1] = true;
             maze[1][14][0] = true;
+            maze[1][14][3] = true;
             maze[1][14][1] = true;
             maze[1][15][1] = true;
             maze[1][15][3] = true;
