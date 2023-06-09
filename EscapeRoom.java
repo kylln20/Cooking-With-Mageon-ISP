@@ -119,8 +119,7 @@ public class EscapeRoom implements KeyListener, MouseListener{
     public void mouseExited(MouseEvent e){}
 
 
-    public void keyPressed(KeyEvent e){}
-    public void keyReleased(KeyEvent e){
+    public void keyPressed(KeyEvent e){
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             if(x < 460){
                 x+=5;
@@ -132,7 +131,7 @@ public class EscapeRoom implements KeyListener, MouseListener{
             drawPerson(x, y);
             drawBackground();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if(x > 160){
+            if(x > 0){
                 x-=5;
             }
             panel.removeAll();
@@ -142,7 +141,10 @@ public class EscapeRoom implements KeyListener, MouseListener{
             drawPerson(x, y);
             drawBackground();
 
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        }
+    }
+    public void keyReleased(KeyEvent e){
+         if (e.getKeyCode() == KeyEvent.VK_UP) {
 
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 
@@ -152,6 +154,7 @@ public class EscapeRoom implements KeyListener, MouseListener{
             panel.revalidate();
             panel.repaint();
             addComponents();
+            drawPerson(x, y);
             drawBackground();
         }
     }
