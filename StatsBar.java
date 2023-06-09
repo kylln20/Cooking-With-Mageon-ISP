@@ -20,6 +20,7 @@ public class StatsBar{
     Color border = new Color(249,203,156);
     Color fill = new Color(249,203,156, 230);
     Font defaultFont = new Font(Font.SERIF, Font.PLAIN, 18);
+    boolean[] nutrients = new boolean[14];
 
     int numNutri = 0;
     int numCal = 0;
@@ -34,15 +35,15 @@ public class StatsBar{
         JLabel nutrients = new JLabel("Nutrients");
         nutrients.setFont(defaultFont);
         nutrients.setBounds(5, 5, 100, 20);
-        
+
         JLabel calories = new JLabel("Calories");
         calories.setFont(defaultFont);
         calories.setBounds(5, 25, 100, 20);
-        
+
         JLabel satisfaction = new JLabel("Satisfaction");
         satisfaction.setFont(defaultFont);
         satisfaction.setBounds(5, 45, 100, 20);
-        
+
         stats.add(nutrients);
         stats.add(calories);
         stats.add(satisfaction);
@@ -50,6 +51,19 @@ public class StatsBar{
         Drawing bars = new Drawing();
         bars.setBounds(110, 5, 280, 60);
         stats.add(bars);
+    }
+    public void addNutri(boolean[] x) {
+        for (int i = 0; i < 14; i++) {
+            if (x[i]) nutrients[i] = true;
+        }
+    }
+
+    public void addCalo (int x) {
+        numCal = Math.max(100, numCal + x);
+    }
+
+    public void addSatis() {
+        numSatis = Math.max(100, numSatis + 80);
     }
 
     public JPanel getStats(){
@@ -68,6 +82,11 @@ public class StatsBar{
             gr.drawRoundRect(0, 45, 280, 15, 10, 10);
 
             gr.setColor(Color.RED);
+            int count = 0;
+            for (int i = 0; i < 14; i++) {
+                if (nutrients[i]) count++;
+            }
+            numNutri = count;
             gr.fillRoundRect(1, 6, numNutri*280/100, 13, 10, 10);
             gr.fillRoundRect(1, 26, numCal*280/100, 13, 10, 10);
             gr.fillRoundRect(1, 46, numSatis*280/100, 13, 10, 10);

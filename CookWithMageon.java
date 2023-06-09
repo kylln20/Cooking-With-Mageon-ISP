@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.File; 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -63,20 +63,34 @@ public class CookWithMageon implements KeyListener, MouseListener{
 
     /** A Dialogue object, displays the messages the game helper MAGEON gives to the user */
     private Dialogue dialogue;
-
-    /** */
-    private String[] dialogueText = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press the ENTER key to continue",
+    /** */ 
+    private String[] dialogueText1 = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press the ENTER key to continue",
             "At the top left, there will are nutrients, calories, and <br> satisfaction bars. The goal of this game is to fill all of these bars",
             "At the right, there is a fridge. Click on the fridge to open it!",
             "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store!"};
 
     private JFrame inventoryFrame = new JFrame("Inventory");
-    private Dialogue di = new Dialogue(new String[] {"Now that we're back from the grocery store, we need to store our ingredients! Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space in the fridge. Then, press the 'swap' button!", "Once you're finished, press the 'Done' button. Any food on the left will be discarded afterwards."});
+    private Dialogue di = new Dialogue(new String[] {"Now that we're back from the grocery store, we need to store our ingredients! Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space in the fridge. Then, press the 'swap' button!", "Once you're finished, press the 'Done' button. Any food on the left will be discarded afterwards.", "Ding ding ding. Oh look, its time to start cooking! Let's make a nice healthy meal!", "Press the arrow keys or WASD to move around the kitchen"});
     private ArrayList<Food> invL; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
     private Food[][] invR; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
     private int[] selectedLeft = new int[2]; // [4, 5] to symbolize 4th column, 5th row is selected 0-th indexed
     private int[] selectedRight = new int[2]; // [4, 5] to symbolize 4th column, 5th row is selected
 
+    private JLabel backgroundImg;
+    private String imgName;
+    private Color transparent = new Color(0, 0, 0, 0);
+    private int x = 320;
+    private int y = 160;
+    private JLabel personImg;
+    private JPanel person;
+    private Food[][] fridge;
+    private boolean[][] selected = new boolean[4][3];
+    private JPanel problem;
+    private int probGuess;
+    private boolean correctAns = true;
+    
+    
+    
     /**
      * CookWithMageon constructor
      * Adds the panel to the frame, allows the panel to have no layout, adds a keylistener to the frame, make the frame
@@ -121,9 +135,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
      *
      * @param e The argument passed from the command line
      */
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     /**
      * keyPressed method, part of the interface, KeyListener class
@@ -132,6 +144,31 @@ public class CookWithMageon implements KeyListener, MouseListener{
      * @param e The argument passed from the command line
      */
     public void keyPressed(KeyEvent e) {
+        if (sceneNum == 5) {
+            if (imgName.equals("fridge open") || imgName.equals("fridge closed")) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+                    if (x < 460) {
+                        x += 5;
+                    }
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+                    addComponents();
+                    drawPerson(x, y);
+                    drawBackground();
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+                    if (x > 0) {
+                        x -= 5;
+                    }
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+                    addComponents();
+                    drawPerson(x, y);
+                    drawBackground();
+                }
+            }
+        }
     }
 
     /**
@@ -314,6 +351,51 @@ public class CookWithMageon implements KeyListener, MouseListener{
             panel.revalidate();
             update();
             panel.repaint();
+        } else if (sceneNum == 5) {
+            if (imgName.equals("fridge closed") || imgName.equals("fridge open")) {
+                if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+                    if (x <= 175) { // stove
+                        imgName = "stove";
+                        di.getDialogue().setVisible(false);
+                        statsbar.getStats().setVisible(false);
+                        panel.removeAll();
+                        panel.revalidate();
+                        panel.repaint();
+                        addComponents();
+                        drawPerson(x, y);
+                        cook();
+                        drawBackground();
+                    } else if (x <= 417) { // cabinet
+                        imgName = "cabinet closed";
+                        statsbar.getStats().setVisible(false);
+                        drawBackground();
+                    }
+                }
+            }
+            if (!imgName.contains("problem")) {
+                if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+                    imgName = "fridge closed";
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+                    addComponents();
+                    drawPerson(x, y);
+                    drawBackground();
+                    statsbar.getStats().setVisible(true); // get back stats back
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (imgName.equals("problemB")) {
+                    imgName = "fridge closed";
+                }
+                di.keyReleased(e);
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+                addComponents();
+                drawPerson(x, y);
+                drawBackground();
+            }
         }
     }
 
@@ -425,7 +507,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
         } else if (sceneNum == 2) {
             panel.setBackground(new Color(0, 0, 0, 0));
             statsbar = new StatsBar();
-            dialogue = new Dialogue(dialogueText);
+            dialogue = new Dialogue(dialogueText1);
             addComponents();
             drawBackground();
         } else if (sceneNum == 3) {
@@ -462,15 +544,15 @@ public class CookWithMageon implements KeyListener, MouseListener{
                             }
                         }
                     }
-                }
+                } 
                 Food lettuceFood = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97));
                 Food whiteFlourFood = (new Food("White Flour", "Pictures/flour(white).png", new int[]{1, 5}, 302, "", 2.60));
                 Food multigrainFlourFood = (new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{6, 7}, 160, "", 2.99));
                 Food milkFood = (new Food("Milk", "Pictures/milk.png", new int[]{0, 3, 8}, 150, "", 1.47));
-                Food whiteRiceFood = (new Food("Uncooked White Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "", 2.87));
-                Food multigrainRiceFood = (new Food("Uncooked Wholegrain Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "", 3.47));
+                Food whiteRiceFood = (new Food("Cooked Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "", 2.87));
+                Food multigrainRiceFood = (new Food("Healthy Cooked Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "", 3.47));
                 Food tomatoFood = (new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "", 1.25));
-                Food potatoFood = (new Food("Raw Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "", 1.84));
+                Food potatoFood = (new Food("Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "", 1.84));
                 Food carrotFood = (new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "", 1.97));
                 Food rawEggsFood = (new Food("Raw Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "", 1.31));
                 Food rawBeefFood = (new Food("Raw Beef", "Pictures/beef.png", new int[]{1, 5}, 217, "", 1.25));
@@ -478,8 +560,9 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 Food appleFood = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79));
                 Food spinachFood = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80));
                 Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
-                Food uncookedCornFood = (new Food("Uncooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
+                Food uncookedCornFood = (new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
                 Food cheeseFood = (new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "", 1.77));
+                // kayla do u know where the other bread picture is bc I can't find it on github :((
                 JPanel lettuce = lettuceFood.display();
                 JPanel whiteFlour = whiteFlourFood.display();
                 JPanel multigrainFlour = multigrainFlourFood.display();
@@ -683,9 +766,9 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 highlight.setSize(60, 60);
                 highlight.setBackground(new Color(255, 0, 0, 0));
                 highlight.setBorder(new RoundedBorder(10, new Color(255, 0, 0, 90), new Color(255,0,0), "", 0, 0, 0));
-                highlight.setBounds(417 + 80 * selectedRight[0], 35 + 70 * selectedRight[1], 60, 60); // assuming it starts at (35, 90)
+                highlight.setBounds(417 + 80 * selectedRight[0], 35 + 70 * selectedRight[1], 60, 60); // assuming i
                 panel.add(highlight);
-            }
+            } 
             JButton swap = new JButton("swap");
             swap.setSize(150, 50);
             swap.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(145, 165, 199), "Swap", 20, 50, 30));
@@ -739,7 +822,35 @@ public class CookWithMageon implements KeyListener, MouseListener{
             background.setBounds(0, 0, 643, 405);
             panel.add(background);
         } else if (sceneNum == 5) {
+            panel.removeAll();
+            panel.setBackground(new Color(201, 218, 248));
+            fridge = invR;
+            mainFrame.getContentPane().setBackground(transparent); // why
 
+            backgroundImg = new JLabel();
+            imgName = "fridge open";
+
+            statsbar = new StatsBar();
+            di = new Dialogue(new String[]{"Now that we're back from the grocery store, we need to store our ingredients! Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space in the fridge. Then, press the 'swap' button!", "Once you're finished, press the 'Done' button. Any food on the left will be discarded afterwards.",
+                    "Ding ding ding. Oh look, its time to start cooking! Let's make a nice healthy meal!", "Press the arrow keys or WASD to move around the kitchen"});
+            try {
+                personImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/person.png")).getScaledInstance(160, 240, Image.SCALE_SMOOTH)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            personImg.setBounds(0, 0, 160, 240);
+            person = new JPanel();
+            person.setBackground(transparent);
+            person.setLayout(null);
+            person.add(personImg);
+
+            problem = new JPanel();
+            problem.setBackground(new Color(255, 255, 255, 80));
+            problem.setVisible(false);
+
+            addComponents();
+            drawPerson(x, y);
+            drawBackground();
         } else if (sceneNum == 6) {
 
         } else if (sceneNum == 7) {
@@ -779,6 +890,49 @@ public class CookWithMageon implements KeyListener, MouseListener{
             panel.revalidate();
             panel.repaint();
             addComponents();
+            drawBackground();
+        } else if (sceneNum == 5) {
+            if (imgName.equals("problemA") || imgName.equals("problemB") || imgName.equals("stove")) return;
+            if (imgName.equals("fridge open")) {
+                if (e.getX() > 417 && e.getX() < 477 && e.getY() > 60 && e.getY() < 120 && fridge != null && fridge[0][0] != null) {
+                    selected[0][0] = !selected[0][0];
+                } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 60 && e.getY() < 120 && fridge != null && fridge[0][1] != null) {
+                    selected[0][1] = !selected[0][1];
+                } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 60 && e.getY() < 120 && fridge != null && fridge[0][2] != null) {
+                    selected[0][2] = !selected[0][2];
+                } else if (e.getX() > 417 && e.getX() < 477 && e.getY() > 130 && e.getY() < 190 && fridge != null && fridge[1][0] != null) {
+                    selected[1][0] = !selected[1][0];
+                } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 130 && e.getY() < 190 && fridge != null && fridge[1][1] != null) {
+                    selected[1][1] = !selected[1][1];
+                } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 130 && e.getY() < 190 && fridge != null && fridge[1][2] != null) {
+                    selected[1][2] = !selected[1][2];
+                } else if (e.getX() > 417 && e.getX() < 477 && e.getY() > 200 && e.getY() < 260 && fridge != null && fridge[2][0] != null) {
+                    selected[2][0] = !selected[2][0];
+                } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 200 && e.getY() < 260 && fridge != null && fridge[2][1] != null) {
+                    selected[2][1] = !selected[2][1];
+                } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 200 && e.getY() < 260 && fridge != null && fridge[2][2] != null) {
+                    selected[2][2] = !selected[2][2];
+                } else if (e.getX() > 417 && e.getX() < 477 && e.getY() > 270 && e.getY() < 330 && fridge != null && fridge[3][0] != null) {
+                    selected[3][0] = !selected[3][0];
+                } else if (e.getX() > 497 && e.getX() < 497 + 60 && e.getY() > 270 && e.getY() < 330 && fridge != null && fridge[3][1] != null) {
+                    selected[3][1] = !selected[3][1];
+                } else if (e.getX() > 577 && e.getX() < 577 + 60 && e.getY() > 270 && e.getY() < 330 && fridge != null && fridge[3][2] != null) {
+                    selected[3][2] = !selected[3][2];
+                } else if (e.getX() > 275 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290) {
+                    imgName = "fridge closed";
+                }
+            } else if (imgName.equals("fridge closed") && e.getX() > 381 && e.getX() < 640 && e.getY() > 10 && e.getY() < 290) {
+                imgName = "fridge open";
+            } else if (imgName.equals("cabinet closed") && e.getX() > 135 && e.getX() < 540 && e.getY() < 250) {
+                imgName = "cabinet open";
+            } else if (imgName.equals("cabinet open") && ((e.getX() > 120 && e.getX() < 540 && e.getY() < 250) || (e.getX() > 540 && e.getX() < 610 && e.getY() < 330) || (e.getX() > 40 && e.getX() < 120 && e.getY() < 330))) {
+                imgName = "cabinet closed";
+            }
+            panel.removeAll();
+            panel.revalidate();
+            panel.repaint();
+            addComponents();
+            drawPerson(x, y);
             drawBackground();
         }
     }
@@ -896,29 +1050,199 @@ public class CookWithMageon implements KeyListener, MouseListener{
 
     /** A helper method that draws the background of the JPanel*/
     public void drawBackground(){
-        try{
-            if(fridgeOpen) {
-                background = new JLabel(new ImageIcon(ImageIO.read(kitchenOpen)));
-            }else{
-                background = new JLabel(new ImageIcon(ImageIO.read(kitchenClose)));
+        if (sceneNum == 4) {
+            try {
+                if (fridgeOpen) {
+                    background = new JLabel(new ImageIcon(ImageIO.read(kitchenOpen)));
+                } else {
+                    background = new JLabel(new ImageIcon(ImageIO.read(kitchenClose)));
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        }catch(IOException e){ throw new RuntimeException(e); }
-        background.setBounds(0, 0, 643, 405);
-        panel.add(background);
+            background.setBounds(0, 0, 643, 405);
+            panel.add(background);
+        } else if (sceneNum == 5) {
+            try {
+                if (imgName.equals("fridge closed")) {
+                    backgroundImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/kitchen1.png"))));
+                } else if (imgName.equals("fridge open")) {
+                    backgroundImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/kitchen2.png"))));
+                } else if (imgName.equals("cabinet closed")) {
+                    backgroundImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/cabinet_closed.png"))));
+                } else if (imgName.equals("cabinet open")) {
+                    backgroundImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/cabinet_opened.png"))));
+                } else if (imgName.equals("stove")) {
+                    backgroundImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/stove.png"))));
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            backgroundImg.setBounds(0, 0, 640, 400);
+            panel.add(backgroundImg);
+        }
     }
     public void addComponents(){
-        JLabel im = null;
-        try {
-            im = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocery.png")).getScaledInstance(160, 130, Image.SCALE_SMOOTH)));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        if (sceneNum == 4) {
+            JLabel im = null;
+            try {
+                im = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocery.png")).getScaledInstance(160, 130, Image.SCALE_SMOOTH)));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            im.setBounds(450, 270, 160, 130);
+            if (!dialogue.lastWord()) {
+                im.setVisible(false);
+            }
+            panel.add(im);
+            panel.add(statsbar.getStats());
+            panel.add(dialogue.getDialogue());
+        } else if (sceneNum == 5) {
+            panel.add(statsbar.getStats());
+            if (!imgName.contains("cabinet")) {
+                statsbar.getStats().setVisible(true);
+            }
+            if (!imgName.equals("stove")) {
+                panel.add(di.getDialogue());
+            }
+            if (imgName.equals("fridge open")) { // iteming
+                InventoryM inv = new InventoryM(fridge, "im+s", false);
+                inv.getPanel().setBounds(410, 30, 650, 440);
+                panel.add(inv.getPanel());
+            }
+            // highlights
+            if (fridge != null && imgName.equals("fridge open")) {
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        if (selected[i][j]) {
+                            JPanel highlight = new JPanel();
+                            highlight.setSize(60, 60);
+                            highlight.setBackground(new Color(255, 0, 0, 0));
+                            highlight.setBorder(new RoundedBorder(10, new Color(255, 0, 0, 90), new Color(255, 0, 0), "", 0, 0, 0));
+                            highlight.setBounds(417 + 80 * j, 35 + 70 * i, 60, 60); // assuming i
+                            panel.add(highlight);
+                        }
+                    }
+                }
+            }
         }
-        im.setBounds(450, 270, 160, 130);
-        if (!dialogue.lastWord()) {
-            im.setVisible(false);
+    }
+    public void cook() {
+        JButton cook = new JButton("Cook");
+        JButton combine = new JButton("Combine");
+        JButton finishMeal = new JButton("Finish Meal");
+        finishMeal.setSize(200, 50);
+        finishMeal.setBounds(240, 350, 200, 50);
+        finishMeal.setBackground(transparent);
+        finishMeal.setFocusable(false);
+        finishMeal.setOpaque(false);
+        finishMeal.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(201, 218, 248), "Finish Meal", 20, 27, 29));
+        cook.setSize(100, 100);
+        cook.setBounds(225, 300, 100, 50);
+        cook.setBackground(transparent);
+        cook.setOpaque(false);
+        cook.setFocusable(false);
+        cook.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(201, 218, 248), "Cook", 20, 27, 29));
+        combine.setSize(100, 100);
+        combine.setBounds(350, 300, 100, 50);
+        combine.setBackground(transparent);
+        combine.setOpaque(false);
+        combine.setFocusable(false);
+        combine.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(201, 218, 248), "Combine", 20, 15, 29));
+        panel.add(cook);
+        panel.add(combine);
+        panel.add(finishMeal);
+        cook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+                //giveProblem();
+                imgName = "fridge open";
+                if (correctAns) {
+                    for (int i = 0; i < 4; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            if (selected[i][j] && fridge != null && fridge[i][j] != null) {
+                                if (fridge[i][j].name().equals("Raw Beef")) {
+                                    fridge[i][j].setName("Cooked Beef");
+                                    fridge[i][j].setPath("Pictures/cooked_beef.png");
+                                } else if (fridge[i][j].name().equals("White Flour")) {
+                                    fridge[i][j].setName("Bread");
+                                    fridge[i][j].setPath("Pictures/white_bread.png");
+                                } else if (fridge[i][j].name().equals("Multigrain Flour")) {
+                                    fridge[i][j].setName("Healthy Bread");
+                                    fridge[i][j].setPath("Pictures/multigrain_bread.png");
+                                } else if (fridge[i][j].name().equals("Raw Fish")) {
+                                    fridge[i][j].setName("Cooked Fish");
+                                    fridge[i][j].setPath("Pictures/cooked_fish.png");
+                                } else if (fridge[i][j].name().equals("Raw Eggs")) {
+                                    fridge[i][j].setName("Cooked Eggs");
+                                    fridge[i][j].setPath("Pictures/cooked_egg.png");
+                                }
+                            }
+                        }
+                    }
+                }
+                addComponents();
+                drawBackground();
+            }
+        });
+        combine.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+                ArrayList<Food> select = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        if (selected[i][j] && fridge != null && fridge[i][j] != null) {
+                            select.add(fridge[i][j]);
+                        }
+                    }
+                }
+                Recipes recipe = new Recipes("", select);
+                CookBook cb = new CookBook();
+                String name = "";
+                int calories = 0;
+                boolean[] nutrients = new boolean[14];
+                for (Recipes r : cb.getCookbook()) {
+                    if (recipe.equals(r)) {
+                        name = r.getName();
+                        for (Food f : r.getRecipe()) {
+                            calories += f.calories();
+                            for (int i = 0; i < f.nutrients().length; i++) {
+                                nutrients[f.nutrients()[i]] = true;
+                            }
+                        }
+                    }
+                }
+                giveProblem(name, calories, nutrients);
+                addComponents();
+                drawBackground();
+            }
+        });
+        finishMeal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // sceneNum = 6;
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+                JLabel label = new JLabel("A meal has finished!");
+                label.setBounds(0, 0, 300, 300); // we deal with later
+                panel.add(label);
+            }
+        });
+    }
+    public void drawPerson(int x, int y) {
+        if (imgName.equals("fridge closed") || imgName.equals("fridge open")) {
+            personImg.setBounds(0, 0, 160, 240);
+            person.setBounds(x, y, 160, 240);
+            panel.add(person);
         }
-        panel.add(im);
-        panel.add(statsbar.getStats());
-        panel.add(dialogue.getDialogue());
     }
 }

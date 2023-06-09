@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class CookBook {
     /** The arraylist of recipes, to store the recipes */
-    ArrayList<Recipes> cookbook;
+    private ArrayList<Recipes> cookbook;
 
     private Food lettuce;
     private Food bread;
@@ -48,7 +48,7 @@ public class CookBook {
         cookedRice = new Food("Cooked Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "im", 2.87);
         healthyCookedRice = new Food("Healthy Cooked Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "im", 3.47);
         tomato = new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "im", 1.25);
-        potato = new Food("Cooked Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "im", 1.84);
+        potato = new Food("Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "im", 1.84);
         carrot = new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "im", 1.97);
         eggs = new Food("Cooked Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "im", 1.31);
         beef = new Food("Cooked Beef", "Pictures/beef.png", new int[]{1, 5}, 217, "im", 1.25);
@@ -57,8 +57,8 @@ public class CookBook {
         spinach = new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "im", 1.80);
         butter = new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "im", 1.99);
         corn = new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "im", 2.04);
-        cheese = new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "im", 1.77);
-
+        cheese = new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "im", 1.77); 
+        // kayla do u know where the other bread picture is bc I can't find it on github :((
         ArrayList<Food> sa = new ArrayList<>(); // making salad
         sa.add(lettuce);
         sa.add(spinach);
@@ -485,4 +485,5 @@ public class CookBook {
         Recipes hsandwich = new Recipes("Healthy Sandwich", hs);
         cookbook.add(hsandwich);
     }
+    public ArrayList<Recipes> getCookbook() {return cookbook;}
 }
