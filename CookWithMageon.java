@@ -610,7 +610,6 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
                 Food uncookedCornFood = (new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
                 Food cheeseFood = (new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "", 1.77));
-                // kayla do u know where the other bread picture is bc I can't find it on github :((
                 JPanel lettuce = lettuceFood.display();
                 JPanel whiteFlour = whiteFlourFood.display();
                 JPanel multigrainFlour = multigrainFlourFood.display();
