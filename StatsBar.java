@@ -1,5 +1,5 @@
 /**
- * A program to test the stats bar JPanel
+ * A program to create a StatsBar for CookWithMageon using Java Swing and GUI
  *
  * Course Info:
  * ICS4UO
@@ -13,38 +13,40 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StatsBar{
-    public int getNumNutri() {
-        int count = 0;
-        for (int i = 0; i < 14; i++) {
-            if (nutrients[i]) count++;
-        }
-        numNutri = (int) (count / 14.0 * 10);
-        return numNutri;
-    }
 
-    public int getNumCal() {
-        return numCal;
-    }
-
-    public int getNumSatis() {
-        return numSatis;
-    }
-
+    /** The main JPanel */
     JPanel stats = new JPanel();
+
+    /** The border colour */
     Color border = new Color(221, 50, 87);
+
+    /** The fill colour */
     Color fill = new Color(238, 148, 128, 180);
+
+    /** The default font */
     Font defaultFont = new Font(Font.SERIF, Font.PLAIN, 18);
+
+    /** Whether the i-th nutrient has been obtained today */
     boolean[] nutrients = new boolean[14];
 
+    /** percentage of nutrients obtained */
     int numNutri = 0;
+
+    /** number of calories obtained */
     int numCal = 0;
+
+    /** amount of satisfaction obtained*/
     int numSatis = 0;
 
+    /**
+     * StatsBar constructor
+     * Sets the default background with border, as well as adding the nutrients, calories and satisfaction.
+     */
     public StatsBar(){
         stats.setLayout(null);
         stats.setBounds(10, 10, 400, 70);
         stats.setBorder(new RoundedBorder(10, fill, border, "", 0, 0, 0));
-        stats.setBackground(fill);
+        stats.setBackground(new Color(0, 0, 0, 0));
 
         JLabel nutrients = new JLabel("Nutrients");
         nutrients.setFont(defaultFont);
@@ -66,24 +68,92 @@ public class StatsBar{
         bars.setBounds(110, 5, 280, 60);
         stats.add(bars);
     }
+
+    /**
+     * addNutri method
+     *
+     * goes through the nutrients absorbed and checks them off
+     *
+     * @param x the list of nutrients and whether or not the food eaten contains them
+     */
     public void addNutri(boolean[] x) {
         for (int i = 0; i < 14; i++) {
             if (x[i]) nutrients[i] = true;
         }
     }
 
+    /**
+     * addCalo method
+     *
+     * add calories to the stats bar
+     *
+     * @param x the number of calories the user has eaten
+     */
     public void addCalo (int x) {
         numCal = Math.max(100, numCal + x);
     }
 
+    /**
+     * addSatis method
+     *
+     * adds to the current satisfaction
+     */
     public void addSatis() {
         numSatis = Math.max(100, numSatis + 80);
     }
 
+    /**
+     * getStats method
+     *
+     * @return stats The JPanel
+     */
     public JPanel getStats(){
         return stats;
     }
 
+    /**
+     * getNumNutri method
+     *
+     * get method for variable numNutri
+     *
+     * @return numNutri
+     */
+    public int getNumNutri() {
+        int count = 0;
+        for (int i = 0; i < 14; i++) {
+            if (nutrients[i]) count++;
+        }
+        numNutri = (int) (count / 14.0 * 10);
+        return numNutri;
+    }
+
+    /**
+     * getNumCal method
+     *
+     * get method for numCal
+     *
+     * @return numCal
+     */
+    public int getNumCal() {
+        return numCal;
+    }
+
+    /**
+     * getNumSatis method
+     *
+     * get method
+     *
+     * @return numSatis
+     */
+    public int getNumSatis() {
+        return numSatis;
+    }
+
+    /**
+     * Drawing class
+     *
+     * Creates the rounded rectangles to give a visual representation of the nutrients, satisfaction, and calories
+     */
     class Drawing extends JComponent{
         public void paint(Graphics gr){
             gr.setColor(Color.LIGHT_GRAY);

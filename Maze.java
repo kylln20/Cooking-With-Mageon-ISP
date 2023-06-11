@@ -1,5 +1,31 @@
+/**
+ * A program to store information about the maze
+ *
+ * Course Info:
+ * ICS4UO
+ * Valentina Krasteva
+ *
+ * @author Angelina Jiang
+ */
+
 public class Maze {
+
+    /**
+     * 0 = Up
+     * 1 = Right
+     * 2 = Down
+     * 3 = Left
+     */
+
+    /** A matrix with a 3rd dimension, which returns whether this spot contains a wall or not.
+     * Example: maze[0][0][1] means that on the right of the top left cell, there is a wall */
     private boolean[][][] maze;
+
+    /**
+     * Maze constructr
+     *
+     * Manually inputted information on the maze
+     */
     public Maze() {
         maze = new boolean[10][16][4];
         {

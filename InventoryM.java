@@ -1,5 +1,5 @@
 /**
- * A program to test the Inventory JPanel
+ * A program to create an Inventory but modified
  *
  * Course Info:
  * ICS4UO
@@ -14,11 +14,32 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class InventoryM implements MouseListener, KeyListener{
+
+    /** The JPanel */
     private JPanel inventory = new JPanel();
+
+    /** An arraylist of Food objects which will be stored */
     private ArrayList<Food> foods;
+
+    /** How the Food objects wish to be stored */
     private String input;
+
+    /**
+     * true = organizing objects 4 by 5 (4 on the x-axis)
+     * false = organizing objects 3 by 4
+     */
     private boolean bool;
 
+    /**
+     * InventoryM constructor
+     *
+     * Sets the inventory JPanel and other instance varisbles. It also takes in the initial class and converts it to
+     * an Arraylist. It also runs the expand method
+     *
+     * @param initial Food items in terms of an array
+     * @param input The display type for the Food items
+     * @param bool The display type for the InventoryM
+     */
     public InventoryM(Food[][] initial, String input, boolean bool){
         inventory.setLayout(null);
         inventory.setBounds(0, 0, 650, 440);
@@ -38,6 +59,15 @@ public class InventoryM implements MouseListener, KeyListener{
         expand();
     }
 
+    /**
+     * InventoryM constructor
+     *
+     * Sets the inventory JPanel and other instance variables and runs the expand method
+     *
+     * @param initial Food items in terms of an ArrayList
+     * @param input The display type for the Food items
+     * @param bool The display type for the InventoryM
+     */
     public InventoryM(ArrayList<Food> initial, String input, boolean bool){
         this.bool = bool;
         inventory.setLayout(null);
@@ -47,6 +77,12 @@ public class InventoryM implements MouseListener, KeyListener{
         expand();
     }
 
+    /**
+     * expand constructor
+     *
+     * Removes everything from the JPanel and adds the Food in the format of what the bool variable states. The
+     * food display is then added to the JPanel.
+     */
     public void expand(){
         inventory.removeAll();
         inventory.revalidate();
@@ -82,49 +118,69 @@ public class InventoryM implements MouseListener, KeyListener{
         }
     }
 
-    public void addFood(Food addition){
-        foods.add(addition);
-        expand();
-    }
-
+    /**
+     * getPanel method
+     *
+     * get method for JPanel, inventory
+     *
+     * @return inventory
+     */
     public JPanel getPanel(){return inventory;}
 
+    /**
+     * mousePressed method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mousePressed(MouseEvent e){}
+
+    /**
+     * mouseReleased method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseReleased(MouseEvent e){}
+
+    /**
+     * mouseClicked method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseClicked(MouseEvent e){
     }
+    /**
+     * mouseEntered method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseEntered(MouseEvent e){}
+
+    /**
+     * mouseExited method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseExited(MouseEvent e){}
 
-    public static void main(String[] args){
-        JFrame test = new JFrame();
-        test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        test.setSize(610, 300);
-        test.setLayout(null);
-        Food[][] invR = new Food[4][3]; // player can store up to 12 different kind of foods
-        invR[0][0] = (new Food("Raw Fish", "Pictures/raw_fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50));
-        invR[0][1] = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79));
-        invR[0][2] = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80));
-        invR[1][0] = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
-        invR[1][1] = (new Food("Uncooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
-        InventoryM invm = new InventoryM(invR, "s", false);
-        invm.getPanel().setBounds(0, 0, 650, 440);
-        test.add(invm.getPanel());
-        test.setVisible(true);
-    }
+    /**
+     * keyTyped method, part of the interface, KeyListener class
+     *
+     * @param e The argument passed from the command line
+     */
+    public void keyTyped(KeyEvent e) {}
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    /**
+     * keyPressed method, part of the interface, KeyListener class
+     * When a key is pressed, it checks the scene it's on, and allows it to be redone.
+     *
+     * @param e The argument passed from the command line
+     */
+    public void keyPressed(KeyEvent e) {}
 
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    /**
+     * keyReleased method, part of the interface, KeyListener class
+     *
+     * @param e The argument passed from the command line
+     */
+    public void keyReleased(KeyEvent e) {}
 }

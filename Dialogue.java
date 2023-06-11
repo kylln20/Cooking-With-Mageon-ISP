@@ -63,16 +63,38 @@ public class Dialogue implements KeyListener{
         dialogue.add(im);
     }
 
+    /**
+     * lastWord method
+     *
+     * @return whether or not this is the last dialogue sentence Mageon says
+     */
     public boolean lastWord(){
         return (wordsNum == words.length-1);
     }
 
+    /**
+     * getDialogue method
+     *
+     * @return dialogue The JPanel
+     */
     public JPanel getDialogue(){
         return dialogue;
     }
 
-    public void keyTyped(KeyEvent e){}
-    public void keyPressed(KeyEvent e){}
+    /**
+     * keyTyped method, part of the interface, KeyListener class
+     *
+     * @param e The argument passed from the command line
+     */
+    public void keyTyped(KeyEvent e) {}
+
+    /**
+     * keyPressed method, part of the interface, KeyListener class
+     * When a key is pressed, it checks the scene it's on, and allows it to be redone.
+     *
+     * @param e The argument passed from the command line
+     */
+    public void keyPressed(KeyEvent e) {}
 
     /**
      * Detects when the user has released a key, and increases the variable wordsNum to change the message

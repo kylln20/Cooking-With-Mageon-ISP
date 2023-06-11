@@ -1,34 +1,52 @@
+/**
+ * A program to create a Rounded Border
+ *
+ * Course Info:
+ * ICS4UO
+ * Valentina Krasteva
+ *
+ * @author Angelina Jiang
+ */
+
 import javax.swing.border.Border;
 import java.awt.*;
 
 public class RoundedBorder implements Border {
 
+    /** The radius of the curve-ness */
     private int radius;
+
+    /** The colour of the button/panel/component */
     private Color fill;
+
+    /** The colour of the border */
     private Color background;
+
+    /** Any possible text for JButtons */
     private String text;
+
+    /** The size of the text */
     private int size;
 
-    public int getxCoord() {
-        return xCoord;
-    }
-
-    public void setxCoord(int xCoord) {
-        this.xCoord = xCoord;
-    }
-
-    public int getyCoord() {
-        return yCoord;
-    }
-
-    public void setyCoord(int yCoord) {
-        this.yCoord = yCoord;
-    }
-
+    /** the xCoordinate of the text */
     private int xCoord;
+
+    /** The yCoordinate of the text */
     private int yCoord;
 
-
+    /**
+     * RoundedBorder constructor
+     *
+     * Initializes all instance variables
+     *
+     * @param radius The radius
+     * @param fill The fill colour
+     * @param background The border colour
+     * @param text The text
+     * @param size The size of text
+     * @param xCoord The x-Coordinate of text
+     * @param yCoord The y-Coordinate of text
+     */
     RoundedBorder(int radius, Color fill, Color background, String text, int size, int xCoord, int yCoord) {
         this.radius = radius;
         this.fill = fill;
@@ -39,58 +57,49 @@ public class RoundedBorder implements Border {
         this.yCoord = yCoord;
     }
 
+    /**
+     * getBorderInsets method, part of the interface, Border class
+     *
+     * @param c The argument passed from the command line
+     * @return an Insets
+     */
     public Insets getBorderInsets(Component c) {
         return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
     }
 
-    public int getRadius() {
-        return radius;
-    }
-
-    public Color getFill() {
-        return fill;
-    }
-
-    public Color getBackground() {
-        return background;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
-    public void setFill(Color fill) {
-        this.fill = fill;
-    }
-
-    public void setBackground(Color background) {
-        this.background = background;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
+    /**
+     * isBorderOpaque method
+     *
+     * @return whether or not the border is opaque
+     */
     public boolean isBorderOpaque() {
         return true;
     }
 
-
+    /**
+     *  paintBorder method, part of the interface, Border class
+     *
+     * @param c The component
+     * @param g The graphics to draw for the Border class
+     * @param x
+     * @param y
+     * @param width The width of the component
+     * @param height The height of the component
+     */
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
        drawRoundRect(g, width-1, height-1, radius);
     }
+
+    /**
+     * drawRoundRect method
+     *
+     * A helper method designed to draw four quarter-circles and 3 rectangles to create a rounded rectangle
+     *
+     * @param g The graphics given
+     * @param width The width of the component
+     * @param height The height of the component
+     * @param radius The radius of the rounded-ness
+     */
     public Graphics drawRoundRect(Graphics g, int width, int height, int radius) {
         g.setColor(this.fill);
         g.fillArc(0, 0, radius * 2, radius * 2, 90, 90);

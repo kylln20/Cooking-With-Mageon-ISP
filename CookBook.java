@@ -15,6 +15,7 @@ public class CookBook {
     /** The arraylist of recipes, to store the recipes */
     private ArrayList<Recipes> cookbook;
 
+    /** All possible food objects used in cooking */
     private Food lettuce;
     private Food bread;
     private Food healthyBread;
@@ -57,7 +58,7 @@ public class CookBook {
         spinach = new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "im", 1.80);
         butter = new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "im", 1.99);
         corn = new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "im", 2.04);
-        cheese = new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "im", 1.77); 
+        cheese = new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "im", 1.77);
         ArrayList<Food> sa = new ArrayList<>(); // making salad
         sa.add(lettuce);
         sa.add(spinach);
@@ -483,5 +484,11 @@ public class CookBook {
         Recipes hsandwich = new Recipes("Healthy Sandwich", hs);
         cookbook.add(hsandwich);
     }
+
+    /**
+     * getCookbook method
+     *
+     * @return cookbook The arraylist of recipes
+     */
     public ArrayList<Recipes> getCookbook() {return cookbook;}
 }

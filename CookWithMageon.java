@@ -20,6 +20,8 @@ public class CookWithMageon implements KeyListener, MouseListener{
 
     /** The main JFrame */
     private JFrame mainFrame = new JFrame("Cook with Mageon");
+
+    /** The layered pane for the JFrame */
     private JLayeredPane layeredPane;
 
     /** The panel for the JFrame */
@@ -31,6 +33,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
     /** The budget or amount of money they receive when going to the grocery store */
     private double budget = 21.4; // average amount of money spent on groceries per 3 days
 
+    /** The food the user currently owns */
     private ArrayList<Food> inventory = new ArrayList<>();
 
     /** Satisfaction they are able to absorb when eating the food. The lower this number is, the smaller */
@@ -40,58 +43,96 @@ public class CookWithMageon implements KeyListener, MouseListener{
     private int xCoord = 7;
     private int yCoord = 0;
 
-    /** The choice the user is picking */
+    /** The choice the user is picking for the difficulty level */
     private JLabel choose;
+
+    /** The choice the user is picking for the difficulty level on the JPanel */
     private int chooseY;
 
+    /** The maze's drawing */
     private Drawing d;
 
+    /** Storing information about the maze */
     private final Maze maze;
 
+    /** The information on the pop-up for the maze */
     private int message = -1;
 
     /** A JLabel containing the image used as the background of the JPanel */
     private JLabel background;
+
     /** A picture of the kitchen with the fridge door open */
     private File kitchenOpen = new File("Pictures/kitchen2.png");
+
     /** A picture of the kitchen with the fridge door closed */
     private File kitchenClose = new File("Pictures/kitchen1.png");
+
     /** Whether or not the user has opened the fridge door*/
     private boolean fridgeOpen = false;
+
     /** A StatsBar object, displays the nutrition, calories, and satisfaction level of the player */
     private StatsBar statsbar;
 
     /** A Dialogue object, displays the messages the game helper MAGEON gives to the user */
     private Dialogue dialogue;
-    /** */ 
+
+    /** The dialogue text for Level 1*/
     private String[] dialogueText1 = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press the ENTER key to continue",
             "At the top left, there will are nutrients, calories, and <br> satisfaction bars. The goal of this game is to fill all of these bars",
             "At the right, there is a fridge. Click on the fridge to open it!",
             "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store!"};
 
+    /** The inventory frame for the maze */
     private JFrame inventoryFrame = new JFrame("Inventory");
+
+    /** The dialogue for organizing the fridge */
     private Dialogue di = new Dialogue(new String[] {"Now that we're back from the grocery store, <br>we need to store our ingredients!<br> Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space in the fridge. Then, press the 'swap' button!", "Once you're finished, press the 'Done' button. Any food on the left will be discarded afterwards."});
+
+    /** The left inventory for organizing the fridge */
     private ArrayList<Food> invL; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
+
+    /** The right inventory for the fridge */
     private Food[][] invR; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
+
+    /** The singular item selected on the left side for organizing the fridge */
     private int[] selectedLeft = new int[2]; // [4, 5] to symbolize 4th column, 5th row is selected 0-th indexed
+
+    /** The singular item selected on the right side for organizing the fridge*/
     private int[] selectedRight = new int[2]; // [4, 5] to symbolize 4th column, 5th row is selected
 
+    /** The background image */
     private JLabel backgroundImg;
+
+    /** A variable storing what the background will look like */
     private String imgName;
+
+    /** A placeholder variable to hold the colour transparent */
     private Color transparent = new Color(0, 0, 0, 0);
+
+    /** x and y coordinates for the person in Level 3 */
     private int x = 320;
     private int y = 160;
+
+    /** How the person looks like in Level 3 */
     private JLabel personImg;
+
+    /** A JPanel to hold the JLabel personImg */
     private JPanel person;
+
+    /** The food and the placement of the fridge for Level 3 */
     private Food[][] fridge;
+
+    /**  The selected objects in the fridge for Level 3 */
     private boolean[][] selected = new boolean[4][3];
+
+    /** JPanel for the problem the user must solve in Level 3 */
     private JPanel problem;
+
+    /** The user's answer for the problem the user must solve in Level 3 */
     private int probGuess;
+
+    /** To check whether the user's answer is correct or not for the problem in Level 3 */
     private boolean correctAns = true;
-    
-    private int calories;
-    private boolean[] nutrients;
-    
     
     /**
      * CookWithMageon constructor
@@ -99,13 +140,12 @@ public class CookWithMageon implements KeyListener, MouseListener{
      * unresizable, gives the frame a size, and allows the user to see the JFrame. It also calls update() which allows
      * the user to start the GUI
      */
-
     public CookWithMageon() throws IOException {
         layeredPane = mainFrame.getLayeredPane();
         layeredPane.add(panel, 1);
         mainFrame.addKeyListener(this);
         mainFrame.addMouseListener(this);
-        //mainFrame.setResizable(false); put this in final
+        mainFrame.setResizable(false);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(655, 440);
         panel.setLayout(null);
@@ -284,7 +324,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 no.setFocusable(false);
                 buying.add(no);
                 layeredPane.add(buying, 2);
-                yes.addActionListener(new ActionListener() {
+                yes.addActionListener(new ActionListener() { // if 'yes' is clicked, the scene moves to sceneNum 4
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         buying.setVisible(false);
@@ -404,9 +444,10 @@ public class CookWithMageon implements KeyListener, MouseListener{
     /**
      * update method
      *
+     * updates the current program
      */
     public void update () {
-        if (sceneNum == 0) {
+        if (sceneNum == 0) { // splash screen
             panel.setBackground(new Color(201, 218, 248));
             JLabel logo = null;
             try {
@@ -436,7 +477,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             description.setFont(new Font(Font.SERIF, Font.PLAIN,  15));
             description.setBounds(250, 325, 300, 30);
             panel.add(description);
-        } else if (sceneNum == 1) {
+        } else if (sceneNum == 1) { // main menu screen
             JButton instructions = new JButton("Instructions");
             instructions.setFocusable(false); // must be used so that the keyboard doesn't stop working :sobs:
             instructions.setFont(new Font(Font.SERIF, Font.PLAIN,  30));
@@ -506,7 +547,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             text.setFont(new Font(Font.SERIF, Font.PLAIN,  10));
             text.setBounds(190, 330, 300, 40);
             panel.add(text);
-        } else if (sceneNum == 2) {
+        } else if (sceneNum == 2) { // Level 1
             
             panel.removeAll();
             panel.revalidate();
@@ -517,7 +558,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             addComponents();
             drawBackground();
 
-        } else if (sceneNum == 3) {
+        } else if (sceneNum == 3) { // Level 2
             panel.setBackground(new Color(201, 218, 248));
             { // grocery shop
                 d = new Drawing();
@@ -738,17 +779,8 @@ public class CookWithMageon implements KeyListener, MouseListener{
                         inventoryFrame.setVisible(true);
                     }
                 });
-
-            /*JLabel groceryStore;
-            try {
-                groceryStore = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/grocerystore.png")).getScaledInstance(640, 400, Image.SCALE_SMOOTH)));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
-            groceryStore.setBounds(0, 0, 640, 400);
-            panel.add(groceryStore);*/
-            }
-        } else if (sceneNum == 4) {
+        } else if (sceneNum == 4) { // organizing the fridge
             invL = inventory;
             panel.add(di.getDialogue());
 
@@ -828,7 +860,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             }catch(IOException e){ throw new RuntimeException(e); }
             background.setBounds(0, 0, 643, 405);
             panel.add(background);
-        } else if (sceneNum == 5) {
+        } else if (sceneNum == 5) { // Level 3
             panel.removeAll();
             panel.setBackground(new Color(201, 218, 248));
             fridge = invR;
@@ -857,7 +889,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             addComponents();
             drawPerson(x, y);
             drawBackground();
-        } else if (sceneNum == 6) {
+        } else if (sceneNum == 6) { // end of meal
             panel.removeAll();
             panel.revalidate();
             panel.repaint();
@@ -895,6 +927,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
         mainFrame.repaint();
     }
 
+    /**
+     * mouseClicked method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseClicked(MouseEvent e) {
         if (sceneNum == 2) {
             if (dialogue.lastWord() && e.getX() > 450 && e.getX() < 610 && e.getY() > 270 && e.getY() < 400) {
@@ -961,8 +998,18 @@ public class CookWithMageon implements KeyListener, MouseListener{
         }
     }
 
+    /**
+     * mousePressed method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mousePressed(MouseEvent e) {  }
 
+    /**
+     * mouseReleased method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseReleased(MouseEvent e) {
         if (sceneNum == 4) {
             int x = -1, y = -1;
@@ -1045,21 +1092,57 @@ public class CookWithMageon implements KeyListener, MouseListener{
         }
     }
 
+    /**
+     * mouseEntered method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseEntered(MouseEvent e) {   }
 
+    /**
+     * mouseExited method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseExited(MouseEvent e) {   }
 
+    /**
+     * Drawing class
+     *
+     * Draws the maze using Graphics
+     */
     class Drawing extends JComponent {
+
+        /** an ArrayList of x-coordinates */
         private ArrayList<Integer> x;
+
+        /** an ArrayList of y-coordinates corresponding with the x-coordinates */
         private ArrayList<Integer> y;
+
+        /** an ArrayList of the second x-coordinate */
         private ArrayList<Integer> x2;
+
+        /** an ArrayList of the second y-coordinates corresponding with the second x-coordinates */
         private ArrayList<Integer> y2;
+        // forms (x, y) and (x2, y2)
+
+        /**
+         * Drawing constructor
+         *
+         * initializes the instance variables
+         */
         public Drawing() {
             x = new ArrayList<>();
             y = new ArrayList<>();
             x2 = new ArrayList<>();
             y2 = new ArrayList<>();
         }
+
+        /**
+         * paint method, part of the interface, JComponent class
+         *
+         * @param g The argument passed from the command line
+         */
         public void paint (Graphics g) {
             if (sceneNum == 3) { // change later
                 Graphics2D g2 = (Graphics2D) g;
@@ -1072,8 +1155,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
         }
     }
 
-    /** A helper method that draws the background of the JPanel*/
-
+    /**
+     * drawBackground method
+     *
+     * A helper method that draws the background of the JPanel
+     */
     public void drawBackground(){
         if (sceneNum == 4 || sceneNum == 2) {
             try {
@@ -1108,6 +1194,12 @@ public class CookWithMageon implements KeyListener, MouseListener{
             panel.add(backgroundImg);
         }
     }
+
+    /**
+     * addComponents method
+     *
+     * a helper method to add the JComponents
+     */
     public void addComponents(){
         if (sceneNum == 2) {
             JLabel im = null;
@@ -1154,7 +1246,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
         }
     }
 
-    
+    /**
+     * cook method
+     *
+     * a helper method to help the player cook
+     */
     public void cook() {
         JButton cook = new JButton("Cook");
         JButton combine = new JButton("Combine");
@@ -1240,7 +1336,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 Recipes recipe = new Recipes("", select);
                 CookBook cb = new CookBook();
                 String name = "";
-                calories = 0;
+                int calories = 0;
                 boolean[] nutrients = new boolean[14];
                 for (Recipes r : cb.getCookbook()) {
                     if (recipe.equals(r)) {
@@ -1253,6 +1349,9 @@ public class CookWithMageon implements KeyListener, MouseListener{
                         }
                         break;
                     }
+                }
+                if (calories != 0) {
+
                 }
                 imgName = "fridge open";
                 statsbar.addCalo(calories);
@@ -1281,6 +1380,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
             }
         });
     }
+    /**
+     * drawPerson method
+     *
+     * a helper class that draws a person
+     */
     public void drawPerson(int x, int y) {
         if (imgName.equals("fridge closed") || imgName.equals("fridge open")) {
             personImg.setBounds(0, 0, 160, 240);

@@ -14,17 +14,20 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Inventory implements MouseListener{
+
+    /** The JPanel */
     private JPanel inventory = new JPanel();
+
+    /** An arraylist of Food objects which will be stored */
     private ArrayList<Food> foods;
 
-    public Inventory(int x1, int y1, int x2, int y2){
-        inventory.setLayout(null);
-        inventory.setBounds(x1, y1, x2, y2);
-        inventory.setBackground(new Color(201, 218, 248));
-        foods = new ArrayList<Food>();
-        expand();
-    }
-
+    /**
+     * Inventory constructor
+     *
+     * Sets the inventory JPanel and other instance variables. It also calls the expand class
+     *
+     * @param initial Food items in terms of an array
+     */
     public Inventory(ArrayList<Food> initial){
         inventory.setLayout(null);
         inventory.setBackground(new Color(201, 218, 248));
@@ -32,6 +35,11 @@ public class Inventory implements MouseListener{
         expand();
     }
 
+    /**
+     * expand method
+     *
+     * redoes inventory and goes through the current inventory to add the Food
+     */
     public void expand(){
         inventory.removeAll();
         inventory.revalidate();
@@ -54,36 +62,47 @@ public class Inventory implements MouseListener{
         }
     }
 
-    public void addFood(Food addition){
-        foods.add(addition);
-        expand();
-    }
-
+    /**
+     * getPanel method
+     *
+     * get method for JPanel, inventory
+     *
+     * @return inventory
+     */
     public JPanel getPanel(){return inventory;}
 
+    /**
+     * mousePressed method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mousePressed(MouseEvent e){}
+
+    /**
+     * mouseReleased method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseReleased(MouseEvent e){}
+
+    /**
+     * mouseClicked method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseClicked(MouseEvent e){
     }
+    /**
+     * mouseEntered method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseEntered(MouseEvent e){}
+
+    /**
+     * mouseExited method, part of the interface, MouseListener class
+     *
+     * @param e The argument passed from the command line
+     */
     public void mouseExited(MouseEvent e){}
-
-    public static void main(String[] args){
-        JFrame test = new JFrame();
-        test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        test.setSize(610, 300);
-        test.setLayout(null);
-        Food lettuce = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97));
-        Food apple = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
-        Food pr = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
-        Food po = new Food("Multigrain Flour", "Pictures/flour(multigrain).png", new int[]{}, 25, "im+n+q", 0.14);
-
-        Inventory i = new Inventory(0, 0, 640, 300);
-        i.addFood(lettuce);
-        i.addFood(apple);
-        i.addFood(pr);
-        i.addFood(po);
-        test.add(i.getPanel());
-        test.setVisible(true);
-    }
 }
