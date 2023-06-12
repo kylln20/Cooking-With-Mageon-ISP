@@ -99,7 +99,7 @@ public class StatsBar{
      * adds to the current satisfaction
      */
     public void addSatis() {
-        numSatis = Math.max(100, numSatis + 80);
+        numSatis = Math.min(100, numSatis + 80);
     }
 
     /**
@@ -111,42 +111,11 @@ public class StatsBar{
         return stats;
     }
 
-    /**
-     * getNumNutri method
-     *
-     * get method for variable numNutri
-     *
-     * @return numNutri
-     */
-    public int getNumNutri() {
-        int count = 0;
-        for (int i = 0; i < 14; i++) {
-            if (nutrients[i]) count++;
-        }
-        numNutri = (int) (count / 14.0 * 10);
-        return numNutri;
-    }
-
-    /**
-     * getNumCal method
-     *
-     * get method for numCal
-     *
-     * @return numCal
-     */
-    public int getNumCal() {
-        return numCal;
-    }
-
-    /**
-     * getNumSatis method
-     *
-     * get method
-     *
-     * @return numSatis
-     */
-    public int getNumSatis() {
-        return numSatis;
+    public void reset() {
+        numSatis = 0;
+        nutrients = new boolean[14];
+        numCal = 0;
+        numNutri = 0;
     }
 
     /**
@@ -170,9 +139,10 @@ public class StatsBar{
             for (int i = 0; i < 14; i++) {
                 if (nutrients[i]) count++;
             }
-            numNutri = (int) (count / 14.0 * 10);
+            numNutri = (int) (count / 14.0 * 100);
+            int percentage = (int) (numCal / 1700.0 * 100);
             gr.fillRoundRect(1, 6, numNutri*280/100, 13, 10, 10);
-            gr.fillRoundRect(1, 26, numCal*280/100, 13, 10, 10);
+            gr.fillRoundRect(1, 26, percentage*280/100, 13, 10, 10);
             gr.fillRoundRect(1, 46, numSatis*280/100, 13, 10, 10);
         }
     }

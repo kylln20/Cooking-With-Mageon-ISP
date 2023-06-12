@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CookWithMageon implements KeyListener, MouseListener{
 
@@ -128,12 +129,13 @@ public class CookWithMageon implements KeyListener, MouseListener{
     /** JPanel for the problem the user must solve in Level 3 */
     private JPanel problem;
 
-    /** The user's answer for the problem the user must solve in Level 3 */
-    private int probGuess;
+    /** The variables used when making the recipe in Level 3 */
+    private ArrayList<String> name;
+    private int calories;
+    private boolean[] nutrients;
 
-    /** To check whether the user's answer is correct or not for the problem in Level 3 */
-    private boolean correctAns = true;
-    
+    private int numMeals;
+
     /**
      * CookWithMageon constructor
      * Adds the panel to the frame, allows the panel to have no layout, adds a keylistener to the frame, make the frame
@@ -436,8 +438,16 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 drawBackground();
             }
         } else if (sceneNum == 6) {
-            mainFrame.setVisible(false);
-            mainFrame.dispose();
+            update();
+        } else if (sceneNum == 7) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                sceneNum = 1;
+                message = -1;
+                xCoord = 7; yCoord = 0;
+            } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+                mainFrame.setVisible(false);
+                mainFrame.dispose();
+            }
         }
     }
 
@@ -478,6 +488,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             description.setBounds(250, 325, 300, 30);
             panel.add(description);
         } else if (sceneNum == 1) { // main menu screen
+            name = new ArrayList<>();
             JButton instructions = new JButton("Instructions");
             instructions.setFocusable(false); // must be used so that the keyboard doesn't stop working :sobs:
             instructions.setFont(new Font(Font.SERIF, Font.PLAIN,  30));
@@ -592,24 +603,25 @@ public class CookWithMageon implements KeyListener, MouseListener{
                             }
                         }
                     }
-                } 
-                Food lettuceFood = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2}, 30, "", 1.97));
-                Food whiteFlourFood = (new Food("White Flour", "Pictures/flour.png", new int[]{1, 5}, 302, "", 2.60));
-                Food multigrainFlourFood = (new Food("Multigrain Flour", "Pictures/multigrain_flour.png", new int[]{6, 7}, 160, "", 2.99));
+                }
+                Food lettuceFood = (new Food("Lettuce", "Pictures/lettuce.png", new int[]{0, 2, 4}, 30, "", 0.59));
+                Food whiteFlourFood = (new Food("White Flour", "Pictures/flour.png", new int[]{1, 5}, 302, "", 1.62));
+                Food multigrainFlourFood = (new Food("Multigrain Flour", "Pictures/multigrain_flour.png", new int[]{5, 6, 7}, 160, "", 2.22));
                 Food milkFood = (new Food("Milk", "Pictures/milk.png", new int[]{0, 3, 8}, 150, "", 1.47));
-                Food whiteRiceFood = (new Food("Cooked Rice", "Pictures/rice(white).png", new int[]{3, 8, 9}, 242, "", 2.87));
-                Food multigrainRiceFood = (new Food("Healthy Cooked Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "", 3.47));
-                Food tomatoFood = (new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "", 1.25));
-                Food potatoFood = (new Food("Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "", 1.84));
-                Food carrotFood = (new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2}, 22, "", 1.97));
-                Food rawEggsFood = (new Food("Raw Eggs", "Pictures/eggs.png", new int[]{11, 3, 12}, 78, "", 1.31));
-                Food rawBeefFood = (new Food("Raw Beef", "Pictures/raw_beef.png", new int[]{1, 5}, 217, "", 1.25));
+                Food whiteRiceFood = (new Food("Cooked Rice", "Pictures/rice(white).png", new int[]{3, 8}, 242, "", 1.09));
+                Food multigrainRiceFood = (new Food("Healthy Cooked Rice", "Pictures/rice(multigrain).png", new int[]{3, 7, 8, 9}, 180, "", 1.35));
+                Food tomatoFood = (new Food("Tomato", "Pictures/tomato.png", new int[]{2}, 22, "", 0.67));
+                Food potatoFood = (new Food("Potato", "Pictures/potato.png", new int[]{2, 10}, 87, "", 0.65));
+                Food carrotFood = (new Food("Carrot", "Pictures/carrot.png", new int[]{0, 2, 4}, 22, "", 0.76));
+                Food rawEggsFood = (new Food("Raw Eggs", "Pictures/eggs.png", new int[]{3, 11, 12}, 78, "", 1.10));
+                Food rawBeefFood = (new Food("Raw Beef", "Pictures/raw_beef.png", new int[]{1, 5}, 217, "", 2.25));
                 Food rawFishFood = (new Food("Raw Fish", "Pictures/raw_fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50));
                 Food appleFood = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79));
-                Food spinachFood = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{4, 0, 12, 7}, 30, "", 1.80));
-                Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 1.99));
-                Food uncookedCornFood = (new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 2.04));
+                Food spinachFood = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{0, 4, 7, 12}, 30, "", 1.80));
+                Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 0.66));
+                Food uncookedCornFood = (new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 1.46));
                 Food cheeseFood = (new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "", 1.77));
+
                 JPanel lettuce = lettuceFood.display();
                 JPanel whiteFlour = whiteFlourFood.display();
                 JPanel multigrainFlour = multigrainFlourFood.display();
@@ -767,7 +779,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 inventoryFrame.setResizable(false);
                 inventoryFrame.setSize(610, 300);
                 Inventory i = new Inventory(this.inventory);
-                inventoryFrame.add(i.getPanel());
+                inventoryFrame.add(BorderLayout.CENTER, new JScrollPane(i.getPanel()));
                 inventoryFrame.setLocationRelativeTo(null);
                 inventoryFrame.setVisible(false);
 
@@ -882,7 +894,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             person.add(personImg);
 
             problem = new JPanel();
-            problem.setBackground(new Color(255, 255, 255, 80));
+            problem.setBackground(new Color(255, 255, 255, 140));
             problem.setVisible(false);
 
             addComponents();
@@ -901,29 +913,144 @@ public class CookWithMageon implements KeyListener, MouseListener{
             }
             mageon.setBounds(400, 50,150, 150);
             panel.add(mageon);
-            /* 
-            JLabel nutrients = new JLabel("You have gotten " + statsbar.getNumNutri() + "% of nutrients required in a day");
-            JLabel calories = new JLabel("You have gotten " + statsbar.getNumCal() + "% of calories required in a meal");
-            JLabel satisfaction = new JLabel("You have gotten " + statsbar.getNumSatis() + "% of satisfaction");
-            panel.add(nutrients);
-            panel.add(calories);
-            panel.add(satisfaction);
-            nutrients.setBounds(0, 200, 200, 40);
-            calories.setBounds(0, 250, 200, 40);
-            satisfaction.setBounds(0, 300, 200, 40);
-            */
-            JLabel congrats = new JLabel("You made food!");
+            JLabel congrats = new JLabel("You made:");
             panel.add(congrats);
-            congrats.setFont(new Font(Font.SERIF, Font.PLAIN, 30));
-            congrats.setBounds(20, 200, 200, 40);
-            JLabel instruct = new JLabel("Press <ENTER> to go back to the main menu or press Q to exit");
-            panel.add(instruct);
-            instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
-            instruct.setBounds(20, 250, 200, 30);
+            int x = 50;
+            for (String name : name) {
+                JLabel label = new JLabel(name);
+                label.setBounds(20, x, 200, 20);
+                x += 20;
+                label.setFont(new Font(Font.SERIF, Font.PLAIN, 13));
+                panel.add(label);
+            }
+            congrats.setFont(new Font(Font.SERIF, Font.PLAIN, 13));
+            congrats.setBounds(20, 20, 200, 40);
+            
+            numMeals++;
+            imgName = "fridge open";
+            if (numMeals == 9) {
+                JLabel instruct = new JLabel("Press <ENTER> to go back to the main menu or press Q to exit");
+                panel.add(instruct);
+                sceneNum = 7;
+                instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
+                instruct.setBounds(20, 250, 600, 200);
+            } else if (numMeals % 3 == 0) {
+                JLabel instruct = new JLabel("Day " + numMeals / 3 + " has ended. Press <ENTER> to continue");
+                panel.add(instruct);
+                statsbar.reset();
+                sceneNum = 5;
+                instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
+                instruct.setBounds(20, 250, 500, 200);
+            } else {
+                JLabel instruct = new JLabel("Press <ENTER> to continue onto the next meal");
+                panel.add(instruct);
+                sceneNum = 5;
+                instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
+                instruct.setBounds(20, 250, 500, 200);
+            }
         } else if (sceneNum == 7) {
 
         }
         mainFrame.repaint();
+    }
+
+    public void giveProblem(String name, int calories, boolean[] nutrients) {
+        problem.removeAll();
+        problem.revalidate();
+        problem.repaint();
+        imgName = "problemA";
+        panel.setBackground(new Color(201, 218, 248));
+        problem.setBounds(120, 50, 400, 300);
+        //problem.setBounds(0, 0, 650, 440);
+        problem.setLayout(null);
+        int a = (int) (Math.random() * 1001);
+        int b = (int) (Math.random() * 1001);
+        JLabel equation = new JLabel(a + " + " + b + " = ");
+        equation.setBounds(50, 50, 200, 50);
+        equation.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+        problem.add(equation);
+
+        ArrayList<Integer> coordinates = new ArrayList<>();
+        coordinates.add(70);
+        coordinates.add(170);
+        coordinates.add(270);
+        Collections.shuffle(coordinates);
+        int x = (int) (Math.random() * 2001);
+        if (x == a + b) x++;
+        int y = (int) (Math.random() * 2001);
+        if (y == a + b) y--;
+        JButton wrong1 = new JButton(String.valueOf(x));
+        JButton wrong2 = new JButton(String.valueOf(y));
+        wrong1.setSize(70, 50);
+        wrong2.setSize(70, 50);
+        wrong1.setBounds(coordinates.remove(0), 100, 70, 50);
+        wrong1.setBorder(new RoundedBorder(10, new Color(201, 218, 248), new Color(201, 218, 248), String.valueOf(x), 20, 10, 30));
+        wrong2.setBounds(coordinates.remove(0), 100, 70, 50);
+        wrong2.setBorder(new RoundedBorder(10, new Color(201, 218, 248), new Color(201, 218, 248), String.valueOf(y), 20, 10, 30));
+        problem.add(wrong1);
+        problem.add(wrong2);
+        wrong1.setBackground(transparent);
+        wrong2.setBackground(transparent);
+
+        wrong1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+
+                JLabel label = new JLabel("<html>:( You lost some ingredients .. Press ENTER to continue <html>");
+                label.setBounds(50, 0, panel.getWidth(), panel.getHeight());
+
+                panel.add(label);
+                imgName = "problemB";
+            }
+        });
+
+        wrong2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+
+                JLabel label = new JLabel("<html>:( You lost some ingredients .. Press ENTER to continue <html>");
+                label.setBounds(50, 0, panel.getWidth(), panel.getHeight());
+
+                panel.add(label);
+                imgName = "problemB";
+            }
+        });
+
+        JButton right = new JButton(String.valueOf(a + b));
+        right.setSize(50, 50);
+        right.setBounds(coordinates.remove(0), 100, 70,50);
+        right.setBorder(new RoundedBorder(10, new Color(201, 218, 248), new Color(201, 218, 248), String.valueOf(a + b), 20, 10, 30));
+        problem.add(right);
+        right.setBackground(transparent);
+
+        right.setFocusable(false);
+        wrong1.setFocusable(false);
+        wrong2.setFocusable(false);
+        right.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+
+                JLabel label = new JLabel("<html>Congrats! You have picked the right answer! You have made: " + name + "<html>. Press ENTER to continue <html>");
+                label.setBounds(50, 0, panel.getWidth(), panel.getHeight());
+                statsbar.addNutri(nutrients);
+                statsbar.addSatis();
+                statsbar.addCalo(calories * 10);
+                panel.add(label);
+                imgName = "problemB";
+            }
+        });
+
+        problem.setVisible(true);
+        panel.add(problem);
     }
 
     /**
@@ -1283,26 +1410,24 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 panel.repaint();
                 //giveProblem();
                 imgName = "fridge open";
-                if (correctAns) {
-                    for (int i = 0; i < 4; i++) {
-                        for (int j = 0; j < 3; j++) {
-                            if (selected[i][j] && fridge != null && fridge[i][j] != null) {
-                                if (fridge[i][j].name().equals("Raw Beef")) {
-                                    fridge[i][j].setName("Cooked Beef");
-                                    fridge[i][j].setPath("Pictures/cooked_beef.png");
-                                } else if (fridge[i][j].name().equals("White Flour")) {
-                                    fridge[i][j].setName("Bread");
-                                    fridge[i][j].setPath("Pictures/white_bread.png");
-                                } else if (fridge[i][j].name().equals("Multigrain Flour")) {
-                                    fridge[i][j].setName("Healthy Bread");
-                                    fridge[i][j].setPath("Pictures/multigrain_bread.png");
-                                } else if (fridge[i][j].name().equals("Raw Fish")) {
-                                    fridge[i][j].setName("Cooked Fish");
-                                    fridge[i][j].setPath("Pictures/cooked_fish.png");
-                                } else if (fridge[i][j].name().equals("Raw Eggs")) {
-                                    fridge[i][j].setName("Cooked Eggs");
-                                    fridge[i][j].setPath("Pictures/cooked_egg.png");
-                                }
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        if (selected[i][j] && fridge != null && fridge[i][j] != null) {
+                            if (fridge[i][j].name().equals("Raw Beef")) {
+                                fridge[i][j].setName("Cooked Beef");
+                                fridge[i][j].setPath("Pictures/cooked_beef.png");
+                            } else if (fridge[i][j].name().equals("White Flour")) {
+                                fridge[i][j].setName("Bread");
+                                fridge[i][j].setPath("Pictures/white_bread.png");
+                            } else if (fridge[i][j].name().equals("Multigrain Flour")) {
+                                fridge[i][j].setName("Healthy Bread");
+                                fridge[i][j].setPath("Pictures/multigrain_bread.png");
+                            } else if (fridge[i][j].name().equals("Raw Fish")) {
+                                fridge[i][j].setName("Cooked Fish");
+                                fridge[i][j].setPath("Pictures/cooked_fish.png");
+                            } else if (fridge[i][j].name().equals("Raw Eggs")) {
+                                fridge[i][j].setName("Cooked Eggs");
+                                fridge[i][j].setPath("Pictures/cooked_egg.png");
                             }
                         }
                     }
@@ -1334,12 +1459,12 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 }
                 Recipes recipe = new Recipes("", select);
                 CookBook cb = new CookBook();
-                String name = "";
-                int calories = 0;
-                boolean[] nutrients = new boolean[14];
+                String names = "";
+                calories = 0;
+                nutrients = new boolean[14];
                 for (Recipes r : cb.getCookbook()) {
                     if (recipe.equals(r)) {
-                        name = r.getName();
+                        names = r.getName();
                         for (Food f : r.getRecipe()) {
                             calories += f.calories();
                             for (int i = 0; i < f.nutrients().length; i++) {
@@ -1349,17 +1474,24 @@ public class CookWithMageon implements KeyListener, MouseListener{
                         break;
                     }
                 }
-                if (calories != 0) {
-
-                }
-                imgName = "fridge open";
-                statsbar.addCalo(calories);
-                statsbar.addNutri(nutrients);
-                statsbar.addSatis();
+                if (!names.equals("")) name.add(names);
                 panel.removeAll();
                 panel.revalidate();
                 panel.repaint();
-                
+                if (calories != 0) {
+                    giveProblem(name.get(name.size()-1), calories, nutrients);
+                } else {
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+
+                    JLabel label = new JLabel("<html>:( None of your ingredients formed a recipe .. Press ENTER to continue <html>");
+                    label.setBounds(50, 0, panel.getWidth(), panel.getHeight());
+
+                    panel.add(label);
+                    imgName = "problemB";
+                }
+
                 addComponents();
                 drawPerson(x, y);
                 drawBackground();
