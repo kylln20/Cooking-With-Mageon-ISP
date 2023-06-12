@@ -15,7 +15,7 @@ GAME INSTRUCTIONS
 Cooking With MAGEON is played with a keyboard and mouse/trackpad. The keys used are the arrow keys and the WASD keys. 
 The main program file is called CookWithMageon.java.
 
-LEVEL 1 )
+LEVEL 1 
 In Level 1, MAGEON introduces the player to the game. The key is used to continue dialogue and the mouse is used to interact with the fridge.
 
 LEVEL 2 
