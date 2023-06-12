@@ -1,17 +1,19 @@
 Cooking With Mageon Game Manual
 ---------------------------------
-
 ICS4UO Culminating Project. A game made to teach children how to plan and cook nutritious meals.
 
 GAME OVERVIEW
+---------------
 Cooking With MAGEON is an educational and entertaining game made for children ages 10-14 to learn how to cook. Specifically, MAGEON guids the player in making meals, going through the necessary processes of shopping, organizing, and cooking. In the end, the player is judged on the metrics of how caloric, nutritious, and satisfactory their meals are.
 
 
 GAME JUSTIFICATION
+--------------------
 We made this game to educate people on the complexities of making meals, from planning and shopping to organizing and cooking. More than 50% of Canadians aged 12 and up consume fruits and vegetables less than five times per day (Canada). While a main source of nutrients, many Canadians do not meet this measure of "healthy eating." Combined with issues such as inflation increasing prices of food by 10% during the pandemic, eating well has never been more difficult (Fradella). The game gives the player a sense of the issue, giving the player the experience of the sometimes fun and sometimes monotony of feeding oneself everyday. 
 
 
 GAME INSTRUCTIONS 
+------------------
 Cooking With MAGEON is played with a keyboard and mouse/trackpad. The keys used are the arrow keys and the WASD keys. 
 The main program file is called CookWithMageon.java.
 
@@ -33,9 +35,9 @@ LEVEL 3
 - In MAGEON's dialogue, the top row of foods purchased will appear underneath the text
 - If one doesn't finish the prompting dialogue before clicking on the bought foods, then the DONE and SWAP button will overlap with MAGEON's dialogue.
 
+
 BIBLIOGRAPHY
 -------------
-
 Canada, Public Health Agency of. “How Healthy Are Canadians?” Www.canada.ca, 8 Mar. 2017, www.canada.ca/en/public-health/services/publications/healthy-living/how-healthy-canadians.html#s3-1-4.
 
 Fradella, Allyson. “Behind the Numbers: What’s Causing Growth in Food Prices.” Www150.Statcan.gc.ca, 16 Nov. 2022, www150.statcan.gc.ca/n1/pub/62f0014m/62f0014m2022014-eng.htm.
