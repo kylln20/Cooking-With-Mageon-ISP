@@ -4,7 +4,7 @@ ICS4UO Culminating Project. A game made to teach children how to plan and cook n
 
 GAME OVERVIEW
 ---------------
-Cooking With MAGEON is an educational and entertaining game made for children ages 10-14 to learn how to cook. Specifically, MAGEON guids the player in making meals, going through the necessary processes of shopping, organizing, and cooking. In the end, the player is judged on the metrics of how caloric, nutritious, and satisfactory their meals are.
+Cooking With MAGEON is an educational and entertaining game made for children ages 10-14 to learn how to cook. Specifically, MAGEON guides the player in making meals, going through the necessary processes of shopping, organizing, and cooking. In the end, the player is judged on the metrics of how caloric, nutritious, and satisfactory their meals are.
 
 
 GAME JUSTIFICATION
