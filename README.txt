@@ -31,6 +31,9 @@ COMMON PROBLEMS
 ------------------
 - There is no option to EXIT the game in the middle of playing. The player's only option is go through with the entire game, because like in real life, the player is required to feed themself to survive (or click close on the window bar)
 
+LEVEL 2
+- If you click "No" to buying an item of food, the inventory will show no food as being purchased until the next time you confirm a purchase.
+
 LEVEL 3
 - In MAGEON's dialogue, the top row of foods purchased will appear underneath the text
 - If one doesn't finish the prompting dialogue before clicking on the bought foods, then the DONE and SWAP button will overlap with MAGEON's dialogue.
