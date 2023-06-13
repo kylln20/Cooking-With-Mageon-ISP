@@ -661,7 +661,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 JPanel cheese = cheeseFood.display();
                 Food[] buyable = new Food[17];
                 lettuce.setBounds(80 + (30 * 3), 70, 30, 30);
-                whiteFlour.setBounds(80 + (30 * 5), 70 + 30, 30, 30);
+                whiteFlour.setBounds(80 + (30 * 5), 70 + 27, 30, 30);
                 multigrainFlour.setBounds(80 + (30 * 8), 70 + 30, 30, 30);
                 milk.setBounds(80 + (30 * 14), 70 + (30), 30, 30);
                 whiteRice.setBounds(80 + (30), 70 + (30 * 4), 30, 30);
