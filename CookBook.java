@@ -89,38 +89,46 @@ public class CookBook {
 
         ArrayList<Food> happlePie = new ArrayList<>();
         happlePie.add(apple);
-        happlePie.add(bread);
+        happlePie.add(healthyBread);
         happlePie.add(butter);
         Recipes happlePieRec = new Recipes("Healthy Apple Pie", happlePie);
         cookbook.add(happlePieRec);
 
         ArrayList<Food> fishPie = new ArrayList<>();
-        fishPie.add(apple);
+        fishPie.add(potato);
+        fishPie.add(milk);
         fishPie.add(bread);
         fishPie.add(butter);
+        fishPie.add(fish);
         Recipes fishPierec = new Recipes("Fish Pie", fishPie);
         cookbook.add(fishPierec);
 
         ArrayList<Food> hfishPie = new ArrayList<>();
-        hfishPie.add(apple);
-        hfishPie.add(healthyBread);
-        hfishPie.add(butter);
+        fishPie.add(potato);
+        fishPie.add(milk);
+        fishPie.add(healthyBread);
+        fishPie.add(butter);
+        fishPie.add(fish);
         Recipes hfishPierec = new Recipes("Fish Pie", hfishPie);
         cookbook.add(hfishPierec);
 
         ArrayList<Food> fishPiewc = new ArrayList<>();
-        fishPiewc.add(apple);
-        fishPiewc.add(bread);
-        fishPiewc.add(butter);
-        fishPiewc.add(corn);
+        fishPie.add(potato);
+        fishPie.add(milk);
+        fishPie.add(bread);
+        fishPie.add(butter);
+        fishPie.add(fish);
+        fishPie.add(corn);
         Recipes fishPierecwc = new Recipes("Fish Pie", fishPiewc);
         cookbook.add(fishPierecwc);
 
         ArrayList<Food> hfishPiewc = new ArrayList<>();
-        hfishPiewc.add(apple);
-        hfishPiewc.add(healthyBread);
-        hfishPiewc.add(butter);
-        hfishPiewc.add(corn);
+        fishPie.add(potato);
+        fishPie.add(milk);
+        fishPie.add(healthyBread);
+        fishPie.add(butter);
+        fishPie.add(fish);
+        fishPie.add(corn);
         Recipes hfishPiewcrec = new Recipes("Fish Pie", hfishPiewc);
         cookbook.add(hfishPiewcrec);
 
@@ -157,7 +165,7 @@ public class CookBook {
         ArrayList<Food> rvsf = new ArrayList<>();
         rvsf.add(cookedRice);
         rvsf.add(spinach);
-        Recipes rrvsf = new Recipes("Healthy Rice and Vegetable Stir-Fry", rvsf);
+        Recipes rrvsf = new Recipes("Rice and Vegetable Stir-Fry", rvsf);
         cookbook.add(rrvsf);
 
         ArrayList<Food> hrvsf = new ArrayList<>();
@@ -483,6 +491,21 @@ public class CookBook {
         hs.add(lettuce);
         Recipes hsandwich = new Recipes("Healthy Sandwich", hs);
         cookbook.add(hsandwich);
+
+        ArrayList<Food> apples = new ArrayList<>();
+        hs.add(apple);
+        Recipes appl = new Recipes("Apple", apples);
+        cookbook.add(appl);
+
+        ArrayList<Food> cookedFish = new ArrayList<>();
+        cookedFish.add(fish);
+        Recipes cm = new Recipes("Cooked Meat", cookedFish);
+        cookbook.add(cm);
+
+        ArrayList<Food> cookedMeat = new ArrayList<>();
+        cookedMeat.add(fish);
+        Recipes cmt = new Recipes("Cooked Meat", cookedMeat);
+        cookbook.add(cmt);
     }
 
     /**

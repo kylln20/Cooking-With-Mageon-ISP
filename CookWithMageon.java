@@ -32,13 +32,10 @@ public class CookWithMageon implements KeyListener, MouseListener{
     private int sceneNum = 0;
 
     /** The budget or amount of money they receive when going to the grocery store */
-    private double budget = 21.4; // average amount of money spent on groceries per 3 days
+    private double budget = 11.2; // average amount of money spent on groceries per 1 day
 
     /** The food the user currently owns */
     private ArrayList<Food> inventory = new ArrayList<>();
-
-    /** Satisfaction they are able to absorb when eating the food. The lower this number is, the smaller */
-    private double percentage = 1.0; // 0.7, 1.0, 1.3 satisfaction absorbed
 
     /** Coordinates for the maze */
     private int xCoord = 7;
@@ -81,13 +78,13 @@ public class CookWithMageon implements KeyListener, MouseListener{
     private String[] dialogueText1 = {"Hello! I'm MAGEON, your personal cooking assistant. <br> Press the ENTER key to continue",
             "At the top left, there will are nutrients, calories, and <br> satisfaction bars. The goal of this game is to fill all of these bars",
             "At the right, there is a fridge. Click on the fridge to open it!",
-            "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store!"};
+            "In order to make healthy meals, we must fill the fridge with food. <br>To the grocery store! Press the shopping cart to continue."};
 
     /** The inventory frame for the maze */
     private JFrame inventoryFrame = new JFrame("Inventory");
 
-    /** The dialogue for organizing the fridge */
-    private Dialogue di = new Dialogue(new String[] {"Now that we're back from the grocery store, <br>we need to store our ingredients!<br> Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space in the fridge. Then, press the 'swap' button!", "Once you're finished, press the 'Done' button. Any food on the left will be discarded afterwards."});
+    /** The dialogue for Level 2 and 3 */
+    private Dialogue di = new Dialogue(new String[]{"Welcome to the grocery store!<br>Here, you'll be buying all the food you need for today.", "Use the WASD keys or the arrow keys to navigate the grocery store.<br>", "To see what you've purchased, click on the Inventory button on the <br>top right.", "Make sure you don't exceed your budget, shown at the top left.<br>", "I'll see you again back home! Have fun!<br>"});
 
     /** The left inventory for organizing the fridge */
     private ArrayList<Food> invL; // {{0, 1, 2, 3}, {4, 5, 6, 7} ...}
@@ -189,27 +186,29 @@ public class CookWithMageon implements KeyListener, MouseListener{
      */
     public void keyPressed(KeyEvent e) {
         if (sceneNum == 5) {
-            if (imgName.equals("fridge open") || imgName.equals("fridge closed")) {
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-                    if (x < 460) {
-                        x += 5;
+            if ( di.lastWord()) {
+                if (imgName.equals("fridge open") || imgName.equals("fridge closed")) {
+                    if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+                        if (x < 460) {
+                            x += 5;
+                        }
+                        panel.removeAll();
+                        panel.revalidate();
+                        panel.repaint();
+                        addComponents();
+                        drawPerson(x, y);
+                        drawBackground();
+                    } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+                        if (x > 0) {
+                            x -= 5;
+                        }
+                        panel.removeAll();
+                        panel.revalidate();
+                        panel.repaint();
+                        addComponents();
+                        drawPerson(x, y);
+                        drawBackground();
                     }
-                    panel.removeAll();
-                    panel.revalidate();
-                    panel.repaint();
-                    addComponents();
-                    drawPerson(x, y);
-                    drawBackground();
-                } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-                    if (x > 0) {
-                        x -= 5;
-                    }
-                    panel.removeAll();
-                    panel.revalidate();
-                    panel.repaint();
-                    addComponents();
-                    drawPerson(x, y);
-                    drawBackground();
                 }
             }
         }
@@ -233,13 +232,11 @@ public class CookWithMageon implements KeyListener, MouseListener{
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 sceneNum = 2;
                 if (chooseY == 290) { // hard !
-                    budget = 17;
-                    percentage = 0.7;
+                    budget = 8.2;
                 } else if (chooseY == 240) { // med
 
                 } else if (chooseY == 190) { // easy
-                    budget = 30;
-                    percentage = 1.3;
+                    budget = 17.4;
                 }
                 update();
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -265,126 +262,130 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 drawBackground();
             }
         } else if (sceneNum == 3 && message == -1) {
-            if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-                if (!maze.check(yCoord, xCoord, 0)) {
-                    yCoord--;
+            di.keyReleased(e);
+            if (di.lastWord()) {
+                if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+                    if (!maze.check(yCoord, xCoord, 0)) {
+                        yCoord--;
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+                    if (!maze.check(yCoord, xCoord, 3)) {
+                        xCoord--;
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+                    if (!maze.check(yCoord, xCoord, 2)) {
+                        yCoord++;
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+                    if (!maze.check(yCoord, xCoord, 1)) {
+                        xCoord++;
+                    }
                 }
-            } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-                if (!maze.check(yCoord, xCoord, 3)) {
-                    xCoord--;
-                }
-            } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-                if (!maze.check(yCoord, xCoord, 2)) {
-                    yCoord++;
-                }
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-                if (!maze.check(yCoord, xCoord, 1)) {
-                    xCoord++;
-                }
-            }
-            if (xCoord < 0) xCoord = 0;
-            if (xCoord > 15) xCoord = 15;
-            if (yCoord < 0) yCoord = 0;
-            if (yCoord > 9) yCoord = 9;
-            if (yCoord == 9 && xCoord == 8 && e.getKeyCode() == KeyEvent.VK_DOWN) { // got thrugh exit
-                message = 17;
-                JPanel buying = new JPanel();
-                buying.setLayout(null);
-                buying.setBackground(new Color(72, 176, 216, 0));
-                buying.setSize(400, 220);
-                buying.setBounds(127, 100, 400, 220);
-                buying.setBorder(new RoundedBorder(40, new Color(72, 176, 216), new Color(16, 85, 112), "", 0, 0, 0));
-                JLabel question = new JLabel("Would you like to leave");
-                question.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
-                question.setBounds(80, 0, 350, 60);
-                buying.add(question);
-                JLabel itemName = new JLabel("the grocery store?");
-                itemName.setFont(new Font(Font.SERIF, Font.BOLD, 25));
-                itemName.setBounds(100, 40, 400, 40);
-                buying.add(itemName);
-                JLabel price = new JLabel("Note: This action is irreversible");
-                price.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-                price.setBounds(150, 70, 400, 40);
-                buying.add(price);
+                if (xCoord < 0) xCoord = 0;
+                if (xCoord > 15) xCoord = 15;
+                if (yCoord < 0) yCoord = 0;
+                if (yCoord > 9) yCoord = 9;
+                if (yCoord == 9 && xCoord == 8 && e.getKeyCode() == KeyEvent.VK_DOWN) { // got thrugh exit
+                    message = 17;
+                    JPanel buying = new JPanel();
+                    buying.setLayout(null);
+                    buying.setBackground(new Color(72, 176, 216, 0));
+                    buying.setSize(400, 220);
+                    buying.setBounds(127, 100, 400, 220);
+                    buying.setBorder(new RoundedBorder(40, new Color(72, 176, 216), new Color(16, 85, 112), "", 0, 0, 0));
+                    JLabel question = new JLabel("Would you like to leave");
+                    question.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+                    question.setBounds(80, 0, 350, 60);
+                    buying.add(question);
+                    JLabel itemName = new JLabel("the grocery store?");
+                    itemName.setFont(new Font(Font.SERIF, Font.BOLD, 25));
+                    itemName.setBounds(100, 40, 400, 40);
+                    buying.add(itemName);
+                    JLabel price = new JLabel("Note: This action is irreversible");
+                    price.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+                    price.setBounds(150, 70, 400, 40);
+                    buying.add(price);
 
-                JButton no = new JButton("NO");
-                JButton yes = new JButton("YES");
-                yes.setFocusable(false); // must be used so that the keyboard doesn't stop working :sobs:
-                yes.setFont(new Font(Font.SERIF, Font.PLAIN, 30));
-                yes.setBounds(50, 140, 120, 60);
-                //instructions.setBorderPainted(true);
-                yes.setOpaque(true);
-                yes.setBackground(new Color(72, 176, 216));
-                yes.setBorder(new RoundedBorder(15, new Color(217, 234, 211), new Color(217, 234, 211), "YES", 20, 40, 35));
-                //instructions.setForeground(Color.BLACK);
-                buying.add(yes);
-                no.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
-                no.setBorder(new RoundedBorder(15, new Color(244, 204, 204), new Color(244, 204, 204), "NO", 20, 45, 35));
-                no.setBounds(235, 140, 120, 60);
-                //no.setOpaque(true);
-                no.setBackground(new Color(72, 176, 216));
-                no.setFocusable(false);
-                buying.add(no);
-                layeredPane.add(buying, 2);
-                yes.addActionListener(new ActionListener() { // if 'yes' is clicked, the scene moves to sceneNum 4
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        buying.setVisible(false);
-                        sceneNum = 4;
-                        panel.removeAll();
-                        panel.revalidate();
-                        panel.repaint();
-                        update();
-                    }
-                });
-                no.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        buying.setVisible(false);
-                        message = -1;
-                    }
-                });
-            } else if (xCoord == 3 && yCoord == 0) { // lettuce
-                message = 0;
-            } else if (xCoord == 5 && yCoord == 1) { // white flour
-                message = 1;
-            } else if (xCoord == 8 && yCoord == 1) { // multigrain flour
-                message = 2;
-            } else if (xCoord == 14 && yCoord == 1) { // milk
-                message = 3;
-            } else if (xCoord == 1 && yCoord == 4) { // raw white rice
-                message = 4;
-            } else if (xCoord == 3 && yCoord == 5) { // multigrain rice
-                message = 5;
-            } else if (xCoord == 8 && yCoord == 4) { // tomato
-                message = 6;
-            } else if (xCoord == 13 && yCoord == 4) { // potato
-                message = 7;
-            } else if (xCoord == 12 && yCoord == 5) { // carrot
-                message = 8;
-            } else if (xCoord == 5 && yCoord == 6) { // eggs
-                message = 9;
-            } else if (xCoord == 10 && yCoord == 7) { //beef
-                message = 10;
-            } else if (xCoord == 12 && yCoord == 8) { // fish
-                message = 11;
-            } else if (xCoord == 0 && yCoord == 9) { //apple
-                message = 12;
-            } else if (xCoord == 6 && yCoord == 9) { // spinach
-                message = 13;
-            } else if (xCoord == 10 && yCoord == 4) { //butter
-                message = 14;
-            } else if (xCoord == 11 && yCoord == 9) { //corn
-                message = 15;
-            } else if (xCoord == 15 && yCoord == 9) { //cheese
-                message = 16;
-            } else {
-                message = -1;
+                    JButton no = new JButton("NO");
+                    JButton yes = new JButton("YES");
+                    yes.setFocusable(false); // must be used so that the keyboard doesn't stop working :sobs:
+                    yes.setFont(new Font(Font.SERIF, Font.PLAIN, 30));
+                    yes.setBounds(50, 140, 120, 60);
+                    //instructions.setBorderPainted(true);
+                    yes.setOpaque(true);
+                    yes.setBackground(new Color(72, 176, 216));
+                    yes.setBorder(new RoundedBorder(15, new Color(217, 234, 211), new Color(217, 234, 211), "YES", 20, 40, 35));
+                    //instructions.setForeground(Color.BLACK);
+                    buying.add(yes);
+                    no.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+                    no.setBorder(new RoundedBorder(15, new Color(244, 204, 204), new Color(244, 204, 204), "NO", 20, 45, 35));
+                    no.setBounds(235, 140, 120, 60);
+                    //no.setOpaque(true);
+                    no.setBackground(new Color(72, 176, 216));
+                    no.setFocusable(false);
+                    buying.add(no);
+                    layeredPane.add(buying, 2);
+                    yes.addActionListener(new ActionListener() { // if 'yes' is clicked, the scene moves to sceneNum 4
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            buying.setVisible(false);
+                            sceneNum = 4;
+                            di = new Dialogue(new String[] {"Now that we're back from the grocery store, <br>we need to store our ingredients!<br> Your fridge can only hold up to 12 distinct foods!", "Press a food item from the left and any space <br>in the fridge.<br> Then, press the 'swap' button!", "Once you're finished, press the 'Done' button.<br>Any food on the left will be discarded afterwards."});
+                            panel.removeAll();
+                            panel.revalidate();
+                            panel.repaint();
+                            update();
+                        }
+                    });
+                    no.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            buying.setVisible(false);
+                            message = -1;
+                        }
+                    });
+                } else if (xCoord == 3 && yCoord == 0) { // lettuce
+                    message = 0;
+                } else if (xCoord == 5 && yCoord == 1) { // white flour
+                    message = 1;
+                } else if (xCoord == 8 && yCoord == 1) { // multigrain flour
+                    message = 2;
+                } else if (xCoord == 14 && yCoord == 1) { // milk
+                    message = 3;
+                } else if (xCoord == 1 && yCoord == 4) { // raw white rice
+                    message = 4;
+                } else if (xCoord == 3 && yCoord == 5) { // multigrain rice
+                    message = 5;
+                } else if (xCoord == 8 && yCoord == 4) { // tomato
+                    message = 6;
+                } else if (xCoord == 13 && yCoord == 4) { // potato
+                    message = 7;
+                } else if (xCoord == 12 && yCoord == 5) { // carrot
+                    message = 8;
+                } else if (xCoord == 5 && yCoord == 6) { // eggs
+                    message = 9;
+                } else if (xCoord == 10 && yCoord == 7) { //beef
+                    message = 10;
+                } else if (xCoord == 12 && yCoord == 8) { // fish
+                    message = 11;
+                } else if (xCoord == 0 && yCoord == 9) { //apple
+                    message = 12;
+                } else if (xCoord == 6 && yCoord == 9) { // spinach
+                    message = 13;
+                } else if (xCoord == 10 && yCoord == 4) { //butter
+                    message = 14;
+                } else if (xCoord == 11 && yCoord == 9) { //corn
+                    message = 15;
+                } else if (xCoord == 15 && yCoord == 9) { //cheese
+                    message = 16;
+                } else {
+                    message = -1;
+                }
+                d.repaint();
             }
             panel.removeAll();
             panel.revalidate();
             panel.repaint();
-            d.repaint();
             update();
         } else if (sceneNum == 4) {
             di.keyReleased(e);
@@ -393,49 +394,54 @@ public class CookWithMageon implements KeyListener, MouseListener{
             update();
             panel.repaint();
         } else if (sceneNum == 5) {
-            if (imgName.equals("fridge closed") || imgName.equals("fridge open")) {
-                if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-                    if (x <= 175) { // stove
-                        imgName = "stove";
-                        di.getDialogue().setVisible(false);
-                        statsbar.getStats().setVisible(false);
+            di.keyReleased(e);
+            if (di.lastWord()) {
+                if (imgName.equals("fridge closed") || imgName.equals("fridge open")) {
+                    if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+                        if (x <= 175) { // stove
+                            imgName = "stove";
+                            di.getDialogue().setVisible(false);
+                            statsbar.getStats().setVisible(false);
+                            panel.removeAll();
+                            panel.revalidate();
+                            panel.repaint();
+                            addComponents();
+                            drawPerson(x, y);
+                            cook();
+                            drawBackground();
+                        } else if (x <= 417) { // cabinet
+                            imgName = "cabinet closed";
+                            statsbar.getStats().setVisible(false);
+                            panel.removeAll();
+                            panel.revalidate();
+                            panel.repaint();
+                            drawBackground();
+                        }
+                    }
+                }
+                if (!imgName.contains("problem")) {
+                    if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+                        imgName = "fridge closed";
                         panel.removeAll();
                         panel.revalidate();
                         panel.repaint();
                         addComponents();
                         drawPerson(x, y);
-                        cook();
                         drawBackground();
-                    } else if (x <= 417) { // cabinet
-                        imgName = "cabinet closed";
-                        statsbar.getStats().setVisible(false);
+                        statsbar.getStats().setVisible(true); // get back stats back
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (imgName.equals("problemB")) {
+                        imgName = "fridge closed";
+                        panel.removeAll();
+                        panel.revalidate();
+                        panel.repaint();
+                        addComponents();
+                        drawPerson(x, y);
                         drawBackground();
                     }
                 }
-            }
-            if (!imgName.contains("problem")) {
-                if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-                    imgName = "fridge closed";
-                    panel.removeAll();
-                    panel.revalidate();
-                    panel.repaint();
-                    addComponents();
-                    drawPerson(x, y);
-                    drawBackground();
-                    statsbar.getStats().setVisible(true); // get back stats back
-                }
-            }
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (imgName.equals("problemB")) {
-                    imgName = "fridge closed";
-                }
-                di.keyReleased(e);
-                panel.removeAll();
-                panel.revalidate();
-                panel.repaint();
-                addComponents();
-                drawPerson(x, y);
-                drawBackground();
             }
         } else if (sceneNum == 6) {
             update();
@@ -444,6 +450,20 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 sceneNum = 1;
                 message = -1;
                 xCoord = 7; yCoord = 0;
+                statsbar.reset();
+                invL.clear();
+                invR = new Food[4][3];
+                selectedLeft = new int[2];
+                selectedRight = new int[2];
+                selectedLeft[0] = -1;
+                selectedRight[0] = -1;
+                selected = new boolean[4][3];
+                name.clear();
+                numMeals = 0;
+                panel.removeAll();
+                panel.revalidate();
+                panel.repaint();
+                update();
             } else if (e.getKeyCode() == KeyEvent.VK_Q) {
                 mainFrame.setVisible(false);
                 mainFrame.dispose();
@@ -512,11 +532,10 @@ public class CookWithMageon implements KeyListener, MouseListener{
             instructionsPanel.setBackground(new Color(201, 218, 248));
             instructionsFrame.add(instructionsPanel);
             instructionsFrame.setLocationRelativeTo(null);
-            JTextArea instructionsText = new JTextArea("    The goal of the game is to cook meals and balance nutrition and satisfaction. \nThere will be a required amount of vitamin that must be consumed. \n" +
-                    "\n" +
-                    "    You must survive 3 days, cooking 3 meals a day. In the beginning, you will go \nto a grocery store before the first day, where you can buy products to use. Once \nyou return from the store, you may not go back. \n" +
-                    "\n" +
-                    "    If the food you make turns into a meal, you will eat it. Otherwise, it will go into \nthe trash. You will not die if you don’t anything for 3 days. \n");
+            JTextArea instructionsText = new JTextArea("    YOU must try to cook meals for yourself for a whole day. And this \nisn't just ordering takeout. The goal of the game is to cook 3 nutritious, \ncaloric meals that will satisfy you, the player. \n" +
+                    "    You must survive 1 day, cooking 3 meals. Before you cook, \nyou'll go to the grocery store. There, you'll have to navigate the maze of a store,\nbuying healthy products with the budget you have, shown at the \ntop right of the screen.\n"+
+                    "    Once you return home, you'll first put all your groceries in the fridge. Then, \nit's time to cook! If the food you combine counts as a meal, you will eat it and gain \nthose nutrients and calories. Otherwise, it will go into the trash.\n"+
+                    "    You will not die if you don’t eat anything all day. \n");
             instructionsText.setBounds(35, 75,650, 600);
             instructionsText.setFont(new Font("Serif", Font.PLAIN, 17));
             instructionsPanel.add(instructionsText);
@@ -570,6 +589,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             drawBackground();
 
         } else if (sceneNum == 3) { // Level 2
+            panel.add(di.getDialogue());
             panel.setBackground(new Color(201, 218, 248));
             { // grocery shop
                 d = new Drawing();
@@ -617,7 +637,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 Food rawBeefFood = (new Food("Raw Beef", "Pictures/raw_beef.png", new int[]{1, 5}, 217, "", 2.25));
                 Food rawFishFood = (new Food("Raw Fish", "Pictures/raw_fish.png", new int[]{1, 3, 12, 13}, 190, "", 2.50));
                 Food appleFood = (new Food("Apple", "Pictures/apple.png", new int[]{2, 9}, 95, "", 0.79));
-                Food spinachFood = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{0, 4, 7, 12}, 30, "", 1.80));
+                Food spinachFood = (new Food("Spinach", "Pictures/leafy_greens.png", new int[]{0, 4, 7, 12}, 30, "", 1.2));
                 Food butterFood = (new Food("Butter", "Pictures/butter.png", new int[]{10, 3, 11}, 102, "", 0.66));
                 Food uncookedCornFood = (new Food("Cooked Corn", "Pictures/corn.png", new int[]{1, 2, 7}, 177, "", 1.46));
                 Food cheeseFood = (new Food("Cheese", "Pictures/cheese.png", new int[]{13, 0, 10, 8}, 100, "", 1.77));
@@ -828,6 +848,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             swap.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if (!di.lastWord()) return;
                     Food temp = invR[selectedRight[1]][selectedRight[0]];
                     if (temp == null) {
                         invR[selectedRight[1]][selectedRight[0]] = invL.get(selectedLeft[1] * 4 + selectedLeft[0]);
@@ -855,12 +876,13 @@ public class CookWithMageon implements KeyListener, MouseListener{
             panel.add(done);
             done.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) { // next, can add confirmation later
+                public void actionPerformed(ActionEvent e) {
+                    if (!di.lastWord()) return;
                     sceneNum = 5;
                     panel.removeAll();
                     panel.revalidate();
                     panel.repaint();
-
+                    di = new Dialogue(new String[]{"Ding ding ding. Oh look, its time to start cooking!<br> Let's make a nice healthy meal!", "Press the arrow keys or WASD to move around the kitchen.<br>", "When you're underneath the stove, you can press UP <br> or W to create a food item.", "Press COOK or COMBINE to make a meal with your foods.<br>You can select items in your fridge by clicking on them. These will<br>be highlighted in red.", "Press DOWN or S to then go back to the whole kitchen.<br>", "At the end of a meal, press FINISH MEAL to well, finish cooking<br>that meal! If the food you made counts as a meal,<br>it will display such on the results screen for that day.<br>", "Remember your stats bars at the top left. Try to fill them!<br>Good luck and have fun!<br>"});
                     update();
                 }
             });
@@ -881,7 +903,6 @@ public class CookWithMageon implements KeyListener, MouseListener{
             imgName = "fridge open";
 
             statsbar = new StatsBar();
-            di = new Dialogue(new String[]{"Ding ding ding. Oh look, its time to start cooking!<br> Let's make a nice healthy meal!", "Press the arrow keys or WASD to move around the kitchen."});
             try {
                 personImg = new JLabel(new ImageIcon(ImageIO.read(new File("Pictures/person.png")).getScaledInstance(160, 240, Image.SCALE_SMOOTH)));
             } catch (IOException e) {
@@ -928,28 +949,21 @@ public class CookWithMageon implements KeyListener, MouseListener{
             
             numMeals++;
             imgName = "fridge open";
-            if (numMeals == 9) {
-                JLabel instruct = new JLabel("Press <ENTER> to go back to the main menu or press Q to exit");
+            if (numMeals == 3) {
+                JLabel instruct = new JLabel("<html>Aaand you're done! Congrats! Press ENTER to go back to the main menu or press Q to exit<html>");
                 panel.add(instruct);
                 sceneNum = 7;
+
                 instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
-                instruct.setBounds(20, 250, 600, 200);
-            } else if (numMeals % 3 == 0) {
-                JLabel instruct = new JLabel("Day " + numMeals / 3 + " has ended. Press <ENTER> to continue");
-                panel.add(instruct);
-                statsbar.reset();
-                sceneNum = 5;
-                instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
-                instruct.setBounds(20, 250, 500, 200);
+                instruct.setBounds(20, 200, 600, 200);
             } else {
-                JLabel instruct = new JLabel("Press <ENTER> to continue onto the next meal");
+                JLabel instruct = new JLabel("Press ENTER to continue onto the next meal");
                 panel.add(instruct);
                 sceneNum = 5;
+                imgName = "problemB";
                 instruct.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
                 instruct.setBounds(20, 250, 500, 200);
             }
-        } else if (sceneNum == 7) {
-
         }
         mainFrame.repaint();
     }
@@ -1480,6 +1494,9 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 panel.repaint();
                 if (calories != 0) {
                     giveProblem(name.get(name.size()-1), calories, nutrients);
+                    addComponents();
+                    drawPerson(x, y);
+                    drawBackground();
                 } else {
                     panel.removeAll();
                     panel.revalidate();
@@ -1491,10 +1508,6 @@ public class CookWithMageon implements KeyListener, MouseListener{
                     panel.add(label);
                     imgName = "problemB";
                 }
-
-                addComponents();
-                drawPerson(x, y);
-                drawBackground();
             }
         });
         finishMeal.addActionListener(new ActionListener() {
