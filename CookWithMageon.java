@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File; 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -234,7 +234,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 if (chooseY == 290) { // hard !
                     budget = 8.2;
                 } else if (chooseY == 240) { // med
-
+                    budget = 11.2;
                 } else if (chooseY == 190) { // easy
                     budget = 17.4;
                 }
@@ -578,7 +578,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             text.setBounds(190, 330, 300, 40);
             panel.add(text);
         } else if (sceneNum == 2) { // Level 1
-            
+
             panel.removeAll();
             panel.revalidate();
             panel.repaint();
@@ -768,6 +768,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                                 } else {
                                     inventory.add(buyable[message]);
                                 }
+
                                 message = -1;
                                 inventoryFrame.getContentPane().removeAll();
                                 inventoryFrame.revalidate();
@@ -799,7 +800,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 inventoryFrame.setResizable(false);
                 inventoryFrame.setSize(610, 300);
                 Inventory i = new Inventory(this.inventory);
-                inventoryFrame.add(BorderLayout.CENTER, new JScrollPane(i.getPanel()));
+                inventoryFrame.add(BorderLayout.CENTER, (i.getPanel()));
                 inventoryFrame.setLocationRelativeTo(null);
                 inventoryFrame.setVisible(false);
 
@@ -838,7 +839,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                 highlight.setBorder(new RoundedBorder(10, new Color(255, 0, 0, 90), new Color(255,0,0), "", 0, 0, 0));
                 highlight.setBounds(417 + 80 * selectedRight[0], 35 + 70 * selectedRight[1], 60, 60); // assuming i
                 panel.add(highlight);
-            } 
+            }
             JButton swap = new JButton("swap");
             swap.setSize(150, 50);
             swap.setBorder(new RoundedBorder(20, new Color(201, 218, 248), new Color(145, 165, 199), "Swap", 20, 50, 30));
@@ -882,7 +883,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                     panel.removeAll();
                     panel.revalidate();
                     panel.repaint();
-                    di = new Dialogue(new String[]{"Ding ding ding. Oh look, its time to start cooking!<br> Let's make a nice healthy meal!", "Press the arrow keys or WASD to move around the kitchen.<br>", "When you're underneath the stove, you can press UP <br> or W to create a food item.", "Press COOK or COMBINE to make a meal with your foods.<br>You can select items in your fridge by clicking on them. These will<br>be highlighted in red.", "Press DOWN or S to then go back to the whole kitchen.<br>", "At the end of a meal, press FINISH MEAL to well, finish cooking<br>that meal! If the food you made counts as a meal,<br>it will display such on the results screen for that day.<br>", "Remember your stats bars at the top left. Try to fill them!<br>Good luck and have fun!<br>"});
+                    di = new Dialogue(new String[]{"Ding ding ding. Oh look, its time to start cooking! Let's make a nice healthy meal!<br>", "Press the arrow keys or WASD to move around the kitchen.<br>", "When you're underneath the stove, you can press UP <br> or W to create a food item.", "Press COOK or COMBINE to make a meal with your foods.<br>You can select items in your fridge by clicking on them. These will<br>be highlighted in red.", "Press DOWN or S to then go back to the whole kitchen.<br>", "At the end of a meal, press FINISH MEAL to well, finish cooking<br>that meal! If the food you made counts as a meal,<br>it will display such on the results screen for that day.<br>", "Remember your stats bars at the top left. Try to fill them!<br>Good luck and have fun!<br>"});
                     update();
                 }
             });
@@ -946,7 +947,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
             }
             congrats.setFont(new Font(Font.SERIF, Font.PLAIN, 13));
             congrats.setBounds(20, 20, 200, 40);
-            
+
             numMeals++;
             imgName = "fridge open";
             if (numMeals == 3) {
@@ -1468,7 +1469,7 @@ public class CookWithMageon implements KeyListener, MouseListener{
                                 fridge[i][j].setQuantity(fridge[i][j].quantity() - 1);
                             }
                             selected[i][j] = false;
-                        } 
+                        }
                     }
                 }
                 Recipes recipe = new Recipes("", select);
